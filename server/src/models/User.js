@@ -48,12 +48,24 @@ const userSchema = new mongoose.Schema({
 const secretKey = process.env.SECRET_KEY;
 userSchema.methods.generateAuthToken = async function() {
   try {
+    console.log('Generating token for user:', this._id);
+    console.log('Secret key exists:', !!secretKey);
+    
+    if (!secretKey) {
+      throw new Error('SECRET_KEY is not defined in environment variables');
+    }
+    
     const token = jwt.sign({ _id: this._id }, secretKey);
+    console.log('Token generated successfully');
+    
     this.tokens = this.tokens.concat({token: token});
     await this.save();
+    console.log('Token saved to user document');
+    
     return token;
   } catch (error) {
-    console.log(error);
+    console.log('Token generation error:', error);
+    throw error;
   }
 }
 

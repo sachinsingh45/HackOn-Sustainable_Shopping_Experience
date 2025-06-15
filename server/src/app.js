@@ -11,7 +11,8 @@ var path = require('path');
 const app = express();
 
 // Database connection
-require('./database/connection');
+const connectDB = require('./database/connection');
+connectDB();
 
 // Product Model
 const Product = require('./models/Product');
