@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Camera } from 'lucide-react';
-import { useStore } from '../../store/useStore';
+import { Search, Camera, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+
+import { useStore } from '../../store/useStore';
+import MaterialInfoScanner from './biodegradable';
 
 const SearchBar = () => {
   const { searchQuery, setSearchQuery, searchProducts, products } = useStore();
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
+
+  const [showScanner, setShowScanner] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -97,15 +102,32 @@ const SearchBar = () => {
         </div>
         
         <div className="flex">
-          <button
-            type="button"
-            onClick={handleGreenLens}
-            className="bg-green-500 hover:bg-green-600 px-3 py-2 flex items-center justify-center transition-colors"
-            title="Green Lens - Scan products for eco info"
-          >
-            <Camera className="w-5 h-5 text-white" />
-          </button>
-          
+          <>
+            <button
+              type="button"
+              onClick={() => setShowScanner(true)}
+              className="bg-green-500 hover:bg-green-600 px-3 py-2 flex items-center justify-center transition-colors"
+              title="Green Lens - Scan products for eco info"
+            >
+              <Camera className="w-5 h-5 text-white" />
+            </button>
+
+            {showScanner && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+                <div className="bg-white p-6 rounded-xl shadow-xl max-w-2xl w-full relative">
+                  <button
+                    className="absolute top-2 right-2 text-gray-600 hover:text-gray-900 text-lg font-bold"
+                    onClick={() => setShowScanner(false)}
+                  >
+                    <X className="w-5 h-5 hover:text-red-700" />
+                  </button>
+                  <MaterialInfoScanner />
+                </div>
+              </div>
+            )}
+          </>
+
+
           <button
             type="submit"
             className="bg-orange-400 hover:bg-orange-500 px-4 py-2 rounded-r-md flex items-center justify-center transition-colors"
