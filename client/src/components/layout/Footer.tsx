@@ -105,11 +105,12 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row items-center justify-between">
           <div className="flex items-center space-x-4 mb-4 md:mb-0">
             <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-orange-400 rounded flex items-center justify-center">
-                <span className="text-gray-900 font-bold text-sm">A</span>
-              </div>
-              <span className="font-bold text-lg">Amazon</span>
-              <span className="text-green-400 text-sm">Green</span>
+              <img
+                src="/logo.png"
+                alt="Amazon Logo"
+                className="w-24 h-auto object-contain"
+              />
+              <Leaf className="w-5 h-5 mr-2 text-green-400" />
             </Link>
             
             <select className="bg-gray-800 border border-gray-600 text-white px-3 py-1 rounded text-sm">

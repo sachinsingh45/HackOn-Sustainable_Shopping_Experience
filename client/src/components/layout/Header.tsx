@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, User, MapPin } from 'lucide-react';
+import { ShoppingCart, User, MapPin,Leaf } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 import SearchBar from '../common/SearchBar';
 
@@ -22,12 +22,14 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-orange-400 rounded flex items-center justify-center">
-              <span className="text-gray-900 font-bold text-sm">A</span>
-            </div>
-            <span className="font-bold text-lg">Amazon</span>
-            <span className="text-green-400 text-sm">Green</span>
+          <Link to="/" className="flex items-center space-x-1 p-2">
+            
+            <img
+              src="/logo.png"
+              alt="Amazon Logo"
+              className="w-24 h-auto object-contain"
+            />
+            <Leaf className="w-5 h-5 text-green-400" />
           </Link>
 
           {/* Delivery Location */}
@@ -35,7 +37,7 @@ const Header = () => {
             <MapPin className="w-4 h-4" />
             <div>
               <div className="text-xs text-gray-300">Deliver to</div>
-              <div className="font-semibold">{user?.location || 'Select location'}</div>
+              <div className="font-semibold">{user?.location || 'India'}</div>
             </div>
           </div>
 
