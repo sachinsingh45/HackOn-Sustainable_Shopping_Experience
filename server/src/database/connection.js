@@ -1,6 +1,6 @@
 // Libraries
 const mongoose = require('mongoose');
-const db_url = process.env.DB_URL;
+const db_url = process.env.MONGO_URI;
 
 // Database Connection
 const connectDB = async () => {
