@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Star, Leaf, Users, Package, Truck } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useStore } from '../../store/useStore';
+import { useToast } from '../../context/ToastContext';
 
 interface Product {
   _id: string;
@@ -31,19 +32,22 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { addToCart, user } = useStore();
+  const { showToast } = useToast();
   
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent navigation when clicking add to cart
     if (!user) {
-      // Redirect to login if not authenticated
+      showToast('Please login to add items to cart', 'warning');
       window.location.href = '/login';
       return;
     }
     
     try {
       await addToCart(product.id);
+      showToast(`${product.name} added to cart successfully!`, 'success');
     } catch (error) {
       console.error('Failed to add to cart:', error);
+      showToast('Failed to add item to cart', 'error');
     }
   };
 

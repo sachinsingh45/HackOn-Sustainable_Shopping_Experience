@@ -3,17 +3,29 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Star, Heart, Share2, Truck, Shield, ArrowLeft, Plus, Minus, Leaf, Users, Package, Info, ChevronDown, ChevronUp, ShoppingCart, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../store/useStore';
+import { useToast } from '../context/ToastContext';
+
+type SectionKey = 'details' | 'shipping' | 'returns' | 'eco';
+
+interface ExpandedSections {
+  details: boolean;
+  shipping: boolean;
+  returns: boolean;
+  eco: boolean;
+}
 
 const ProductPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { products, addToCart, user, fetchProduct } = useStore();
+  const { showToast } = useToast();
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState('default');
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [expandedSections, setExpandedSections] = useState({
+  const [error, setError] = useState<string | null>(null);
+  const [expandedSections, setExpandedSections] = useState<ExpandedSections>({
     details: true,
     shipping: false,
     returns: false,
@@ -26,20 +38,52 @@ const ProductPage = () => {
 
   useEffect(() => {
     const loadProduct = async () => {
+      if (!id) {
+        setError('Product ID is missing');
+        setLoading(false);
+        return;
+      }
+
       setLoading(true);
+      setError(null);
+      
       try {
-        let foundProduct = products.find(p => p.id === id);
+        // First try to find the product in the local store
+        let foundProduct = products.find(p => p.id === id || p._id === id);
+        
+        // If not found in local store, try to fetch from server
         if (!foundProduct) {
-          foundProduct = await fetchProduct(id);
+          const fetchedProduct = await fetchProduct(id);
+          if (fetchedProduct) {
+            foundProduct = {
+              ...fetchedProduct,
+              rating: fetchedProduct.rating || Math.random() * 2 + 3,
+              reviews: fetchedProduct.reviews || Math.floor(Math.random() * 5000) + 100,
+              carbonFootprint: fetchedProduct.carbonFootprint || Math.random() * 5 + 0.5,
+              ecoScore: fetchedProduct.ecoScore || Math.floor(Math.random() * 40) + 60,
+              isEcoFriendly: fetchedProduct.isEcoFriendly || Math.random() > 0.6,
+              groupBuyEligible: fetchedProduct.groupBuyEligible || Math.random() > 0.7,
+              category: fetchedProduct.category || 'General',
+              image: fetchedProduct.image || fetchedProduct.url || fallbackImage,
+              price: fetchedProduct.price || '₹0',
+              value: fetchedProduct.value || '0',
+              accValue: fetchedProduct.accValue || 0,
+              id: fetchedProduct.id || fetchedProduct._id,
+              _id: fetchedProduct._id || fetchedProduct.id
+            };
+          }
         }
+
         if (foundProduct) {
           setProduct(foundProduct);
         } else {
-          navigate('/');
+          setError('Product not found');
+          setTimeout(() => navigate('/'), 2000);
         }
       } catch (error) {
         console.error('Error loading product:', error);
-        navigate('/');
+        setError('Failed to load product');
+        setTimeout(() => navigate('/'), 2000);
       } finally {
         setLoading(false);
       }
@@ -48,7 +92,7 @@ const ProductPage = () => {
     loadProduct();
   }, [id, products, fetchProduct, navigate]);
 
-  const toggleSection = (section: string) => {
+  const toggleSection = (section: SectionKey) => {
     setExpandedSections(prev => ({
       ...prev,
       [section]: !prev[section]
@@ -71,22 +115,59 @@ const ProductPage = () => {
     e.currentTarget.src = fallbackImage;
   };
 
+  const handleAddToCart = async () => {
+    if (!user) {
+      showToast('Please login to add items to cart', 'warning');
+      navigate('/login');
+      return;
+    }
+
+    try {
+      await addToCart(product.id);
+      showToast(`${product.name} added to cart successfully!`, 'success');
+    } catch (error) {
+      console.error('Failed to add to cart:', error);
+      showToast('Failed to add item to cart', 'error');
+    }
+  };
+
+  const handleBuyNow = async () => {
+    if (!user) {
+      showToast('Please login to proceed with purchase', 'warning');
+      navigate('/login');
+      return;
+    }
+
+    try {
+      await addToCart(product.id);
+      showToast('Redirecting to checkout...', 'info');
+      navigate('/cart');
+    } catch (error) {
+      console.error('Failed to add to cart:', error);
+      showToast('Failed to proceed with purchase', 'error');
+    }
+  };
+
   if (loading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-12 text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto"></div>
-        <p className="mt-4 text-gray-600">Loading product...</p>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading product details...</p>
+        </div>
       </div>
     );
   }
 
-  if (!product) {
+  if (error || !product) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-12 text-center">
-        <h2 className="text-2xl font-bold mb-4">Product not found</h2>
-        <Link to="/" className="text-green-600 hover:text-green-700">
-          Return to homepage
-        </Link>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-500 mb-4">{error || 'Product not found'}</p>
+          <Link to="/" className="text-green-600 hover:text-green-700">
+            Return to Home
+          </Link>
+        </div>
       </div>
     );
   }
@@ -234,7 +315,7 @@ const ProductPage = () => {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => addToCart(product.id)}
+                onClick={handleAddToCart}
                 className="flex-1 bg-yellow-400 hover:bg-yellow-500 text-gray-900 py-3 px-6 rounded-lg font-semibold transition-colors flex items-center justify-center"
               >
                 <ShoppingCart className="w-5 h-5 mr-2" />
@@ -243,6 +324,7 @@ const ProductPage = () => {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
+                onClick={handleBuyNow}
                 className="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-3 px-6 rounded-lg font-semibold transition-colors flex items-center justify-center"
               >
                 <Zap className="w-5 h-5 mr-2" />
