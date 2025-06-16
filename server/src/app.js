@@ -40,6 +40,3 @@ app.listen(port, function() {
   console.log("Server started at port " + port);
 })
 
-// ===== To store data from productsData.js =====
-// const defaultData = require('./defaultData');
-// defaultData();
