@@ -1,0 +1,61 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS / IDE-specific
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# Build output
+dist/
+build/
+out/
+coverage/
+
+# Cache
+.cache/
+.next/
+.nyc_output/
+.husky/_/
+.eslintcache
+
+# Dependency manager folders
+.bun/
+.pnpm-store/
+jspm_packages/
+
+# MongoDB dumps
+dump/
+
+# Production/Debug Files
+*.tgz
+*.pid
+
+# Firebase & AWS config (if any)
+.firebase/
+.aws/
+
+# Optional: Lint & test reports
+reports/
+test-results/
+
+# Frontend (Vite/React) specific
+.vite/
+*.tsbuildinfo
