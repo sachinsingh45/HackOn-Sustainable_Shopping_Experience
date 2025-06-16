@@ -1,0 +1,50 @@
+# Ignore node_modules in both folders
+client/node_modules/
+server/node_modules/
+
+# Ignore .env files
+client/.env
+server/.env
+
+# Ignore build or dist outputs
+client/dist/
+server/dist/
+client/build/
+server/build/
+
+# Vite, Next.js, or other bundler caches
+client/.vite/
+server/.vite/
+**/.cache/
+**/.turbo/
+**/.next/
+
+# Ignore OS and editor junk
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# TS cache
+**/*.tsbuildinfo
+
+# MongoDB dumps
+server/dump/
+
+# Dependency manager specific
+.pnpm-store/
+.bun/
+
+# Lint & test outputs
+.eslintcache
+coverage/
+reports/
+test-results/
