@@ -22,6 +22,7 @@ interface Product {
   prime?: boolean;
   mrp?: string;
   discount?: string;
+  category?: string;
 }
 
 interface ProductCardProps {
@@ -31,7 +32,8 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { addToCart, user } = useStore();
   
-  const handleAddToCart = async () => {
+  const handleAddToCart = async (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent navigation when clicking add to cart
     if (!user) {
       // Redirect to login if not authenticated
       window.location.href = '/login';
@@ -46,13 +48,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   };
 
   const discount = product.discount ? parseInt(product.discount.replace(/[-%]/g, '')) : 0;
+  const price = parseFloat(product.price.replace(/[^0-9.]/g, ''));
 
   return (
-    <motion.div
-      whileHover={{ y: -4 }}
-      className="bg-white rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 overflow-hidden"
-    >
-      <Link to={`/product/${product.id}`} className="block">
+    <Link to={`/product/${product.id}`} className="block">
+      <motion.div
+        whileHover={{ y: -4 }}
+        className="bg-white rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 overflow-hidden"
+      >
         <div className="relative">
           <img
             src={product.image || product.url}
@@ -64,7 +67,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           />
           
           {/* Badges */}
-          <div className="absolute top-2 left-2 space-y-1">
+          <div className="absolute top-2 left-2 flex flex-col gap-2">
             {product.isEcoFriendly && (
               <span className="bg-green-500 text-white text-xs px-2 py-1 rounded-full flex items-center">
                 <Leaf className="w-3 h-3 mr-1" />
@@ -95,11 +98,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
 
         <div className="p-4">
-          <h3 className="text-sm font-medium text-gray-900 mb-2 line-clamp-2 hover:text-blue-600">
-            {product.name}
-          </h3>
-
-          {/* Rating */}
+          <h3 className="font-medium text-gray-900 mb-1 line-clamp-2">{product.name}</h3>
+          
           <div className="flex items-center mb-2">
             <div className="flex items-center">
               {[...Array(5)].map((_, i) => (
@@ -112,72 +112,37 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                   }`}
                 />
               ))}
+              <span className="ml-1 text-sm text-gray-600">
+                ({product.reviews?.toLocaleString() || '0'})
+              </span>
             </div>
-            <span className="text-sm text-gray-600 ml-1">
-              ({(product.reviews || 100).toLocaleString()})
-            </span>
           </div>
 
-          {/* Price */}
-          <div className="flex items-center mb-2">
-            <span className="text-lg font-bold text-gray-900">
-              {product.price}
-            </span>
-            {product.mrp && (
-              <span className="text-sm text-gray-500 line-through ml-2">
-                {product.mrp}
+          <div className="flex items-baseline justify-between mb-3">
+            <div>
+              <span className="text-lg font-bold text-gray-900">{product.price}</span>
+              {product.mrp && (
+                <span className="ml-2 text-sm text-gray-500 line-through">
+                  {product.mrp}
+                </span>
+              )}
+            </div>
+            {product.carbonFootprint && (
+              <span className="text-sm text-green-600">
+                {product.carbonFootprint} kg CO₂
               </span>
             )}
           </div>
 
-          {/* Eco Info */}
-          {product.ecoScore && (
-            <div className="space-y-1 mb-3">
-              <div className="flex items-center justify-between text-xs">
-                <span className="text-gray-600">Eco Score:</span>
-                <div className="flex items-center">
-                  <div className="w-16 bg-gray-200 rounded-full h-2 mr-2">
-                    <div
-                      className={`h-2 rounded-full ${
-                        product.ecoScore >= 80
-                          ? 'bg-green-500'
-                          : product.ecoScore >= 60
-                          ? 'bg-yellow-500'
-                          : 'bg-red-500'
-                      }`}
-                      style={{ width: `${product.ecoScore}%` }}
-                    />
-                  </div>
-                  <span className="font-medium">{product.ecoScore}/100</span>
-                </div>
-              </div>
-              {product.carbonFootprint && (
-                <div className="flex items-center justify-between text-xs text-gray-600">
-                  <span>Carbon Footprint:</span>
-                  <span className="font-medium">{product.carbonFootprint} kg CO₂e</span>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Delivery Info */}
-          <div className="flex items-center text-xs text-gray-600 mb-3">
-            <Truck className="w-3 h-3 mr-1" />
-            <span>Free delivery by tomorrow</span>
-          </div>
+          <button
+            onClick={handleAddToCart}
+            className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 py-2 px-4 rounded-lg font-medium transition-colors"
+          >
+            Add to Cart
+          </button>
         </div>
-      </Link>
-
-      {/* Add to Cart Button */}
-      <div className="px-4 pb-4">
-        <button
-          onClick={handleAddToCart}
-          className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 py-2 px-4 rounded-md font-medium transition-colors"
-        >
-          Add to Cart
-        </button>
-      </div>
-    </motion.div>
+      </motion.div>
+    </Link>
   );
 };
 

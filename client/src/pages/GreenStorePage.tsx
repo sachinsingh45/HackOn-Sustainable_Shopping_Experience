@@ -10,13 +10,20 @@ const GreenStorePage = () => {
   const [sortBy, setSortBy] = useState('eco-score');
   const [priceRange, setPriceRange] = useState([0, 10000]);
 
+  // Calculate category counts
+  const categoryCounts = products.reduce((acc, product) => {
+    const category = product.category?.toLowerCase() || 'general';
+    acc[category] = (acc[category] || 0) + 1;
+    return acc;
+  }, {} as { [key: string]: number });
+
   const categories = [
     { id: 'all', name: 'All Green Products', count: products.length },
-    { id: 'electronics', name: 'Green Electronics', count: 12 },
-    { id: 'fashion', name: 'Sustainable Fashion', count: 8 },
-    { id: 'home', name: 'Eco Home & Garden', count: 15 },
-    { id: 'beauty', name: 'Organic Beauty', count: 6 },
-    { id: 'books', name: 'Eco Books', count: 4 }
+    { id: 'electronics', name: 'Green Electronics', count: categoryCounts['electronics'] || 0 },
+    { id: 'fashion', name: 'Sustainable Fashion', count: categoryCounts['fashion'] || 0 },
+    { id: 'home', name: 'Eco Home & Garden', count: categoryCounts['home'] || 0 },
+    { id: 'beauty', name: 'Organic Beauty', count: categoryCounts['beauty'] || 0 },
+    { id: 'books', name: 'Eco Books', count: categoryCounts['books'] || 0 }
   ];
 
   const sortOptions = [
@@ -29,20 +36,29 @@ const GreenStorePage = () => {
 
   const filteredProducts = products
     .filter(product => product.isEcoFriendly)
-    .filter(product => selectedCategory === 'all' || product.category.toLowerCase() === selectedCategory)
-    .filter(product => product.price >= priceRange[0] && product.price <= priceRange[1])
+    .filter(product => {
+      if (selectedCategory === 'all') return true;
+      return product.category?.toLowerCase() === selectedCategory;
+    })
+    .filter(product => {
+      const price = parseFloat(product.price.replace(/[^0-9.]/g, ''));
+      return price >= priceRange[0] && price <= priceRange[1];
+    })
     .sort((a, b) => {
+      const priceA = parseFloat(a.price.replace(/[^0-9.]/g, ''));
+      const priceB = parseFloat(b.price.replace(/[^0-9.]/g, ''));
+      
       switch (sortBy) {
         case 'eco-score':
-          return b.ecoScore - a.ecoScore;
+          return (b.ecoScore || 0) - (a.ecoScore || 0);
         case 'carbon-footprint':
-          return a.carbonFootprint - b.carbonFootprint;
+          return (a.carbonFootprint || 0) - (b.carbonFootprint || 0);
         case 'price-low':
-          return a.price - b.price;
+          return priceA - priceB;
         case 'price-high':
-          return b.price - a.price;
+          return priceB - priceA;
         case 'rating':
-          return b.rating - a.rating;
+          return (b.rating || 0) - (a.rating || 0);
         default:
           return 0;
       }
@@ -207,10 +223,7 @@ const GreenStorePage = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <ProductCard
-                    product={product}
-                    onAddToCart={addToCart}
-                  />
+                  <ProductCard product={product} />
                 </motion.div>
               ))}
             </div>

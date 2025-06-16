@@ -178,12 +178,18 @@ export const useStore = create<Store>((set, get) => ({
         isEcoFriendly: Math.random() > 0.6,
         groupBuyEligible: Math.random() > 0.7,
         category: product.category || 'General',
-        image: product.url || 'https://images.pexels.com/photos/1029236/pexels-photo-1029236.jpeg'
+        image: product.url || 'https://images.pexels.com/photos/1029236/pexels-photo-1029236.jpeg',
+        price: product.price || '₹0',
+        value: product.value || '0',
+        accValue: product.accValue || 0,
+        id: product.id || product._id,
+        _id: product._id || product.id
       }));
       
       set({ products: enhancedProducts });
     } catch (error: any) {
       set({ error: 'Failed to fetch products' });
+      console.error('Error fetching products:', error);
     } finally {
       set({ loading: false });
     }
