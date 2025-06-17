@@ -48,46 +48,48 @@ const Navigation = () => {
             className="flex items-center space-x-2 hover:bg-gray-700 px-2 py-1 rounded transition-colors flex-shrink-0"
           >
             <Menu className="w-4 h-4" />
-            <span className="text-sm font-medium">All</span>
+            <span className="text-sm font-medium hidden sm:block">All</span>
           </button>
 
           {/* Horizontal Scrollable Navigation */}
-          <div className="flex items-center space-x-6 text-sm overflow-x-auto scrollbar-hide flex-1 ml-4">
-            <Link to="/todays-deals" className="hover:bg-gray-700 px-2 py-1 rounded transition-colors whitespace-nowrap flex-shrink-0">
+          <div className="flex items-center space-x-2 sm:space-x-6 text-sm overflow-x-auto scrollbar-hide flex-1 ml-2 sm:ml-4">
+            <Link to="/todays-deals" className="hover:bg-gray-700 px-2 py-1 rounded transition-colors whitespace-nowrap flex-shrink-0 text-xs sm:text-sm">
               Today's Deals
             </Link>
-            <Link to="/sell" className="hover:bg-gray-700 px-2 py-1 rounded transition-colors whitespace-nowrap flex-shrink-0">
+            <Link to="/sell" className="hover:bg-gray-700 px-2 py-1 rounded transition-colors whitespace-nowrap flex-shrink-0 text-xs sm:text-sm">
               Sell on Amazon
             </Link>
-            <Link to="/customer-service" className="hover:bg-gray-700 px-2 py-1 rounded transition-colors whitespace-nowrap flex-shrink-0">
+            <Link to="/customer-service" className="hover:bg-gray-700 px-2 py-1 rounded transition-colors whitespace-nowrap flex-shrink-0 text-xs sm:text-sm">
               Customer Service
             </Link>
-            <Link to="/registry" className="hover:bg-gray-700 px-2 py-1 rounded transition-colors whitespace-nowrap flex-shrink-0">
+            <Link to="/registry" className="hover:bg-gray-700 px-2 py-1 rounded transition-colors whitespace-nowrap flex-shrink-0 text-xs sm:text-sm">
               Registry
             </Link>
-            <Link to="/gift-cards" className="hover:bg-gray-700 px-2 py-1 rounded transition-colors whitespace-nowrap flex-shrink-0">
+            <Link to="/gift-cards" className="hover:bg-gray-700 px-2 py-1 rounded transition-colors whitespace-nowrap flex-shrink-0 text-xs sm:text-sm">
               Gift Cards
             </Link>
             
-            {/* Green Features */}
-            {greenFeatures.map(({ icon: Icon, label, path, description, action }) => (
+            {/* Green Features - Show fewer on mobile */}
+            {greenFeatures.slice(0, window.innerWidth < 640 ? 2 : greenFeatures.length).map(({ icon: Icon, label, path, description, action }) => (
               path ? (
                 <Link
                   key={path}
                   to={path}
-                  className="flex items-center space-x-2 text-green-400 hover:text-green-300 hover:bg-green-900 hover:bg-opacity-20 px-3 py-1.5 rounded-md transition-all duration-200 whitespace-nowrap flex-shrink-0"
+                  className="flex items-center space-x-1 sm:space-x-2 text-green-400 hover:text-green-300 hover:bg-green-900 hover:bg-opacity-20 px-2 sm:px-3 py-1.5 rounded-md transition-all duration-200 whitespace-nowrap flex-shrink-0 text-xs sm:text-sm"
                 >
-                  <Icon className="w-4 h-4" />
-                  <span className="text-sm font-medium">{label}</span>
+                  <Icon className="w-3 h-3 sm:w-4 sm:h-4" />
+                  <span className="font-medium hidden sm:block">{label}</span>
+                  <span className="font-medium sm:hidden">{label.split(' ')[0]}</span>
                 </Link>
               ) : (
                 <button
                   key={label}
                   onClick={action}
-                  className="flex items-center space-x-2 text-green-400 hover:text-green-300 hover:bg-green-900 hover:bg-opacity-20 px-3 py-1.5 rounded-md transition-all duration-200 whitespace-nowrap flex-shrink-0"
+                  className="flex items-center space-x-1 sm:space-x-2 text-green-400 hover:text-green-300 hover:bg-green-900 hover:bg-opacity-20 px-2 sm:px-3 py-1.5 rounded-md transition-all duration-200 whitespace-nowrap flex-shrink-0 text-xs sm:text-sm"
                 >
-                  <Icon className="w-4 h-4" />
-                  <span className="text-sm font-medium">{label}</span>
+                  <Icon className="w-3 h-3 sm:w-4 sm:h-4" />
+                  <span className="font-medium hidden sm:block">{label}</span>
+                  <span className="font-medium sm:hidden">{label.split(' ')[0]}</span>
                 </button>
               )
             ))}
@@ -100,28 +102,28 @@ const Navigation = () => {
         <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto relative">
             {/* Header */}
-            <div className="sticky top-0 bg-gradient-to-r from-green-500 to-blue-500 text-white p-6 rounded-t-2xl">
+            <div className="sticky top-0 bg-gradient-to-r from-green-500 to-blue-500 text-white p-4 sm:p-6 rounded-t-2xl">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
-                    <Sparkles className="w-6 h-6" />
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                    <Sparkles className="w-4 h-4 sm:w-6 sm:h-6" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold">Green Lens Analysis</h2>
-                    <p className="text-green-100 text-sm">Analyze product sustainability</p>
+                    <h2 className="text-lg sm:text-xl font-bold">Green Lens Analysis</h2>
+                    <p className="text-green-100 text-xs sm:text-sm">Analyze product sustainability</p>
                   </div>
                 </div>
                 <button
                   className="text-white hover:text-gray-200 transition-colors"
                   onClick={() => setShowGreenLens(false)}
                 >
-                  <X className="w-6 h-6" />
+                  <X className="w-5 h-5 sm:w-6 sm:h-6" />
                 </button>
               </div>
             </div>
             
             {/* Content */}
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
               <MaterialInfoScanner />
             </div>
           </div>
@@ -132,7 +134,7 @@ const Navigation = () => {
       {menuOpen && (
         <div className="fixed inset-0 z-50">
           <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setMenuOpen(false)} />
-          <div className="fixed left-0 top-0 h-full w-80 bg-white text-gray-900 shadow-lg overflow-y-auto">
+          <div className="fixed left-0 top-0 h-full w-80 max-w-[90vw] bg-white text-gray-900 shadow-lg overflow-y-auto">
             <div className="p-4">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-lg font-semibold">Browse</h2>

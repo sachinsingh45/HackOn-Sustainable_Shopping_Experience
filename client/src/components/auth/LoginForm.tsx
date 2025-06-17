@@ -56,7 +56,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-8 px-2 sm:px-6 lg:px-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -68,14 +68,14 @@ const LoginForm = () => {
               <div className="w-10 h-10 bg-orange-400 rounded flex items-center justify-center">
                 <span className="text-white font-bold text-lg">A</span>
               </div>
-              <span className="text-2xl font-bold text-gray-900">Amazon</span>
-              <span className="text-green-500 text-lg">Green</span>
+              <span className="text-xl sm:text-2xl font-bold text-gray-900">Amazon</span>
+              <span className="text-green-500 text-base sm:text-lg">Green</span>
             </div>
           </Link>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          <h2 className="mt-4 sm:mt-6 text-center text-2xl sm:text-3xl font-extrabold text-gray-900">
             Sign in to your account
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <p className="mt-2 text-center text-xs sm:text-sm text-gray-600">
             Or{' '}
             <Link
               to="/register"
@@ -86,7 +86,7 @@ const LoginForm = () => {
           </p>
         </div>
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form className="mt-6 sm:mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -154,13 +154,13 @@ const LoginForm = () => {
 
           {error && (
             <div className="bg-red-50 border border-red-200 rounded-md p-3">
-               <p className="text-sm text-red-600">
-      {typeof error === 'string' ? error : error.msg}
-    </p>
+              <p className="text-xs sm:text-sm text-red-600">
+                {typeof error === 'string' ? error : error.msg}
+              </p>
             </div>
           )}
 
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-0">
             <div className="flex items-center">
               <input
                 id="remember-me"
@@ -168,12 +168,12 @@ const LoginForm = () => {
                 type="checkbox"
                 className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
               />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+              <label htmlFor="remember-me" className="ml-2 block text-xs sm:text-sm text-gray-900">
                 Remember me
               </label>
             </div>
 
-            <div className="text-sm">
+            <div className="text-xs sm:text-sm">
               <Link
                 to="/forgot-password"
                 className="font-medium text-green-600 hover:text-green-500"
@@ -187,21 +187,17 @@ const LoginForm = () => {
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-xs sm:text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Signing in...' : 'Sign in'}
             </button>
           </div>
 
           <div className="text-center">
-            <p className="text-sm text-gray-600">
+            <p className="text-xs sm:text-sm text-gray-600">
               By signing in, you agree to Amazon Green's{' '}
               <Link to="/terms" className="text-green-600 hover:text-green-500">
                 Terms of Service
-              </Link>{' '}
-              and{' '}
-              <Link to="/privacy" className="text-green-600 hover:text-green-500">
-                Privacy Policy
               </Link>
             </p>
           </div>
