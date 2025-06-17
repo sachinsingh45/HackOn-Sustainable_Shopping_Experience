@@ -7,6 +7,13 @@ import ProfilePage from './pages/ProfilePage';
 import GreenStorePage from './pages/GreenStorePage';
 import SellOnAmazonPage from './pages/SellOnAmazonPage';
 import GreenBridgePage from './pages/GreenBridgePage';
+import TodaysDealsPage from './pages/TodaysDealsPage';
+import CustomerServicePage from './pages/CustomerServicePage';
+import RegistryPage from './pages/RegistryPage';
+import GiftCardsPage from './pages/GiftCardsPage';
+import GroupBuyPage from './pages/GroupBuyPage';
+import EcoChallengesPage from './pages/EcoChallengesPage';
+import CarbonCalculatorPage from './pages/CarbonCalculatorPage';
 import LoginForm from './components/auth/LoginForm';
 import RegisterForm from './components/auth/RegisterForm';
 import ProtectedRoute from './components/common/ProtectedRoute';
@@ -37,6 +44,13 @@ function App() {
             <Route path="green-store" element={<GreenStorePage />} />
             <Route path="sell" element={<SellOnAmazonPage />} />
             <Route path="greenbridge" element={<GreenBridgePage />} />
+            <Route path="todays-deals" element={<TodaysDealsPage />} />
+            <Route path="customer-service" element={<CustomerServicePage />} />
+            <Route path="registry" element={<RegistryPage />} />
+            <Route path="gift-cards" element={<GiftCardsPage />} />
+            <Route path="group-buy" element={<GroupBuyPage />} />
+            <Route path="challenges" element={<EcoChallengesPage />} />
+            <Route path="carbon-calculator" element={<CarbonCalculatorPage />} />
 
             {/* Protected Routes */}
             <Route path="cart" element={
