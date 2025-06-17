@@ -2,6 +2,8 @@
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const Product = require('./Product');
+const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -11,12 +13,12 @@ const userSchema = new mongoose.Schema({
   number: {
     type: String,
     required: true,
-    unique:true
+    unique: true
   },
   email: {
     type: String,
     required: true,
-    unique:true
+    unique: true
   },
   password: {
     type: String,
@@ -35,7 +37,7 @@ const userSchema = new mongoose.Schema({
   ],
   cart: [
     {
-      id: Number,
+      id: String,
       cartItem: {},
       qty: Number
     }
@@ -43,7 +45,14 @@ const userSchema = new mongoose.Schema({
   orders: [
     {}
   ]
-  
+});
+
+// Convert email to lowercase before saving
+userSchema.pre('save', function(next) {
+  if (this.email) {
+    this.email = this.email.toLowerCase();
+  }
+  next();
 });
 
 // Token generation
@@ -72,12 +81,17 @@ userSchema.methods.generateAuthToken = async function() {
 }
 
 // Add to cart
-userSchema.methods.addToCart = async function(id, productInfo) {
+userSchema.methods.addToCart = async function(productId, product) {
   try {
-    this.cart = this.cart.concat({ id: id, cartItem: productInfo, qty: 1 });
+    this.cart = this.cart.concat({
+      id: productId,
+      cartItem: product,
+      qty: 1
+    });
     await this.save();
   } catch (error) {
-    console.log(error);
+    console.error("Add to cart error:", error);
+    throw error;
   }
 }
 
@@ -94,6 +108,13 @@ userSchema.methods.addOrder = async function(orderInfo) {
 
 // Model
 const User = mongoose.model("users", userSchema);
+
+// Drop the unique index on name field if it exists
+User.collection.dropIndex('name_1').catch(err => {
+  if (err.code !== 26) { // 26 is the error code for "namespace not found"
+    console.error('Error dropping name index:', err);
+  }
+});
 
 // Export model
 module.exports = User;

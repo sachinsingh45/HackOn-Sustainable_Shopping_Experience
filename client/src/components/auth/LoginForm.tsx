@@ -1,32 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, Leaf } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useStore } from '../../store/useStore';
+import ErrorIcon from '../common/ErrorIcon';
+
+interface FormData {
+  email: string;
+  password: string;
+}
+
+interface ValidationErrors {
+  email?: string;
+  password?: string;
+}
+
+interface ErrorMessage {
+  msg: string;
+}
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const { login, loading, error } = useStore();
   
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     email: '',
     password: ''
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [validationErrors, setValidationErrors] = useState<any>({});
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
+
+  // Clear validation errors when form data changes
+  useEffect(() => {
+    setValidationErrors({});
+  }, [formData]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { name, value} = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    
-    // Clear validation error when user starts typing
-    if (validationErrors[name]) {
-      setValidationErrors((prev: any) => ({ ...prev, [name]: '' }));
-    }
+
   };
 
   const validateForm = () => {
-    const errors: any = {};
+    const errors: ValidationErrors = {};
     
     if (!formData.email) {
       errors.email = 'Email is required';
@@ -36,8 +52,6 @@ const LoginForm = () => {
     
     if (!formData.password) {
       errors.password = 'Password is required';
-    } else if (formData.password.length < 6) {
-      errors.password = 'Password must be at least 6 characters';
     }
     
     setValidationErrors(errors);
@@ -55,8 +69,16 @@ const LoginForm = () => {
     }
   };
 
+  // Helper function to format error message
+  const formatErrorMessage = (error: string | ErrorMessage | ErrorMessage[]) => {
+    if (typeof error === 'string') return error;
+    if (Array.isArray(error)) return error.map(err => err.msg).join(', ');
+    if (error && 'msg' in error) return error.msg;
+    return 'An error occurred';
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-8 px-2 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -65,17 +87,18 @@ const LoginForm = () => {
         <div>
           <Link to="/" className="flex justify-center">
             <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-orange-400 rounded flex items-center justify-center">
-                <span className="text-white font-bold text-lg">A</span>
-              </div>
-              <span className="text-xl sm:text-2xl font-bold text-gray-900">Amazon</span>
-              <span className="text-green-500 text-base sm:text-lg">Green</span>
+              <img
+                src="/dark-logo.png"
+                alt="Amazon Logo"
+                className="w-24 h-auto object-contain"
+              />
+              <Leaf className="w-5 h-5 text-green-400" />
             </div>
           </Link>
-          <h2 className="mt-4 sm:mt-6 text-center text-2xl sm:text-3xl font-extrabold text-gray-900">
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Sign in to your account
           </h2>
-          <p className="mt-2 text-center text-xs sm:text-sm text-gray-600">
+          <p className="mt-2 text-center text-sm text-gray-600">
             Or{' '}
             <Link
               to="/register"
@@ -86,7 +109,7 @@ const LoginForm = () => {
           </p>
         </div>
 
-        <form className="mt-6 sm:mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -110,7 +133,10 @@ const LoginForm = () => {
                 />
               </div>
               {validationErrors.email && (
-                <p className="mt-1 text-sm text-red-600">{validationErrors.email}</p>
+                <div className="flex items-start space-x-2 mt-1">
+                  <ErrorIcon />
+                  <p className="text-sm text-red-600">{validationErrors.email}</p>
+                </div>
               )}
             </div>
 
@@ -147,20 +173,23 @@ const LoginForm = () => {
                 </button>
               </div>
               {validationErrors.password && (
-                <p className="mt-1 text-sm text-red-600">{validationErrors.password}</p>
+                <div className="flex items-start space-x-2 mt-1">
+                  <ErrorIcon />
+                  <p className="text-sm text-red-600">{validationErrors.password}</p>
+                </div>
               )}
             </div>
           </div>
 
           {error && (
             <div className="bg-red-50 border border-red-200 rounded-md p-3">
-              <p className="text-xs sm:text-sm text-red-600">
-                {typeof error === 'string' ? error : error.msg}
-              </p>
+                <p className="text-sm text-red-600 flex-1">
+                  {formatErrorMessage(error)}
+                </p>
             </div>
           )}
 
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-0">
+<div className="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-0">
             <div className="flex items-center">
               <input
                 id="remember-me"
@@ -173,13 +202,8 @@ const LoginForm = () => {
               </label>
             </div>
 
-            <div className="text-xs sm:text-sm">
-              <Link
-                to="/forgot-password"
-                className="font-medium text-green-600 hover:text-green-500"
-              >
+            <div className="text-xs sm:text-sm cursor-pointer text-green-600 hover:text-green-500">
                 Forgot your password?
-              </Link>
             </div>
           </div>
 

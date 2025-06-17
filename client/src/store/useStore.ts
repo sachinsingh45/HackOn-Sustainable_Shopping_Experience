@@ -135,9 +135,27 @@ export const useStore = create<Store>((set, get) => ({
     try {
       set({ loading: true, error: null });
       const response = await authAPI.register(userData);
-      return true;
+      if (response.status) {
+        return true;
+      }
+      // Handle validation errors from server
+      if (response.message && Array.isArray(response.message)) {
+        const errorMessage = response.message.map((err: any) => err.msg).join(', ');
+        set({ error: errorMessage });
+      } else {
+        set({ error: 'Registration failed' });
+      }
+      return false;
     } catch (error: any) {
-      set({ error: error.response?.data?.message || 'Registration failed' });
+      // Clear any previous errors before setting new ones
+      set({ error: null });
+      
+      if (error.response?.data?.message && Array.isArray(error.response.data.message)) {
+        const errorMessage = error.response.data.message.map((err: any) => err.msg).join(', ');
+        set({ error: errorMessage });
+      } else {
+        set({ error: error.response?.data?.message || 'Registration failed' });
+      }
       return false;
     } finally {
       set({ loading: false });

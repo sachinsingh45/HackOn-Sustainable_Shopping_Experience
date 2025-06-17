@@ -24,7 +24,11 @@ export const authAPI = {
     return response.data;
   },
 
-  login: async (credentials: { email: string; password: string }) => {
+  login: async (credentials: { 
+    email: string; 
+    password: string;
+    rememberMe?: boolean;
+  }) => {
     const response = await api.post('/login', credentials);
     return response.data;
   },

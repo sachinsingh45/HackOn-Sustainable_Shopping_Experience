@@ -57,9 +57,11 @@ router.post('/register', [
 
   check('password')
     .not().isEmpty().withMessage("Password can't be empty")
-    .isLength({ min: 6 }).withMessage("Password must be at least 6 characters long")
-    .matches(/\d/).withMessage("Password must contain a number")
-    .isAlphanumeric().withMessage("Password can only contain alphabets and numbers"),
+    .isLength({ min: 8 }).withMessage("Password must be at least 8 characters long")
+    .matches(/[a-z]/).withMessage("Password must contain a lowercase letter")
+    .matches(/[A-Z]/).withMessage("Password must contain an uppercase letter")
+    .matches(/[0-9]/).withMessage("Password must contain a number")
+    .matches(/[!@#$%^&*(),.?":{}|<>]/).withMessage("Password must contain a special character"),
 
   check('confirmPassword')
     .not().isEmpty().withMessage("Confirm Password can't be empty"),
@@ -126,24 +128,30 @@ router.post('/register', [
 
 // POST: Login
 router.post('/login', [
-  check('email').notEmpty().withMessage("Email can't be empty")
-                .isEmail().withMessage("Invalid email")
-                .normalizeEmail(),
-  check('password').notEmpty().withMessage("Password can't be empty")
-                   .isLength({ min: 6 }).withMessage("Min 6 characters")
-                   .matches(/\d/).withMessage("Must contain number")
-                   .isAlphanumeric().withMessage("Only alphanumeric")
+  check('email')
+    .notEmpty().withMessage("Email can't be empty")
+    .isEmail().withMessage("Email format is invalid")
+    .normalizeEmail(),
+
+  check('password')
+    .notEmpty().withMessage("Password can't be empty")
 ], async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ status: false, message: errors.array() });
+    return res.status(400).json({ 
+      status: false, 
+      message: errors.array() 
+    });
   }
 
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(400).json({ status: false, message: [{ msg: "Incorrect Email or Password" }] });
+      return res.status(400).json({ 
+        status: false, 
+        message: [{ msg: "Incorrect Email or Password" }] 
+      });
     }
 
     const token = await user.generateAuthToken();
@@ -152,11 +160,17 @@ router.post('/login', [
       httpOnly: true
     });
 
-    res.status(201).json({ status: true, message: "Logged in successfully!" });
+    res.status(201).json({ 
+      status: true, 
+      message: "Logged in successfully!" 
+    });
 
   } catch (err) {
     console.error("Login error:", err);
-    res.status(500).json({ status: false, message: "Internal server error" });
+    res.status(500).json({ 
+      status: false, 
+      message: [{ msg: "Internal server error" }] 
+    });
   }
 });
 
@@ -250,6 +264,5 @@ router.get("/products/search", async (req, res) => {
     res.status(500).json({ status: false, message: "Search failed" });
   }
 });
-
 
 module.exports = router;
