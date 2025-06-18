@@ -197,7 +197,9 @@ const EcoChallengesPage = () => {
                 }
                 return (
                   <motion.div
+
                     key={challenge.id}
+                    key={challenge?._id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -282,7 +284,7 @@ const EcoChallengesPage = () => {
               </h3>
               <div className="space-y-3">
                 {leaderboard.length === 0 && <div className="text-gray-400 text-sm">No leaderboard data yet.</div>}
-                {leaderboard.map((lbUser, index) => {
+                {leaderboard?.map((lbUser, index) => {
                   const isCurrent = user && lbUser.name === user.name;
                   let rankIcon = null;
                   if (index === 0) rankIcon = <span title="1st" className="mr-1">🥇</span>;
