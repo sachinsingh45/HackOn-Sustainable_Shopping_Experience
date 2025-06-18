@@ -3,9 +3,9 @@ const Challenge = require('./models/Challenge');
 require('dotenv').config({ path: '../.env' });
 
 const badgeIcons = {
-  daily: 'https://cdn-icons-png.flaticon.com/512/190/190411.png',
-  weekly: 'https://cdn-icons-png.flaticon.com/512/190/190406.png',
-  monthly: 'https://cdn-icons-png.flaticon.com/512/190/190416.png',
+  daily: '/daily-badge.png',
+  weekly: '/weekly-badge.png',
+  monthly: '/monthly-badge.png',
 };
 
 function getPeriodDates(frequency) {
@@ -36,8 +36,8 @@ async function ensureChallenge(frequency, name, description, type, targetValue) 
       type,
       targetValue,
       rewardBadge: {
-        name: `${frequency.charAt(0).toUpperCase() + frequency.slice(1)} Challenge Winner`,
-        description: `Awarded for completing the ${frequency} challenge`,
+        name: `${frequency.charAt(0).toUpperCase() + frequency.slice(1)} Eco Champion`,
+        description: `Awarded for completing the ${frequency} eco challenge`,
         iconUrl: badgeIcons[frequency],
       },
       isActive: true,
@@ -53,9 +53,32 @@ async function ensureChallenge(frequency, name, description, type, targetValue) 
 
 async function main() {
   await mongoose.connect(process.env.MONGO_URI);
-  await ensureChallenge('daily', 'Eco Daily Action', 'Complete one eco-friendly action today!', 'ecoScore', 10);
-  await ensureChallenge('weekly', 'Weekly CO2 Saver', 'Save 5kg of CO2 this week!', 'co2Saved', 5);
-  await ensureChallenge('monthly', 'Monthly Green Shopper', 'Buy 3 eco-friendly products this month!', 'moneySaved', 3);
+  
+  // Create challenges that match frontend expectations
+  await ensureChallenge(
+    'daily', 
+    'Daily Eco Shopper', 
+    'Buy at least 1 eco-friendly product today to complete this challenge.', 
+    'ecoScore', 
+    1
+  );
+  
+  await ensureChallenge(
+    'weekly', 
+    'Weekly CO₂ Saver', 
+    'Save at least 5kg of CO₂ this week to complete this challenge.', 
+    'co2Saved', 
+    5
+  );
+  
+  await ensureChallenge(
+    'monthly', 
+    'Monthly Green Champion', 
+    'Buy at least 10 eco-friendly products this month to complete this challenge.', 
+    'ecoScore', 
+    10
+  );
+  
   await mongoose.disconnect();
   process.exit(0);
 }

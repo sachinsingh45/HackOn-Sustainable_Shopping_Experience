@@ -144,6 +144,10 @@ export const challengeAPI = {
     const response = await axios.post(`http://localhost:8000/api/challenges/complete/${challengeId}`, {}, { withCredentials: true });
     return response.data;
   },
+  checkCompletion: async () => {
+    const response = await axios.post('http://localhost:8000/api/challenges/check-completion', {}, { withCredentials: true });
+    return response.data;
+  },
 };
 
 // Leaderboard API

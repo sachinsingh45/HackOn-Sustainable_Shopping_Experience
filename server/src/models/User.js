@@ -50,13 +50,15 @@ const userSchema = new mongoose.Schema({
           quantity: Number,
           price: Number,
           carbonFootprint: Number,
-          ecoScore: Number
+          ecoScore: Number,
+          isEcoFriendly: Boolean
         }],
         totalAmount: Number,
         totalEcoScore: Number,
         totalCarbonSaved: Number,
         moneySaved: Number,
         orderDate: Date,
+        date: Date,
         status: String,
         summary: {
           name: String,
@@ -64,7 +66,10 @@ const userSchema = new mongoose.Schema({
           carbonFootprint: Number,
           date: Date,
           status: String
-        }
+        },
+        isEcoFriendly: Boolean,
+        ecoScore: Number,
+        carbonFootprint: Number
       }
     }
   ],

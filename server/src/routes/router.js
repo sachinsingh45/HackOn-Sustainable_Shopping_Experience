@@ -333,17 +333,44 @@ router.post('/challenges/complete/:challengeId', authenticate, async (req, res) 
     const { challengeId } = req.params;
     const user = await User.findById(req.userId);
     const challenge = await Challenge.findById(challengeId);
-    if (!challenge) return res.status(404).json({ status: false, message: 'Challenge not found' });
+    
+    if (!challenge) {
+      return res.status(404).json({ status: false, message: 'Challenge not found' });
+    }
+    
+    // Check if user has joined the challenge
+    if (!user.currentChallenges.includes(challengeId)) {
+      return res.status(400).json({ status: false, message: 'You must join the challenge first' });
+    }
+    
+    // Check if already completed
+    const alreadyHasBadge = user.badges.some(b => b.challengeId && b.challengeId.toString() === challengeId);
+    if (alreadyHasBadge) {
+      return res.status(400).json({ status: false, message: 'Challenge already completed' });
+    }
+    
     // Remove from currentChallenges
     user.currentChallenges = user.currentChallenges.filter(id => id.toString() !== challengeId);
-    // Add badge if not already earned
-    const alreadyHasBadge = user.badges.some(b => b.challengeId && b.challengeId.toString() === challengeId);
-    if (!alreadyHasBadge) {
-      user.badges.push({ ...challenge.rewardBadge.toObject(), challengeId });
-    }
+    
+    // Create badge with proper structure
+    const badge = {
+      name: challenge.rewardBadge.name,
+      description: challenge.rewardBadge.description,
+      iconUrl: challenge.rewardBadge.iconUrl,
+      challengeId: challenge._id,
+      dateEarned: new Date()
+    };
+    
+    user.badges.push(badge);
     await user.save();
-    res.status(200).json({ status: true, message: 'Challenge completed and badge awarded', badges: user.badges });
+    
+    res.status(200).json({ 
+      status: true, 
+      message: 'Challenge completed and badge awarded', 
+      badges: user.badges 
+    });
   } catch (error) {
+    console.error('Complete challenge error:', error);
     res.status(500).json({ status: false, message: 'Failed to complete challenge' });
   }
 });
@@ -378,18 +405,41 @@ router.post('/order/:id', authenticate, async (req, res) => {
       return res.status(400).json({ status: false, message: 'Invalid User' });
     }
 
-    // Create order object
+    // Create order object with proper eco-friendly flags and consistent structure
     const orderInfo = {
-      productId: product._id,
-      name: product.name,
-      price: product.price,
-      carbonFootprint: product.carbonFootprint,
-      ecoScore: product.ecoScore,
-      date: new Date(),
+      items: [{
+        name: product.name,
+        quantity: 1,
+        price: product.price,
+        carbonFootprint: product.carbonFootprint || 0,
+        ecoScore: product.ecoScore || 0,
+        isEcoFriendly: product.isEcoFriendly || (product.ecoScore && product.ecoScore > 0)
+      }],
+      totalAmount: product.price,
+      totalEcoScore: product.ecoScore || 0,
+      totalCarbonSaved: product.carbonFootprint || 0,
+      moneySaved: 0,
+      orderDate: new Date(),
+      date: new Date(), // Add both date and orderDate for consistency
+      status: 'completed',
+      // Add summary information for easy display
+      summary: {
+        name: product.name,
+        price: product.price,
+        carbonFootprint: product.carbonFootprint || 0,
+        date: new Date(),
+        status: 'completed'
+      },
+      // Add eco-friendly flags for challenge tracking
+      isEcoFriendly: product.isEcoFriendly || (product.ecoScore && product.ecoScore > 0),
+      ecoScore: product.ecoScore || 0,
+      carbonFootprint: product.carbonFootprint || 0
     };
+    
     user.orders.push({ orderInfo });
     user.carbonSaved += product.carbonFootprint || 0;
-    user.ecoScore += product.ecoScore || 0;
+    user.ecoScore = (user.ecoScore + (product.ecoScore || 0)) / 2; // Average of current and new eco score
+    
     // Auto-join all active challenges
     const activeChallenges = await Challenge.find({ isActive: true });
     activeChallenges.forEach(challenge => {
@@ -398,6 +448,10 @@ router.post('/order/:id', authenticate, async (req, res) => {
         user.currentChallenges.push(challengeId);
       }
     });
+
+    // Check for automatic challenge completion
+    await checkAndCompleteChallenges(user, orderInfo);
+    
     await user.save();
     res.status(201).json({ status: true, message: 'Order placed successfully', user });
   } catch (error) {
@@ -420,20 +474,22 @@ router.post('/orders', authenticate, async (req, res) => {
 
     const { items, totalAmount, totalEcoScore, totalCarbonSaved, moneySaved } = req.body;
 
-    // Create order object with detailed information
+    // Create order object with detailed information and eco-friendly flags
     const orderInfo = {
       items: items.map(item => ({
         name: item.name,
         quantity: item.quantity,
         price: item.price,
-        carbonFootprint: item.carbonFootprint,
-        ecoScore: item.ecoScore
+        carbonFootprint: item.carbonFootprint || 0,
+        ecoScore: item.ecoScore || 0,
+        isEcoFriendly: item.isEcoFriendly || (item.ecoScore && item.ecoScore > 0)
       })),
       totalAmount,
       totalEcoScore,
       totalCarbonSaved,
       moneySaved,
       orderDate: new Date(),
+      date: new Date(), // Add both date and orderDate for consistency
       status: 'completed',
       // Add summary information for easy display
       summary: {
@@ -442,7 +498,11 @@ router.post('/orders', authenticate, async (req, res) => {
         carbonFootprint: totalCarbonSaved,
         date: new Date(),
         status: 'completed'
-      }
+      },
+      // Add eco-friendly flags for challenge tracking
+      isEcoFriendly: items.some(item => item.isEcoFriendly || (item.ecoScore && item.ecoScore > 0)),
+      ecoScore: totalEcoScore,
+      carbonFootprint: totalCarbonSaved
     };
 
     // Update user stats
@@ -455,6 +515,9 @@ router.post('/orders', authenticate, async (req, res) => {
 
     // Clear cart
     user.cart = [];
+
+    // Check for automatic challenge completion
+    await checkAndCompleteChallenges(user, orderInfo);
 
     // Save updated user
     await user.save();
@@ -475,6 +538,105 @@ router.post('/orders', authenticate, async (req, res) => {
   }
 });
 
+// Helper function to check and complete challenges automatically
+async function checkAndCompleteChallenges(user, orderInfo) {
+  try {
+    const now = new Date();
+    const activeChallenges = await Challenge.find({ isActive: true });
+    
+    for (const challenge of activeChallenges) {
+      const challengeId = challenge._id.toString();
+      
+      // Skip if user is not joined or already completed
+      if (!user.currentChallenges.includes(challengeId) || 
+          user.badges.some(b => b.challengeId && b.challengeId.toString() === challengeId)) {
+        continue;
+      }
+
+      let shouldComplete = false;
+      
+      if (challenge.frequency === 'daily') {
+        // Check if user bought at least 1 eco-friendly product today
+        const todayOrders = user.orders.filter(order => {
+          const orderDate = new Date(order.orderInfo?.date || order.orderInfo?.orderDate);
+          const isToday = orderDate.getDate() === now.getDate() &&
+                         orderDate.getMonth() === now.getMonth() &&
+                         orderDate.getFullYear() === now.getFullYear();
+          
+          // Check if order is eco-friendly using multiple criteria
+          const isEco = order.orderInfo?.isEcoFriendly === true || 
+                       (order.orderInfo?.ecoScore && order.orderInfo.ecoScore > 0) ||
+                       (order.orderInfo?.items && order.orderInfo.items.some(item => 
+                         item.isEcoFriendly === true || (item.ecoScore && item.ecoScore > 0)
+                       ));
+          
+          return isToday && isEco;
+        });
+        shouldComplete = todayOrders.length >= 1;
+        
+      } else if (challenge.frequency === 'weekly') {
+        // Check if user saved at least 5kg CO2 this week
+        const day = now.getDay();
+        const diffToMonday = (day === 0 ? -6 : 1) - day;
+        const weekStart = new Date(now);
+        weekStart.setDate(now.getDate() + diffToMonday);
+        weekStart.setHours(0, 0, 0, 0);
+        
+        let weeklyCo2Saved = 0;
+        user.orders.forEach(order => {
+          const orderDate = new Date(order.orderInfo?.date || order.orderInfo?.orderDate);
+          if (orderDate >= weekStart && orderDate <= now) {
+            // Try multiple possible fields for carbon footprint
+            const carbonFootprint = order.orderInfo?.carbonFootprint || 
+                                   order.orderInfo?.totalCarbonSaved ||
+                                   order.orderInfo?.summary?.carbonFootprint ||
+                                   0;
+            weeklyCo2Saved += carbonFootprint;
+          }
+        });
+        shouldComplete = weeklyCo2Saved >= 5;
+        
+      } else if (challenge.frequency === 'monthly') {
+        // Check if user bought at least 10 eco-friendly products this month
+        const monthlyOrders = user.orders.filter(order => {
+          const orderDate = new Date(order.orderInfo?.date || order.orderInfo?.orderDate);
+          const isThisMonth = orderDate.getMonth() === now.getMonth() &&
+                             orderDate.getFullYear() === now.getFullYear();
+          
+          // Check if order is eco-friendly using multiple criteria
+          const isEco = order.orderInfo?.isEcoFriendly === true || 
+                       (order.orderInfo?.ecoScore && order.orderInfo.ecoScore > 0) ||
+                       (order.orderInfo?.items && order.orderInfo.items.some(item => 
+                         item.isEcoFriendly === true || (item.ecoScore && item.ecoScore > 0)
+                       ));
+          
+          return isThisMonth && isEco;
+        });
+        shouldComplete = monthlyOrders.length >= 10;
+      }
+
+      if (shouldComplete) {
+        // Complete the challenge
+        user.currentChallenges = user.currentChallenges.filter(id => id.toString() !== challengeId);
+        
+        // Create badge with proper structure
+        const badge = {
+          name: challenge.rewardBadge.name,
+          description: challenge.rewardBadge.description,
+          iconUrl: challenge.rewardBadge.iconUrl,
+          challengeId: challenge._id,
+          dateEarned: new Date()
+        };
+        
+        user.badges.push(badge);
+        console.log(`Challenge ${challenge.name} completed automatically for user ${user.name}`);
+      }
+    }
+  } catch (error) {
+    console.error('Error checking challenges:', error);
+  }
+}
+
 // Leaderboard by badge points
 router.get('/leaderboard', async (req, res) => {
   try {
@@ -492,10 +654,196 @@ router.get('/leaderboard', async (req, res) => {
         avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}`,
         points,
       };
-    }).sort((a, b) => b.points - a.points).slice(0, 10);
+    }).sort((a, b) => b.points - a.points).slice(0, 20);
     res.status(200).json(leaderboard);
   } catch (error) {
     res.status(500).json({ status: false, message: 'Failed to fetch leaderboard' });
+  }
+});
+
+// POST: Check and complete challenges for existing orders
+router.post('/challenges/check-completion', authenticate, async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ status: false, message: 'User not found' });
+    }
+
+    const now = new Date();
+    const activeChallenges = await Challenge.find({ isActive: true });
+    let completedChallenges = [];
+
+    for (const challenge of activeChallenges) {
+      const challengeId = challenge._id.toString();
+      
+      // Skip if user is not joined or already completed
+      if (!user.currentChallenges.includes(challengeId) || 
+          user.badges.some(b => b.challengeId && b.challengeId.toString() === challengeId)) {
+        continue;
+      }
+
+      let shouldComplete = false;
+      
+      if (challenge.frequency === 'daily') {
+        // Check if user bought at least 1 eco-friendly product today
+        const todayOrders = user.orders.filter(order => {
+          const orderDate = new Date(order.orderInfo?.date || order.orderInfo?.orderDate);
+          const isToday = orderDate.getDate() === now.getDate() &&
+                         orderDate.getMonth() === now.getMonth() &&
+                         orderDate.getFullYear() === now.getFullYear();
+          
+          // Check if order is eco-friendly using multiple criteria
+          const isEco = order.orderInfo?.isEcoFriendly === true || 
+                       (order.orderInfo?.ecoScore && order.orderInfo.ecoScore > 0) ||
+                       (order.orderInfo?.items && order.orderInfo.items.some(item => 
+                         item.isEcoFriendly === true || (item.ecoScore && item.ecoScore > 0)
+                       ));
+          
+          return isToday && isEco;
+        });
+        shouldComplete = todayOrders.length >= 1;
+        
+      } else if (challenge.frequency === 'weekly') {
+        // Check if user saved at least 5kg CO2 this week
+        const day = now.getDay();
+        const diffToMonday = (day === 0 ? -6 : 1) - day;
+        const weekStart = new Date(now);
+        weekStart.setDate(now.getDate() + diffToMonday);
+        weekStart.setHours(0, 0, 0, 0);
+        
+        let weeklyCo2Saved = 0;
+        user.orders.forEach(order => {
+          const orderDate = new Date(order.orderInfo?.date || order.orderInfo?.orderDate);
+          if (orderDate >= weekStart && orderDate <= now) {
+            // Try multiple possible fields for carbon footprint
+            const carbonFootprint = order.orderInfo?.carbonFootprint || 
+                                   order.orderInfo?.totalCarbonSaved ||
+                                   order.orderInfo?.summary?.carbonFootprint ||
+                                   0;
+            weeklyCo2Saved += carbonFootprint;
+          }
+        });
+        shouldComplete = weeklyCo2Saved >= 5;
+        
+      } else if (challenge.frequency === 'monthly') {
+        // Check if user bought at least 10 eco-friendly products this month
+        const monthlyOrders = user.orders.filter(order => {
+          const orderDate = new Date(order.orderInfo?.date || order.orderInfo?.orderDate);
+          const isThisMonth = orderDate.getMonth() === now.getMonth() &&
+                             orderDate.getFullYear() === now.getFullYear();
+          
+          // Check if order is eco-friendly using multiple criteria
+          const isEco = order.orderInfo?.isEcoFriendly === true || 
+                       (order.orderInfo?.ecoScore && order.orderInfo.ecoScore > 0) ||
+                       (order.orderInfo?.items && order.orderInfo.items.some(item => 
+                         item.isEcoFriendly === true || (item.ecoScore && item.ecoScore > 0)
+                       ));
+          
+          return isThisMonth && isEco;
+        });
+        shouldComplete = monthlyOrders.length >= 10;
+      }
+
+      if (shouldComplete) {
+        // Complete the challenge
+        user.currentChallenges = user.currentChallenges.filter(id => id.toString() !== challengeId);
+        
+        // Create badge with proper structure
+        const badge = {
+          name: challenge.rewardBadge.name,
+          description: challenge.rewardBadge.description,
+          iconUrl: challenge.rewardBadge.iconUrl,
+          challengeId: challenge._id,
+          dateEarned: new Date()
+        };
+        
+        user.badges.push(badge);
+        completedChallenges.push(challenge.name);
+        console.log(`Challenge ${challenge.name} completed for user ${user.name}`);
+      }
+    }
+
+    await user.save();
+    
+    res.status(200).json({ 
+      status: true, 
+      message: `Checked challenges. ${completedChallenges.length} challenges completed.`,
+      completedChallenges,
+      badges: user.badges 
+    });
+  } catch (error) {
+    console.error('Error checking challenges:', error);
+    res.status(500).json({ status: false, message: 'Failed to check challenges' });
+  }
+});
+
+// GET: User profile with challenges and badges
+router.get('/user/profile', authenticate, async (req, res) => {
+  try {
+    const user = await User.findById(req.userId)
+      .populate('currentChallenges')
+      .lean();
+    
+    if (!user) {
+      return res.status(404).json({ status: false, message: 'User not found' });
+    }
+
+    // Get active challenges
+    const activeChallenges = await Challenge.find({ isActive: true }).lean();
+    
+    // Calculate user stats
+    const totalOrders = user.orders?.length || 0;
+    const totalBadges = user.badges?.length || 0;
+    const ecoScore = user.ecoScore || 0;
+    const carbonSaved = user.carbonSaved || 0;
+    
+    // Calculate weekly CO2 savings for debug info
+    const now = new Date();
+    const day = now.getDay();
+    const diffToMonday = (day === 0 ? -6 : 1) - day;
+    const weekStart = new Date(now);
+    weekStart.setDate(now.getDate() + diffToMonday);
+    weekStart.setHours(0, 0, 0, 0);
+    
+    const weeklyOrders = user.orders?.filter(order => {
+      const orderDate = new Date(order.orderInfo?.date || order.orderInfo?.orderDate);
+      return orderDate >= weekStart && orderDate <= now;
+    }) || [];
+    
+    const weeklyCo2Saved = weeklyOrders.reduce((sum, order) => {
+      const carbonFootprint = order.orderInfo?.carbonFootprint || 
+                             order.orderInfo?.totalCarbonSaved ||
+                             order.orderInfo?.summary?.carbonFootprint ||
+                             0;
+      return sum + carbonFootprint;
+    }, 0);
+
+    const userProfile = {
+      ...user,
+      totalOrders,
+      totalBadges,
+      ecoScore,
+      carbonSaved,
+      weeklyCo2Saved,
+      activeChallenges,
+      // Ensure orders have proper structure
+      orders: user.orders?.map(order => ({
+        ...order,
+        orderInfo: {
+          ...order.orderInfo,
+          date: order.orderInfo?.date || order.orderInfo?.orderDate,
+          orderDate: order.orderInfo?.orderDate || order.orderInfo?.date
+        }
+      })) || []
+    };
+
+    res.status(200).json({ 
+      status: true, 
+      user: userProfile 
+    });
+  } catch (error) {
+    console.error('Get user profile error:', error);
+    res.status(500).json({ status: false, message: 'Failed to get user profile' });
   }
 });
 

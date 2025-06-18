@@ -29,13 +29,6 @@ interface CartItem {
   qty: number;
 }
 
-interface Challenge {
-  id: string;
-  name: string;
-  progress: number;
-  description?: string;
-}
-
 interface Badge {
   id?: string;
   name: string;
@@ -43,6 +36,34 @@ interface Badge {
   iconUrl?: string;
   challengeId?: string;
   dateEarned?: string;
+}
+
+export type Challenge = {
+  _id: string;
+  id?: string;
+  name: string;
+  description: string;
+  type: string;
+  targetValue: number;
+  rewardBadge: Badge;
+  isActive: boolean;
+  frequency: 'daily' | 'weekly' | 'monthly';
+  startDate: string;
+  endDate: string;
+};
+
+interface Challenge {
+  _id: string;
+  id?: string;
+  name: string;
+  description: string;
+  type: string;
+  targetValue: number;
+  rewardBadge: Badge;
+  isActive: boolean;
+  frequency: 'daily' | 'weekly' | 'monthly';
+  startDate: string;
+  endDate: string;
 }
 
 interface User {
@@ -63,7 +84,7 @@ interface User {
     country: string;
     pin: string;
   };
-  currentChallenges: Challenge[];
+  currentChallenges: string[];
   badges: Badge[];
 }
 
@@ -117,6 +138,7 @@ interface Store {
   fetchChallenges: () => Promise<void>;
   joinChallenge: (challengeId: string) => Promise<any>;
   completeChallenge: (challengeId: string) => Promise<any>;
+  checkCompletion: () => Promise<any>;
 
   calculateCartFootprint: () => number;
 
@@ -456,6 +478,16 @@ export const useStore = create<Store>((set, get) => ({
 
   completeChallenge: async (challengeId: string) => {
     const response = await challengeAPI.completeChallenge(challengeId);
+    if (response.status) {
+      set((state) => ({
+        user: state.user ? { ...state.user, badges: response.badges } : null
+      }));
+    }
+    return response;
+  },
+
+  checkCompletion: async () => {
+    const response = await challengeAPI.checkCompletion();
     if (response.status) {
       set((state) => ({
         user: state.user ? { ...state.user, badges: response.badges } : null

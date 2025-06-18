@@ -5,6 +5,28 @@ import { useStore } from '../store/useStore';
 import axios from 'axios';
 import { useToast } from '../context/ToastContext';
 
+// Badge icons and date formatting (copied from EcoChallengesPage for consistency)
+const BADGE_ICONS = {
+  earned: '/daily-badge.png', // fallback to daily badge
+  locked: 'https://cdn-icons-png.flaticon.com/512/565/565547.png', // grey lock
+  daily: '/daily-badge.png',
+  weekly: '/weekly-badge.png',
+  monthly: '/monthly-badge.png',
+};
+
+function formatDate(dateStr: string) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+type OrderItem = {
+  name: string;
+  quantity: number;
+  price: number;
+  // add other fields as needed
+};
+
 const ProfilePage = () => {
   const { user, setUser } = useStore();
   const { showToast } = useToast();
@@ -206,14 +228,11 @@ const ProfilePage = () => {
               <h3 className="text-base sm:text-lg font-semibold mb-4">Current Challenges</h3>
               <div className="space-y-4">
                 {user.currentChallenges && user.currentChallenges.length > 0 ? (
-                  user.currentChallenges.map((challenge, idx) => (
-                    <div key={challenge.id || idx} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 sm:p-4 bg-green-50 rounded-lg gap-2 sm:gap-0">
+                  user.currentChallenges.map((challengeId: string, idx: number) => (
+                    <div key={challengeId || idx} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 sm:p-4 bg-green-50 rounded-lg gap-2 sm:gap-0">
                       <div>
-                        <h4 className="font-medium text-base sm:text-lg">{challenge.name}</h4>
-                        <p className="text-xs sm:text-sm text-gray-600">{challenge.description}</p>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-xs sm:text-sm font-medium text-green-600">Progress: {challenge.progress}%</div>
+                        <h4 className="font-medium text-base sm:text-lg">Challenge ID: {challengeId}</h4>
+                        {/* If you have a challenges array, you can look up the challenge details here */}
                       </div>
                     </div>
                   ))
@@ -228,13 +247,26 @@ const ProfilePage = () => {
               <h3 className="text-base sm:text-lg font-semibold mb-4">Badges</h3>
               <div className="flex flex-wrap gap-3 sm:gap-4">
                 {user.badges && user.badges.length > 0 ? (
-                  user.badges.map((badge, idx) => (
-                    <div key={badge.id || badge.challengeId || badge.name || idx} className="flex flex-col items-center p-2 bg-yellow-50 rounded-lg shadow-sm w-24">
-                      {badge.iconUrl && <img src={badge.iconUrl} alt={badge.name} className="w-10 h-10 mb-2" />}
-                      <span className="font-medium text-xs sm:text-sm text-center">{badge.name}</span>
-                      <span className="text-xs text-gray-600 text-center">{badge.description}</span>
-                    </div>
-                  ))
+                  user.badges.map((badge, idx) => {
+                    // Always use public folder icons, determine frequency from badge name
+                    let freq = '';
+                    if (badge.name?.toLowerCase().includes('daily')) freq = 'daily';
+                    else if (badge.name?.toLowerCase().includes('weekly')) freq = 'weekly';
+                    else if (badge.name?.toLowerCase().includes('monthly')) freq = 'monthly';
+                    
+                    const badgeIcon = BADGE_ICONS[freq] || BADGE_ICONS.earned;
+                    
+                    return (
+                      <div key={badge.id || badge.challengeId || badge.name || idx} className="flex flex-col items-center p-2 bg-yellow-50 rounded-lg shadow-sm w-24">
+                        <img src={badgeIcon} alt={badge.name} className="w-14 h-14 mb-2 rounded-full border-2 border-yellow-400 shadow" />
+                        <span className="font-medium text-xs sm:text-sm text-center">{badge.name}</span>
+                        <span className="text-xs text-gray-600 text-center">{badge.description}</span>
+                        {badge.dateEarned && (
+                          <span className="text-[10px] text-gray-400 mt-1">Earned: {formatDate(badge.dateEarned)}</span>
+                        )}
+                      </div>
+                    );
+                  })
                 ) : (
                   <p className="text-gray-500">No badges earned yet</p>
                 )}
@@ -319,7 +351,7 @@ const ProfilePage = () => {
                           <div className="mt-4 pt-4 border-t">
                             <h5 className="text-sm font-medium text-gray-700 mb-2">Order Items:</h5>
                             <div className="space-y-2">
-                              {data.items.map((item: any, itemIdx: number) => (
+                              {data.items.map((item: OrderItem, itemIdx: number) => (
                                 <div key={itemIdx} className="flex justify-between text-sm">
                                   <span className="text-gray-600">
                                     {item.name} x {item.quantity}
