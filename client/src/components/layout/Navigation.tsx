@@ -31,7 +31,8 @@ const Navigation = () => {
     { icon: Target, label: 'Eco Recommendations', path: '/eco-recommendations', description: 'Personalized suggestions' },
     { icon: Users, label: 'Group Buy Options', path: '/group-buy', description: 'Collective purchasing' },
     { icon: Calculator, label: 'Carbon Calculator', path: '/carbon-calculator', description: 'Calculate your impact' },
-    { icon: Gift, label: 'Eco Rewards', path: '/eco-rewards', description: 'Green loyalty program' }
+    { icon: Gift, label: 'Eco Rewards', path: '/eco-rewards', description: 'Green loyalty program' },
+    { icon: Award, label: 'Eco Challenges', path: '/challenges', description: 'Sustainability challenges' },
   ];
 
   const handleGreenLensClick = () => {
