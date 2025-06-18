@@ -5,6 +5,7 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const authenticate = require('../middleware/authenticate');
 const { check, validationResult } = require('express-validator');
+const Challenge = require('../models/Challenge');
 
 // GET: All products
 router.get("/products", async (req, res) => {
@@ -96,7 +97,14 @@ router.post('/register', [
       name,
       number,
       email,
-      password: hashedPassword
+      password: hashedPassword,
+      location: '',
+      carbonSaved: 0,
+      ecoScore: 0,
+      circularityScore: 0,
+      moneySaved: 0,
+      currentChallenges: [],
+      badges: []
     });
 
     const savedUser = await newUser.save();
@@ -262,6 +270,102 @@ router.get("/products/search", async (req, res) => {
   } catch (error) {
     console.error("Search error:", error);
     res.status(500).json({ status: false, message: "Search failed" });
+  }
+});
+
+// GET: All challenges
+router.get('/challenges', async (req, res) => {
+  try {
+    const challenges = await Challenge.find({ isActive: true });
+    res.status(200).json(challenges);
+  } catch (error) {
+    res.status(500).json({ status: false, message: 'Failed to fetch challenges' });
+  }
+});
+
+// POST: Join a challenge
+router.post('/challenges/join/:challengeId', authenticate, async (req, res) => {
+  try {
+    const { challengeId } = req.params;
+    const user = await User.findById(req.userId);
+    if (!user.currentChallenges.includes(challengeId)) {
+      user.currentChallenges.push(challengeId);
+      await user.save();
+    }
+    res.status(200).json({ status: true, message: 'Challenge joined', currentChallenges: user.currentChallenges });
+  } catch (error) {
+    res.status(500).json({ status: false, message: 'Failed to join challenge' });
+  }
+});
+
+// POST: Complete a challenge
+router.post('/challenges/complete/:challengeId', authenticate, async (req, res) => {
+  try {
+    const { challengeId } = req.params;
+    const user = await User.findById(req.userId);
+    const challenge = await Challenge.findById(challengeId);
+    if (!challenge) return res.status(404).json({ status: false, message: 'Challenge not found' });
+    // Remove from currentChallenges
+    user.currentChallenges = user.currentChallenges.filter(id => id.toString() !== challengeId);
+    // Add badge if not already earned
+    const alreadyHasBadge = user.badges.some(b => b.challengeId && b.challengeId.toString() === challengeId);
+    if (!alreadyHasBadge) {
+      user.badges.push({ ...challenge.rewardBadge.toObject(), challengeId });
+    }
+    await user.save();
+    res.status(200).json({ status: true, message: 'Challenge completed and badge awarded', badges: user.badges });
+  } catch (error) {
+    res.status(500).json({ status: false, message: 'Failed to complete challenge' });
+  }
+});
+
+// POST: Update user location
+router.post('/api/update-location', authenticate, async (req, res) => {
+  try {
+    const { location } = req.body;
+    const user = await User.findById(req.userId);
+    user.location = location;
+    await user.save();
+    res.status(200).json({ status: true, message: 'Location updated', location });
+  } catch (error) {
+    res.status(500).json({ status: false, message: 'Failed to update location' });
+  }
+});
+
+// POST: Direct order (Buy Now)
+router.post('/order/:id', authenticate, async (req, res) => {
+  try {
+    const { id } = req.params;
+    let product = id.match(/^[0-9a-fA-F]{24}$/)
+      ? await Product.findById(id)
+      : await Product.findOne({ id: parseInt(id) });
+
+    if (!product) {
+      return res.status(404).json({ status: false, message: 'Product not found' });
+    }
+
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(400).json({ status: false, message: 'Invalid User' });
+    }
+
+    // Create order object
+    const orderInfo = {
+      productId: product._id,
+      name: product.name,
+      price: product.price,
+      carbonFootprint: product.carbonFootprint,
+      ecoScore: product.ecoScore,
+      date: new Date(),
+    };
+    user.orders.push({ orderInfo });
+    user.carbonSaved += product.carbonFootprint || 0;
+    user.ecoScore += product.ecoScore || 0;
+    await user.save();
+    res.status(201).json({ status: true, message: 'Order placed successfully', user });
+  } catch (error) {
+    console.error('Order error:', error);
+    res.status(500).json({ status: false, message: 'Failed to place order' });
   }
 });
 

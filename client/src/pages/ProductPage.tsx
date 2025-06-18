@@ -17,7 +17,7 @@ interface ExpandedSections {
 const ProductPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { products, addToCart, user, fetchProduct } = useStore();
+  const { products, addToCart, user, fetchProduct, orderProduct } = useStore();
   const { showToast } = useToast();
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -139,12 +139,15 @@ const ProductPage = () => {
     }
 
     try {
-      await addToCart(product.id);
-      showToast('Redirecting to checkout...', 'info');
-      navigate('/cart');
+      const response = await orderProduct(product.id);
+      if (response.status) {
+        showToast('Order placed successfully!', 'success');
+      } else {
+        showToast('Failed to place order', 'error');
+      }
     } catch (error) {
-      console.error('Failed to add to cart:', error);
-      showToast('Failed to proceed with purchase', 'error');
+      console.error('Failed to place order:', error);
+      showToast('Failed to place order', 'error');
     }
   };
 

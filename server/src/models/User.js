@@ -44,7 +44,43 @@ const userSchema = new mongoose.Schema({
   ],
   orders: [
     {}
-  ]
+  ],
+  location: {
+    type: String,
+    default: ''
+  },
+  carbonSaved: {
+    type: Number,
+    default: 0
+  },
+  ecoScore: {
+    type: Number,
+    default: 0
+  },
+  circularityScore: {
+    type: Number,
+    default: 0
+  },
+  moneySaved: {
+    type: Number,
+    default: 0
+  },
+  currentChallenges: {
+    type: [String], // or you can use an array of ObjectId if you have a Challenge model
+    default: []
+  },
+  badges: {
+    type: [
+      {
+        name: { type: String, required: true },
+        description: { type: String },
+        iconUrl: { type: String },
+        challengeId: { type: mongoose.Schema.Types.ObjectId, ref: 'challenges' },
+        dateEarned: { type: Date, default: Date.now }
+      }
+    ],
+    default: []
+  }
 });
 
 // Convert email to lowercase before saving

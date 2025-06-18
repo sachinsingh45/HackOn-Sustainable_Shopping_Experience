@@ -29,6 +29,21 @@ interface CartItem {
   qty: number;
 }
 
+interface Challenge {
+  id: string;
+  name: string;
+  progress: number;
+  description?: string;
+}
+
+interface Badge {
+  name: string;
+  description?: string;
+  iconUrl?: string;
+  challengeId?: string;
+  dateEarned?: string;
+}
+
 interface User {
   _id: string;
   name: string;
@@ -36,12 +51,14 @@ interface User {
   number: string;
   cart: CartItem[];
   orders: any[];
-  ecoScore?: number;
-  carbonSaved?: number;
-  moneySaved?: number;
-  circularityScore?: number;
+  ecoScore: number;
+  carbonSaved: number;
+  moneySaved: number;
+  circularityScore: number;
   achievements?: string[];
-  location?: string;
+  location: string;
+  currentChallenges: Challenge[];
+  badges: Badge[];
 }
 
 interface Store {
@@ -53,12 +70,14 @@ interface Store {
   chatOpen: boolean;
   loading: boolean;
   error: string | null;
+  challenges: Challenge[];
   
   // Actions
   setUser: (user: User | null) => void;
   setProducts: (products: Product[]) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
+  setChallenges: (challenges: Challenge[]) => void;
   
   // Auth actions
   login: (credentials: { email: string; password: string }) => Promise<boolean>;
@@ -87,13 +106,15 @@ interface Store {
   getChallenges: () => Promise<any>;
   chatWithAI: (message: string) => Promise<any>;
 
-// Add this to the Store interface:
-calculateCartFootprint: () => number;
+  // New actions
+  fetchChallenges: () => Promise<void>;
+  joinChallenge: (challengeId: string) => Promise<any>;
+  completeChallenge: (challengeId: string) => Promise<any>;
+
+  calculateCartFootprint: () => number;
+
+  orderProduct: (productId: string) => Promise<any>;
 }
-
-// Add this implementation inside your zustand store:
-
-
 
 export const useStore = create<Store>((set, get) => ({
   user: null,
@@ -104,11 +125,13 @@ export const useStore = create<Store>((set, get) => ({
   chatOpen: false,
   loading: false,
   error: null,
+  challenges: [],
 
   setUser: (user) => set({ user, cart: user?.cart || [] }),
   setProducts: (products) => set({ products }),
   setLoading: (loading) => set({ loading }),
   setError: (error) => set({ error }),
+  setChallenges: (challenges) => set({ challenges }),
 
   // Auth actions
   login: async (credentials) => {
@@ -221,13 +244,14 @@ export const useStore = create<Store>((set, get) => ({
       return null;
     }
   },
+
   calculateCartFootprint: () => {
-  const state = get();
-  return state.cart.reduce((total, item) => {
-    const cf = item.cartItem.carbonFootprint || 0;
-    return total + cf * item.qty;
-  }, 0);
-},
+    const state = get();
+    return state.cart.reduce((total, item) => {
+      const cf = item.cartItem.carbonFootprint || 0;
+      return total + cf * item.qty;
+    }, 0);
+  },
 
   searchProducts: async (query) => {
     try {
@@ -344,5 +368,38 @@ export const useStore = create<Store>((set, get) => ({
         suggestions: []
       };
     }
+  },
+
+  fetchChallenges: async () => {
+    const challenges = await api.getChallenges();
+    set({ challenges });
+  },
+
+  joinChallenge: async (challengeId: string) => {
+    const response = await api.joinChallenge(challengeId);
+    if (response.status) {
+      set((state) => ({
+        user: state.user ? { ...state.user, currentChallenges: response.currentChallenges } : null
+      }));
+    }
+    return response;
+  },
+
+  completeChallenge: async (challengeId: string) => {
+    const response = await api.completeChallenge(challengeId);
+    if (response.status) {
+      set((state) => ({
+        user: state.user ? { ...state.user, badges: response.badges } : null
+      }));
+    }
+    return response;
+  },
+
+  orderProduct: async (productId: string) => {
+    const response = await orderAPI.orderProduct(productId);
+    if (response.status && response.user) {
+      set({ user: response.user });
+    }
+    return response;
   }
 }));

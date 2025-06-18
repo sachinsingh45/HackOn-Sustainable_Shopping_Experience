@@ -15,10 +15,11 @@ const api = axios.create({
 export const authAPI = {
   register: async (userData: {
     name: string;
-    email: string;
     number: string;
+    email: string;
     password: string;
     confirmPassword: string;
+    location?: string;
   }) => {
     const response = await api.post('/register', userData);
     return response.data;
@@ -125,6 +126,29 @@ export const aiAPI = {
 
   chatWithBot: async (message: string, context: any) => {
     const response = await api.post('/ai/chat', { message, context });
+    return response.data;
+  },
+};
+
+// Challenge API
+export const challengeAPI = {
+  getChallenges: async () => {
+    const response = await api.get('/challenges');
+    return response.data;
+  },
+  joinChallenge: async (challengeId: string) => {
+    const response = await api.post(`/challenges/join/${challengeId}`);
+    return response.data;
+  },
+  completeChallenge: async (challengeId: string) => {
+    const response = await api.post(`/challenges/complete/${challengeId}`);
+    return response.data;
+  },
+};
+
+export const orderAPI = {
+  orderProduct: async (productId: string) => {
+    const response = await api.post(`/order/${productId}`);
     return response.data;
   },
 };
