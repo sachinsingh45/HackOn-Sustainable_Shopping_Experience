@@ -149,7 +149,7 @@ const User = mongoose.model("users", userSchema);
 
 // Drop the unique index on name field if it exists
 User.collection.dropIndex('name_1').catch(err => {
-  if (err.code !== 26) { // 26 is the error code for "namespace not found"
+  if (err.code !== 26 && err.code !== 27) { // 26: namespace not found, 27: index not found
     console.error('Error dropping name index:', err);
   }
 });
