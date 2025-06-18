@@ -28,7 +28,7 @@ type OrderItem = {
 };
 
 const ProfilePage = () => {
-  const { user, setUser } = useStore();
+  const { user, setUser, challenges } = useStore();
   const { showToast } = useToast();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [locationPrompt, setLocationPrompt] = useState(false);
@@ -228,14 +228,38 @@ const ProfilePage = () => {
               <h3 className="text-base sm:text-lg font-semibold mb-4">Current Challenges</h3>
               <div className="space-y-4">
                 {user.currentChallenges && user.currentChallenges.length > 0 ? (
-                  user.currentChallenges.map((challengeId: string, idx: number) => (
-                    <div key={challengeId || idx} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 sm:p-4 bg-green-50 rounded-lg gap-2 sm:gap-0">
-                      <div>
-                        <h4 className="font-medium text-base sm:text-lg">Challenge ID: {challengeId}</h4>
-                        {/* If you have a challenges array, you can look up the challenge details here */}
+                  user.currentChallenges.map((challengeId: string, idx: number) => {
+                    const challenge = challenges.find(
+                      (c) => c._id === challengeId || c.id === challengeId
+                    );
+                    return (
+                      <div key={challengeId || idx} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 sm:p-4 bg-green-50 rounded-lg gap-2 sm:gap-0">
+                        <div>
+                          {challenge ? (
+                            <>
+                              <h4 className="font-medium text-base sm:text-lg">{challenge.name}</h4>
+                              <p className="text-sm text-gray-700 mb-1">{challenge.description}</p>
+                              <span className="inline-block bg-green-200 text-green-800 text-xs px-2 py-1 rounded-full mr-2">
+                                {challenge.frequency.charAt(0).toUpperCase() + challenge.frequency.slice(1)}
+                              </span>
+                              <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                                {challenge.type}
+                              </span>
+                              <div className="text-xs text-gray-500 mt-1">
+                                {challenge.startDate && challenge.endDate && (
+                                  <>
+                                    {formatDate(challenge.startDate)} - {formatDate(challenge.endDate)}
+                                  </>
+                                )}
+                              </div>
+                            </>
+                          ) : (
+                            <h4 className="font-medium text-base sm:text-lg text-red-500">Challenge not found</h4>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))
+                    );
+                  })
                 ) : (
                   <p className="text-gray-500">No current challenges</p>
                 )}
