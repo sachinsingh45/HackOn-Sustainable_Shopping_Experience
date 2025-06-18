@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { authAPI, productsAPI, cartAPI, ordersAPI } from '../services/api';
+import { authAPI, productsAPI, cartAPI, ordersAPI, challengeAPI } from '../services/api';
 import { geminiAI } from '../services/geminiAI';
 
 interface Product {
@@ -119,7 +119,7 @@ interface Store {
 
   calculateCartFootprint: () => number;
 
-  orderProduct: (productId: string) => Promise<any>;
+  // If you need to implement orderProduct, use ordersAPI.createOrder or similar here
 }
 
 export const useStore = create<Store>((set, get) => ({
@@ -377,12 +377,17 @@ export const useStore = create<Store>((set, get) => ({
   },
 
   fetchChallenges: async () => {
-    const challenges = await api.getChallenges();
-    set({ challenges });
+    const challenges = await challengeAPI.getChallenges();
+    // Map _id to id for frontend compatibility
+    const mapped = challenges.map((c: any) => ({
+      ...c,
+      id: c._id,
+    }));
+    set({ challenges: mapped });
   },
 
   joinChallenge: async (challengeId: string) => {
-    const response = await api.joinChallenge(challengeId);
+    const response = await challengeAPI.joinChallenge(challengeId);
     if (response.status) {
       set((state) => ({
         user: state.user ? { ...state.user, currentChallenges: response.currentChallenges } : null
@@ -392,7 +397,7 @@ export const useStore = create<Store>((set, get) => ({
   },
 
   completeChallenge: async (challengeId: string) => {
-    const response = await api.completeChallenge(challengeId);
+    const response = await challengeAPI.completeChallenge(challengeId);
     if (response.status) {
       set((state) => ({
         user: state.user ? { ...state.user, badges: response.badges } : null
@@ -401,11 +406,5 @@ export const useStore = create<Store>((set, get) => ({
     return response;
   },
 
-  orderProduct: async (productId: string) => {
-    const response = await orderAPI.orderProduct(productId);
-    if (response.status && response.user) {
-      set({ user: response.user });
-    }
-    return response;
-  }
+  // If you need to implement orderProduct, use ordersAPI.createOrder or similar here
 }));

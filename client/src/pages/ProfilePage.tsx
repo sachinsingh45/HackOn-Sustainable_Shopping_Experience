@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { useStore } from '../store/useStore';
 import axios from 'axios';
 import { useToast } from '../context/ToastContext';
-import api from '../services/api';
 
 const ProfilePage = () => {
   const { user, setUser } = useStore();
@@ -362,7 +361,7 @@ const ProfilePage = () => {
                     if (locationDetails.city && locationDetails.state && locationDetails.country && locationDetails.pin) {
                       setLocationDetailsLoading(true);
                       try {
-                        await api.post('/api/update-location', locationDetails);
+                        await axios.post('/api/update-location', locationDetails);
                         setUser({ ...(user as any), location: locationDetails });
                         setLocationDetails({ city: '', state: '', country: '', pin: '' });
                         showToast('Location updated successfully!', 'success');

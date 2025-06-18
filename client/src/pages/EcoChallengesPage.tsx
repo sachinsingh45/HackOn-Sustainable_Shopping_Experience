@@ -21,40 +21,51 @@ import {
   Droplets
 } from 'lucide-react';
 import { useStore } from '../store/useStore';
+import { useToast } from '../context/ToastContext';
+import { leaderboardAPI } from '../services/api';
+
+const BADGE_ICONS = {
+  earned: 'https://cdn-icons-png.flaticon.com/512/2583/2583346.png', // gold star
+  locked: 'https://cdn-icons-png.flaticon.com/512/565/565547.png', // grey lock
+  daily: 'https://cdn-icons-png.flaticon.com/512/1828/1828884.png', // calendar/star
+  weekly: 'https://cdn-icons-png.flaticon.com/512/2583/2583343.png', // trophy
+  monthly: 'https://cdn-icons-png.flaticon.com/512/2583/2583347.png', // crown
+};
+
+function formatDate(dateStr: string) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+}
+
+const frequencyColors: Record<string, string> = {
+  daily: 'bg-blue-100 text-blue-700',
+  weekly: 'bg-purple-100 text-purple-700',
+  monthly: 'bg-orange-100 text-orange-700',
+};
 
 const EcoChallengesPage = () => {
   const { challenges, fetchChallenges, joinChallenge, completeChallenge, user } = useStore();
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [sortBy, setSortBy] = useState('popular');
+  const { showToast } = useToast();
+  const [leaderboard, setLeaderboard] = useState<any[]>([]);
 
   const categories = [
     { id: 'all', name: 'All Challenges', icon: Award, color: 'bg-green-500' },
     { id: 'daily', name: 'Daily', icon: Calendar, color: 'bg-blue-500' },
     { id: 'weekly', name: 'Weekly', icon: Target, color: 'bg-purple-500' },
     { id: 'monthly', name: 'Monthly', icon: Trophy, color: 'bg-orange-500' },
-    { id: 'community', name: 'Community', icon: Users, color: 'bg-pink-500' }
   ];
 
   useEffect(() => {
     fetchChallenges();
+    leaderboardAPI.getLeaderboard().then(setLeaderboard);
   }, [fetchChallenges]);
 
-  const filteredChallenges = challenges.filter(challenge => 
-    selectedCategory === 'all' || challenge.category === selectedCategory
+  const filteredChallenges = challenges.filter(
+    (challenge) =>
+      selectedCategory === 'all' || challenge.frequency === selectedCategory
   );
-
-  const sortedChallenges = [...filteredChallenges].sort((a, b) => {
-    switch (sortBy) {
-      case 'popular':
-        return b.participants - a.participants;
-      case 'rewards':
-        return b.rewards - a.rewards;
-      case 'time':
-        return parseInt(a.timeLeft) - parseInt(b.timeLeft);
-      default:
-        return 0;
-    }
-  });
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -69,30 +80,6 @@ const EcoChallengesPage = () => {
             <p className="text-xl text-green-100 mb-8">
               Complete challenges, earn rewards, and save the planet
             </p>
-            
-            {/* User Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4 max-w-4xl mx-auto">
-              <div className="bg-white bg-opacity-20 rounded-lg p-4">
-                <div className="text-2xl font-bold">{user?.totalPoints}</div>
-                <div className="text-green-100 text-sm">Total Points</div>
-              </div>
-              <div className="bg-white bg-opacity-20 rounded-lg p-4">
-                <div className="text-2xl font-bold">{user?.challengesCompleted}</div>
-                <div className="text-green-100 text-sm">Completed</div>
-              </div>
-              <div className="bg-white bg-opacity-20 rounded-lg p-4">
-                <div className="text-2xl font-bold">{user?.carbonSaved}</div>
-                <div className="text-green-100 text-sm">CO2 Saved (kg)</div>
-              </div>
-              <div className="bg-white bg-opacity-20 rounded-lg p-4">
-                <div className="text-2xl font-bold">#{user?.currentRank}</div>
-                <div className="text-green-100 text-sm">Rank</div>
-              </div>
-              <div className="bg-white bg-opacity-20 rounded-lg p-4">
-                <div className="text-2xl font-bold">{user?.streak}</div>
-                <div className="text-green-100 text-sm">Day Streak</div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -102,7 +89,12 @@ const EcoChallengesPage = () => {
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex space-x-4 overflow-x-auto scrollbar-hide">
-              {categories.map((category) => (
+              {[
+                { id: 'all', name: 'All Challenges', icon: Award, color: 'bg-green-500' },
+                { id: 'daily', name: 'Daily', icon: Calendar, color: 'bg-blue-500' },
+                { id: 'weekly', name: 'Weekly', icon: Target, color: 'bg-purple-500' },
+                { id: 'monthly', name: 'Monthly', icon: Trophy, color: 'bg-orange-500' },
+              ].map((category) => (
                 <button
                   key={category.id}
                   onClick={() => setSelectedCategory(category.id)}
@@ -117,15 +109,6 @@ const EcoChallengesPage = () => {
                 </button>
               ))}
             </div>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
-            >
-              <option value="popular">Sort by Popularity</option>
-              <option value="rewards">Sort by Rewards</option>
-              <option value="time">Sort by Time Left</option>
-            </select>
           </div>
         </div>
       </div>
@@ -136,54 +119,133 @@ const EcoChallengesPage = () => {
           <div className="lg:col-span-2">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Active Challenges</h2>
             <div className="space-y-6">
-              {challenges.map((challenge, index) => {
-                const joined = user?.currentChallenges.includes(challenge._id);
-                const completed = user?.badges.some(b => b.challengeId === challenge._id);
+              {(filteredChallenges ?? []).map((challenge, index) => {
+                const joined = user?.currentChallenges?.includes(challenge._id) || user?.currentChallenges?.includes(challenge.id);
+                const completed = user?.badges?.some(b => b.challengeId === challenge._id || b.challengeId === challenge.id);
+                let statusLabel = 'Not Joined';
+                if (completed) statusLabel = 'Completed';
+                else if (joined) statusLabel = 'Joined';
+                const freqColor = frequencyColors[challenge.frequency] || 'bg-gray-100 text-gray-700';
+                const badgeIcon = completed
+                  ? BADGE_ICONS[challenge.frequency] || BADGE_ICONS.earned
+                  : BADGE_ICONS.locked;
+                const badgeStyle = completed ? '' : 'grayscale opacity-60';
+
+                // Progress calculation for daily/monthly eco-friendly product challenges
+                let progressText = '';
+                let progress = 0;
+                let target = 1;
+                if (user && (challenge.frequency === 'daily' || challenge.frequency === 'monthly')) {
+                  const now = new Date();
+                  let ecoCount = 0;
+                  user.orders?.forEach(order => {
+                    const orderDate = new Date(order.orderInfo?.date || order.date);
+                    const isEco = order.orderInfo?.isEcoFriendly || order.orderInfo?.ecoScore > 0 || order.orderInfo?.isEcoFriendly === true;
+                    if (challenge.frequency === 'daily') {
+                      if (
+                        orderDate.getDate() === now.getDate() &&
+                        orderDate.getMonth() === now.getMonth() &&
+                        orderDate.getFullYear() === now.getFullYear() &&
+                        isEco
+                      ) {
+                        ecoCount++;
+                      }
+                      target = 1;
+                      progressText = `Eco-friendly products bought today: ${ecoCount}/1`;
+                      progress = ecoCount;
+                    } else if (challenge.frequency === 'monthly') {
+                      if (
+                        orderDate.getMonth() === now.getMonth() &&
+                        orderDate.getFullYear() === now.getFullYear() &&
+                        isEco
+                      ) {
+                        ecoCount++;
+                      }
+                      target = 10;
+                      progressText = `Eco-friendly products bought this month: ${ecoCount}/10`;
+                      progress = ecoCount;
+                    }
+                  });
+                }
+                // Custom descriptions
+                let customDescription = challenge.description;
+                if (challenge.frequency === 'daily') {
+                  customDescription = 'Buy at least 1 eco-friendly product today to complete this challenge.';
+                } else if (challenge.frequency === 'weekly') {
+                  customDescription = 'Place at least 1 order this week to complete this challenge.';
+                } else if (challenge.frequency === 'monthly') {
+                  customDescription = 'Buy at least 10 eco-friendly products this month to complete this challenge.';
+                }
                 return (
                   <motion.div
-                    key={challenge._id}
+                    key={challenge.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
-                    className={`bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow ${completed ? 'border-4 border-yellow-400' : joined ? 'border-4 border-blue-400' : ''}`}
+                    className={`bg-white rounded-2xl shadow-lg transition-shadow border-2 ${completed ? 'border-yellow-400' : joined ? 'border-blue-400' : 'border-gray-100'} group hover:bg-gray-50`}
                   >
-                    <div className="p-6">
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center space-x-4">
-                          <div className={`w-12 h-12 rounded-lg flex items-center justify-center bg-green-500 text-white`}>
-                            <span className="text-lg font-bold">{challenge.name[0]}</span>
-                          </div>
-                          <div>
-                            <h3 className="font-semibold text-gray-900 text-lg">{challenge.name}</h3>
-                            <p className="text-gray-600">{challenge.description}</p>
-                          </div>
+                    <div className="p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className={`px-3 py-1 rounded-full text-xs font-semibold ${freqColor}`}>{challenge.frequency?.toUpperCase() || 'CHALLENGE'}</span>
+                          <span className="text-xs text-gray-400 ml-2">
+                            {formatDate(challenge.startDate)} - {formatDate(challenge.endDate)}
+                          </span>
                         </div>
-                        <div className="text-right">
-                          <div className="text-2xl font-bold text-green-600">{challenge.targetValue}</div>
-                          <div className="text-sm text-gray-500">target</div>
+                        <h3 className="font-semibold text-gray-900 text-lg mb-1">{challenge.name}</h3>
+                        <p className="text-gray-600 mb-2 text-sm">{customDescription}</p>
+                        {(challenge.frequency === 'daily' || challenge.frequency === 'monthly') && joined && !completed && (
+                          <div className="mb-2">
+                            <div className="text-xs text-blue-700 font-semibold">{progressText}</div>
+                            <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
+                              <div
+                                className={`h-2 rounded-full ${progress >= target ? 'bg-green-500' : 'bg-blue-400'}`}
+                                style={{ width: `${Math.min((progress / target) * 100, 100)}%` }}
+                              ></div>
+                            </div>
+                          </div>
+                        )}
+                        <div className="flex items-center gap-2 mt-2">
+                          <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${completed ? 'bg-yellow-100 text-yellow-800' : joined ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-600'}`}>{statusLabel}</span>
                         </div>
                       </div>
-                      <div className="flex space-x-2 mt-4">
-                        {!joined && !completed && (
-                          <button
-                            className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors font-medium"
-                            onClick={() => joinChallenge(challenge._id)}
-                          >
-                            Join Challenge
-                          </button>
-                        )}
-                        {joined && !completed && (
-                          <button
-                            className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors font-medium"
-                            onClick={() => completeChallenge(challenge._id)}
-                          >
-                            Mark as Complete
-                          </button>
-                        )}
-                        {completed && (
-                          <span className="bg-yellow-400 text-white px-6 py-2 rounded-lg font-medium">Badge Earned!</span>
-                        )}
+                      <div className="flex flex-col items-center gap-2 min-w-[120px]">
+                        <div className="relative group">
+                          <img
+                            src={badgeIcon}
+                            alt="badge"
+                            className={`w-14 h-14 rounded-full border-2 ${completed ? 'border-yellow-400' : 'border-gray-300'} shadow ${badgeStyle} transition-all duration-200`}
+                            title={challenge.rewardBadge?.name + (completed ? ' (Earned)' : ' (Locked)')}
+                          />
+                          <div className="absolute left-1/2 -bottom-2 -translate-x-1/2 text-xs text-gray-500 bg-white bg-opacity-80 px-2 py-0.5 rounded shadow border border-gray-200 opacity-0 group-hover:opacity-100 transition-opacity">
+                            {challenge.rewardBadge?.name}
+                            <br />
+                            <span className="text-gray-400">{challenge.rewardBadge?.description}</span>
+                          </div>
+                        </div>
+                        {completed && <span className="text-xs text-yellow-600 font-semibold mt-1">Badge Earned!</span>}
                       </div>
+                    </div>
+                    <div className="flex gap-2 px-6 pb-4">
+                      {!joined && !completed && (
+                        <button
+                          className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors font-medium w-full"
+                          onClick={() => joinChallenge(challenge.id)}
+                        >
+                          Join Challenge
+                        </button>
+                      )}
+                      {joined && !completed && (
+                        <a
+                          href="/green-store"
+                          className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors font-medium w-full text-center block"
+                        >
+                          Continue Shopping
+                        </a>
+                      )}
+                      {completed && (
+                        <span className="bg-yellow-400 text-white px-6 py-2 rounded-lg font-medium w-full text-center">Badge Earned!</span>
+                      )}
                     </div>
                   </motion.div>
                 );
@@ -200,27 +262,32 @@ const EcoChallengesPage = () => {
                 Leaderboard
               </h3>
               <div className="space-y-3">
-                {user?.leaderboard.map((user, index) => (
-                  <div key={user.rank} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-                      user.rank === 1 ? 'bg-yellow-500 text-white' :
-                      user.rank === 2 ? 'bg-gray-400 text-white' :
-                      user.rank === 3 ? 'bg-orange-500 text-white' :
-                      'bg-gray-200 text-gray-700'
-                    }`}>
-                      {user.rank}
+                {leaderboard.length === 0 && <div className="text-gray-400 text-sm">No leaderboard data yet.</div>}
+                {leaderboard.map((lbUser, index) => {
+                  const isCurrent = user && lbUser.name === user.name;
+                  let rankIcon = null;
+                  if (index === 0) rankIcon = <span title="1st" className="mr-1">🥇</span>;
+                  else if (index === 1) rankIcon = <span title="2nd" className="mr-1">🥈</span>;
+                  else if (index === 2) rankIcon = <span title="3rd" className="mr-1">🥉</span>;
+                  return (
+                    <div
+                      key={lbUser.name}
+                      className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${isCurrent ? 'bg-green-50 border-2 border-green-400' : 'hover:bg-gray-50'}`}
+                    >
+                      <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold bg-gray-200 text-gray-700">
+                        {rankIcon || index + 1}
+                      </div>
+                      <img src={lbUser.avatar} alt={lbUser.name} className="w-8 h-8 rounded-full" />
+                      <div className="flex-1">
+                        <div className={`font-medium ${isCurrent ? 'text-green-700' : 'text-gray-900'}`}>{lbUser.name}</div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-bold text-green-600">{lbUser.points}</div>
+                        <div className="text-xs text-gray-500">points</div>
+                      </div>
                     </div>
-                    <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full" />
-                    <div className="flex-1">
-                      <div className="font-medium text-gray-900">{user.name}</div>
-                      <div className="text-sm text-gray-500">{user.carbonSaved}kg CO2 saved</div>
-                    </div>
-                    <div className="text-right">
-                      <div className="font-bold text-green-600">{user.points}</div>
-                      <div className="text-xs text-gray-500">points</div>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
@@ -240,26 +307,6 @@ const EcoChallengesPage = () => {
                   <Lightbulb className="w-5 h-5 text-yellow-500" />
                   <span className="font-medium">Suggest Challenge</span>
                 </button>
-              </div>
-            </div>
-
-            {/* Achievements */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Recent Achievements</h3>
-              <div className="space-y-3">
-                {[
-                  { title: 'First Challenge', description: 'Completed your first eco challenge', icon: Star, color: 'text-yellow-500' },
-                  { title: 'Week Warrior', description: 'Completed 7 challenges in a week', icon: Award, color: 'text-green-500' },
-                  { title: 'Carbon Hero', description: 'Saved 50kg of CO2', icon: Leaf, color: 'text-blue-500' }
-                ].map((achievement, index) => (
-                  <div key={index} className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
-                    <achievement.icon className={`w-5 h-5 ${achievement.color}`} />
-                    <div>
-                      <div className="font-medium text-gray-900">{achievement.title}</div>
-                      <div className="text-sm text-gray-600">{achievement.description}</div>
-                    </div>
-                  </div>
-                ))}
               </div>
             </div>
           </div>

@@ -133,24 +133,23 @@ export const aiAPI = {
 // Challenge API
 export const challengeAPI = {
   getChallenges: async () => {
-    const response = await api.get('/challenges');
+    const response = await axios.get('http://localhost:8000/api/challenges', { withCredentials: true });
     return response.data;
   },
   joinChallenge: async (challengeId: string) => {
-    const response = await api.post(`/challenges/join/${challengeId}`);
+    const response = await axios.post(`http://localhost:8000/api/challenges/join/${challengeId}`, {}, { withCredentials: true });
     return response.data;
   },
   completeChallenge: async (challengeId: string) => {
-    const response = await api.post(`/challenges/complete/${challengeId}`);
+    const response = await axios.post(`http://localhost:8000/api/challenges/complete/${challengeId}`, {}, { withCredentials: true });
     return response.data;
   },
 };
 
-export const orderAPI = {
-  orderProduct: async (productId: string) => {
-    const response = await api.post(`/order/${productId}`);
+// Leaderboard API
+export const leaderboardAPI = {
+  getLeaderboard: async () => {
+    const response = await axios.get('http://localhost:8000/api/leaderboard', { withCredentials: true });
     return response.data;
-  },
+  }
 };
-
-export default api;

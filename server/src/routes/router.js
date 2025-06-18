@@ -361,11 +361,43 @@ router.post('/order/:id', authenticate, async (req, res) => {
     user.orders.push({ orderInfo });
     user.carbonSaved += product.carbonFootprint || 0;
     user.ecoScore += product.ecoScore || 0;
+    // Auto-join all active challenges
+    const activeChallenges = await Challenge.find({ isActive: true });
+    activeChallenges.forEach(challenge => {
+      const challengeId = challenge._id.toString();
+      if (!user.currentChallenges.map(String).includes(challengeId)) {
+        user.currentChallenges.push(challengeId);
+      }
+    });
     await user.save();
     res.status(201).json({ status: true, message: 'Order placed successfully', user });
   } catch (error) {
     console.error('Order error:', error);
     res.status(500).json({ status: false, message: 'Failed to place order' });
+  }
+});
+
+// Leaderboard by badge points
+router.get('/leaderboard', async (req, res) => {
+  try {
+    const users = await User.find({}, 'name badges').lean();
+    const badgePoints = { daily: 10, weekly: 50, monthly: 100 };
+    const leaderboard = users.map(user => {
+      let points = 0;
+      user.badges?.forEach(badge => {
+        if (badge.name?.toLowerCase().includes('daily')) points += badgePoints.daily;
+        else if (badge.name?.toLowerCase().includes('weekly')) points += badgePoints.weekly;
+        else if (badge.name?.toLowerCase().includes('monthly')) points += badgePoints.monthly;
+      });
+      return {
+        name: user.name,
+        avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}`,
+        points,
+      };
+    }).sort((a, b) => b.points - a.points).slice(0, 10);
+    res.status(200).json(leaderboard);
+  } catch (error) {
+    res.status(500).json({ status: false, message: 'Failed to fetch leaderboard' });
   }
 });
 

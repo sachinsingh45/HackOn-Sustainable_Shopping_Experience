@@ -13,6 +13,9 @@ const challengeSchema = new mongoose.Schema({
   targetValue: { type: Number, required: true },
   rewardBadge: { type: badgeSchema, required: true },
   isActive: { type: Boolean, default: true },
+  frequency: { type: String, enum: ['daily', 'weekly', 'monthly'], required: true },
+  startDate: { type: Date, required: true },
+  endDate: { type: Date, required: true },
 });
 
 const Challenge = mongoose.model('challenges', challengeSchema);
