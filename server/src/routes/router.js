@@ -392,6 +392,61 @@ router.post('/order/:id', authenticate, async (req, res) => {
   }
 });
 
+// POST: Create order
+router.post('/orders', authenticate, async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ status: false, message: "User not found" });
+    }
+
+    if (user.cart.length === 0) {
+      return res.status(400).json({ status: false, message: "Cart is empty" });
+    }
+
+    const { items, totalAmount, totalEcoScore, totalCarbonSaved, moneySaved } = req.body;
+
+    // Create order object
+    const orderInfo = {
+      items,
+      totalAmount,
+      totalEcoScore,
+      totalCarbonSaved,
+      moneySaved,
+      orderDate: new Date(),
+      status: 'completed'
+    };
+
+    // Update user stats
+    user.ecoScore = (user.ecoScore + totalEcoScore) / 2; // Average of current and new eco score
+    user.carbonSaved += totalCarbonSaved;
+    user.moneySaved += moneySaved;
+
+    // Add order to user's orders
+    await user.addOrder(orderInfo);
+
+    // Clear cart
+    user.cart = [];
+
+    // Save updated user
+    await user.save();
+
+    res.status(201).json({
+      status: true,
+      message: "Order placed successfully",
+      order: orderInfo
+    });
+
+  } catch (error) {
+    console.error("Create order error:", error);
+    res.status(500).json({
+      status: false,
+      message: "Failed to create order",
+      error: error.message
+    });
+  }
+});
+
 // Leaderboard by badge points
 router.get('/leaderboard', async (req, res) => {
   try {

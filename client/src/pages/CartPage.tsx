@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Trash2, Plus, Minus, Package, Truck, Shield, CreditCard, Leaf, AlertTriangle, BarChart3, Users } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../store/useStore';
 import { useToast } from '../context/ToastContext';
 
 const CartPage = () => {
-  const { cart, removeFromCart, updateQuantity, user } = useStore();
+  const { cart, removeFromCart, updateQuantity, user, checkout } = useStore();
   const { showToast } = useToast();
   const [loading, setLoading] = useState(false);
   const [selectedPackaging, setSelectedPackaging] = useState<{ [key: string]: string }>({});
+  const navigate = useNavigate();
 
   const handleRemoveItem = async (productId: string) => {
     try {
@@ -61,6 +62,19 @@ const CartPage = () => {
       { name: 'Eco-friendly alternative', savings: '2.5 kg CO₂', price: 1899 },
       { name: 'Recycled version', savings: '1.8 kg CO₂', price: 2199 }
     ];
+  };
+
+  const handleCheckout = async () => {
+    try {
+      setLoading(true);
+      await checkout();
+      showToast('Order placed successfully!', 'success');
+      navigate('/orders'); // Redirect to orders page
+    } catch (error: any) {
+      showToast(error.message || 'Failed to place order', 'error');
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (cart.length === 0) {
@@ -156,11 +170,6 @@ const CartPage = () => {
                       <span className="text-lg font-semibold text-gray-900">
                         ₹{parseFloat(item.cartItem.price.replace(/[^0-9.]/g, '')).toLocaleString()}
                       </span>
-                      {item.cartItem.mrp && (
-                        <span className="ml-2 text-sm text-gray-500 line-through">
-                          ₹{parseFloat(item.cartItem.mrp.replace(/[^0-9.]/g, '')).toLocaleString()}
-                        </span>
-                      )}
                     </div>
                   </div>
                   <div className="flex flex-col items-end space-y-2">
@@ -276,23 +285,30 @@ const CartPage = () => {
 
         {/* Order Summary */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sticky top-4">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Order Summary</h2>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white rounded-lg shadow-sm border border-gray-200 p-6"
+          >
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Order Summary</h3>
             
-            <div className="space-y-4">
+            <div className="space-y-3">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Subtotal</span>
                 <span className="font-medium">₹{calculateSubtotal().toLocaleString()}</span>
               </div>
+              
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Shipping</span>
                 <span className="font-medium">Free</span>
               </div>
+              
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Tax</span>
                 <span className="font-medium">₹{(calculateSubtotal() * 0.18).toLocaleString()}</span>
               </div>
-              <div className="border-t pt-4">
+              
+              <div className="border-t pt-3 mt-3">
                 <div className="flex justify-between font-semibold">
                   <span>Total</span>
                   <span>₹{(calculateSubtotal() * 1.18).toLocaleString()}</span>
@@ -300,88 +316,43 @@ const CartPage = () => {
               </div>
             </div>
 
-            {/* Environmental Impact */}
-            <div className="mt-6 bg-green-50 p-4 rounded-lg">
-              <h4 className="font-medium mb-3 text-green-800">Your Impact</h4>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span>Carbon Footprint:</span>
-                  <span className="font-medium">{calculateEcoImpact().toFixed(1)} kg CO₂</span>
+            <button
+              onClick={handleCheckout}
+              disabled={loading || cart.length === 0}
+              className={`mt-6 w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white ${
+                loading || cart.length === 0
+                  ? 'bg-gray-400 cursor-not-allowed'
+                  : 'bg-green-600 hover:bg-green-700'
+              }`}
+            >
+              {loading ? (
+                <div className="flex items-center">
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Processing...
                 </div>
-                <div className="flex justify-between">
-                  <span>Packaging Waste:</span>
-                  <span className="font-medium">{calculateWasteGenerated().toFixed(1)} kg</span>
-                </div>
-                <div className="flex justify-between text-green-700">
-                  <span>Trees to Offset:</span>
-                  <span className="font-medium">{Math.ceil(calculateEcoImpact() / 10)} trees</span>
-                </div>
-              </div>
-            </div>
+              ) : (
+                'Proceed to Checkout'
+              )}
+            </button>
 
-            {/* Waste Visualization */}
-            <div className="mt-6">
-              <h4 className="font-medium mb-3 flex items-center">
-                <BarChart3 className="w-4 h-4 mr-1" />
-                Waste Visualization
-              </h4>
-              <div className="text-sm text-gray-600 mb-2">
-                Your cart will generate approximately:
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-sm">
-                  <span>Plastic packaging</span>
-                  <span className="bg-red-100 text-red-800 px-2 py-1 rounded">
-                    {(calculateWasteGenerated() * 0.6).toFixed(1)} kg
-                  </span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span>Cardboard</span>
-                  <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
-                    {(calculateWasteGenerated() * 0.4).toFixed(1)} kg
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-6 space-y-4">
+            <div className="mt-4 space-y-3">
               <div className="flex items-center text-sm text-gray-600">
                 <Truck className="w-4 h-4 mr-2" />
-                <span>Free delivery for orders above ₹499</span>
+                Free delivery on orders above ₹499
               </div>
               <div className="flex items-center text-sm text-gray-600">
                 <Shield className="w-4 h-4 mr-2" />
-                <span>Secure checkout</span>
+                Secure checkout
               </div>
               <div className="flex items-center text-sm text-gray-600">
-                <Leaf className="w-4 h-4 mr-2" />
-                <span>Carbon footprint: {calculateEcoImpact().toFixed(2)} kg CO₂</span>
+                <CreditCard className="w-4 h-4 mr-2" />
+                Multiple payment options
               </div>
             </div>
-
-            <button
-              onClick={() => showToast('Proceeding to checkout...', 'info')}
-              className="w-full mt-6 bg-green-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center"
-            >
-              <CreditCard className="w-5 h-5 mr-2" />
-              Proceed to Checkout
-            </button>
-
-            <button
-              onClick={() => showToast('Adding carbon offset...', 'info')}
-              className="w-full mt-3 bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center"
-            >
-              <Leaf className="w-5 h-5 mr-2" />
-              Checkout with Carbon Offset
-            </button>
-
-            <Link
-              to="/green-store"
-              className="block text-center mt-4 text-sm text-gray-600 hover:text-green-600"
-            >
-              Continue Shopping
-            </Link>
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>

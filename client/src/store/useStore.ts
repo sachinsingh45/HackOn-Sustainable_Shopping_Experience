@@ -100,6 +100,7 @@ interface Store {
   addToCart: (productId: string) => Promise<void>;
   removeFromCart: (productId: string) => Promise<void>;
   updateQuantity: (productId: string, quantity: number) => Promise<void>;
+  checkout: () => Promise<void>;
   
   // UI actions
   setSearchQuery: (query: string) => void;
@@ -274,40 +275,97 @@ export const useStore = create<Store>((set, get) => ({
   // Cart actions
   addToCart: async (productId) => {
     try {
+      set({ loading: true, error: null });
       const response = await cartAPI.addToCart(productId);
-      if (response.status) {
-        set({ user: response.message, cart: response.message.cart });
-      }
+      const userData = await authAPI.getAuthUser();
+      set({ user: userData, cart: userData.cart || [] });
     } catch (error: any) {
-      set({ error: 'Failed to add to cart' });
+      set({ error: error.response?.data?.message || 'Failed to add to cart' });
+    } finally {
+      set({ loading: false });
     }
   },
 
   removeFromCart: async (productId) => {
     try {
+      set({ loading: true, error: null });
       await cartAPI.removeFromCart(productId);
-      const state = get();
-      if (state.user) {
-        const updatedCart = state.cart.filter(item => item.id !== productId);
-        set({ cart: updatedCart });
-      }
-    } catch (error) {
-      set({ error: 'Failed to remove from cart' });
+      const userData = await authAPI.getAuthUser();
+      set({ user: userData, cart: userData.cart || [] });
+    } catch (error: any) {
+      set({ error: error.response?.data?.message || 'Failed to remove from cart' });
+    } finally {
+      set({ loading: false });
     }
   },
 
   updateQuantity: async (productId, quantity) => {
     try {
+      set({ loading: true, error: null });
       await cartAPI.updateCartQuantity(productId, quantity);
-      const state = get();
-      if (state.user) {
-        const updatedCart = state.cart.map(item =>
-          item.id === productId ? { ...item, qty: quantity } : item
-        );
-        set({ cart: updatedCart });
+      const userData = await authAPI.getAuthUser();
+      set({ user: userData, cart: userData.cart || [] });
+    } catch (error: any) {
+      set({ error: error.response?.data?.message || 'Failed to update quantity' });
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  checkout: async () => {
+    try {
+      set({ loading: true, error: null });
+      const { cart, user } = get();
+      
+      if (!user) {
+        throw new Error('User must be logged in to checkout');
       }
-    } catch (error) {
-      set({ error: 'Failed to update quantity' });
+
+      if (cart.length === 0) {
+        throw new Error('Cart is empty');
+      }
+
+      // Calculate order details
+      const orderItems = cart.map(item => ({
+        productId: item.cartItem._id,
+        name: item.cartItem.name,
+        quantity: item.qty,
+        price: parseFloat(item.cartItem.price.replace(/[^0-9.]/g, '')),
+        ecoScore: item.cartItem.ecoScore || 0,
+        carbonFootprint: item.cartItem.carbonFootprint || 0
+      }));
+
+      const totalAmount = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const totalEcoScore = orderItems.reduce((sum, item) => sum + (item.ecoScore * item.quantity), 0);
+      const totalCarbonSaved = orderItems.reduce((sum, item) => sum + (item.carbonFootprint * item.quantity), 0);
+      
+      // Calculate money saved based on eco-friendly products
+      const moneySaved = orderItems.reduce((sum, item) => {
+        const ecoDiscount = item.ecoScore > 80 ? 0.1 : item.ecoScore > 60 ? 0.05 : 0;
+        return sum + (item.price * item.quantity * ecoDiscount);
+      }, 0);
+
+      // Create order
+      const orderData = {
+        items: orderItems,
+        totalAmount,
+        totalEcoScore,
+        totalCarbonSaved,
+        moneySaved
+      };
+
+      await ordersAPI.createOrder(orderData);
+      
+      // Refresh user data to get updated stats
+      const userData = await authAPI.getAuthUser();
+      set({ user: userData, cart: [] });
+      
+      return true;
+    } catch (error: any) {
+      set({ error: error.response?.data?.message || error.message || 'Checkout failed' });
+      return false;
+    } finally {
+      set({ loading: false });
     }
   },
 
