@@ -20,6 +20,7 @@ import ProtectedRoute from './components/common/ProtectedRoute';
 import { useStore } from './store/useStore';
 import MainLayout from './components/layout/MainLayout';
 import { ToastProvider } from './context/ToastContext';
+import OrderHistoryPage from './pages/OrderHistoryPage';
 
 function App() {
   const { checkAuth, fetchProducts } = useStore();
@@ -61,6 +62,11 @@ function App() {
             <Route path="profile" element={
               <ProtectedRoute>
                 <ProfilePage />
+              </ProtectedRoute>
+            } />
+            <Route path="orders" element={
+              <ProtectedRoute>
+                <OrderHistoryPage />
               </ProtectedRoute>
             } />
           </Route>

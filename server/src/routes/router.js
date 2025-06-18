@@ -250,13 +250,25 @@ router.get("/logout", authenticate, async (req, res) => {
 
 // GET: Authenticated user
 router.get('/getAuthUser', authenticate, async (req, res) => {
-
   try {
     const user = await User.findById(req.userId);
     res.status(200).json(user);
   } catch (err) {
     console.error("Get auth user error:", err);
     res.status(500).json({ status: false, message: "Failed to fetch user" });
+  }
+});
+
+// GET: User's order history
+router.get('/orders', authenticate, async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ status: false, message: 'User not found' });
+    }
+    res.status(200).json({ orders: user.orders });
+  } catch (error) {
+    res.status(500).json({ status: false, message: 'Failed to fetch orders' });
   }
 });
 
