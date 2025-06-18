@@ -98,7 +98,6 @@ router.post('/register', [
       number,
       email,
       password: hashedPassword,
-      location: '',
       carbonSaved: 0,
       ecoScore: 0,
       circularityScore: 0,
@@ -155,12 +154,14 @@ router.post('/login', [
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });
+
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(400).json({ 
         status: false, 
         message: [{ msg: "Incorrect Email or Password" }] 
       });
     }
+
 
     const token = await user.generateAuthToken();
     res.cookie("AmazonClone", token, {
@@ -174,6 +175,7 @@ router.post('/login', [
     });
 
   } catch (err) {
+
     console.error("Login error:", err);
     res.status(500).json({ 
       status: false, 
@@ -248,6 +250,7 @@ router.get("/logout", authenticate, async (req, res) => {
 
 // GET: Authenticated user
 router.get('/getAuthUser', authenticate, async (req, res) => {
+
   try {
     const user = await User.findById(req.userId);
     res.status(200).json(user);
