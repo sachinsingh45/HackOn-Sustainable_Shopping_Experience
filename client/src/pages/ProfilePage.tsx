@@ -247,39 +247,102 @@ const ProfilePage = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-lg shadow-sm border p-4 sm:p-6"
+            className="space-y-6"
           >
-            <h3 className="text-base sm:text-lg font-semibold mb-4">Recent Orders</h3>
-            <div className="space-y-4">
-              {user.orders && user.orders.length > 0 ? (
-                user.orders.slice().reverse().map((order, idx) => {
-                  const info = order.orderInfo || order;
-                  return (
-                    <div key={idx} className="flex flex-col sm:flex-row items-center sm:items-start justify-between p-3 sm:p-4 border rounded-lg gap-3 sm:gap-0">
-                      <div className="flex items-center space-x-3 sm:space-x-4 w-full sm:w-auto">
-                        <img
-                          src={info.image || info.url || 'https://images.pexels.com/photos/1029236/pexels-photo-1029236.jpeg?auto=compress&cs=tinysrgb&w=100'}
-                          alt={info.name}
-                          className="w-16 h-16 object-cover rounded"
-                        />
-                        <div>
-                          <h4 className="font-medium text-base sm:text-lg">{info.name}</h4>
-                          <p className="text-xs sm:text-sm text-gray-600">Ordered on {info.date ? new Date(info.date).toLocaleDateString() : '-'}</p>
-                          <span className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full mt-1">
-                            Delivered
-                          </span>
+            {/* Orders Summary */}
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+              <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center border">
+                <span className="text-2xl font-bold text-green-600">{user.orders?.length || 0}</span>
+                <span className="text-gray-600 mt-1">Total Orders</span>
+              </div>
+              <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center border">
+                <span className="text-2xl font-bold text-blue-600">₹{user.orders?.reduce((sum, order) => {
+                  const data = order.orderInfo || order;
+                  return sum + (data.totalAmount || data.price || 0);
+                }, 0).toLocaleString() || '0'}</span>
+                <span className="text-gray-600 mt-1">Total Spent</span>
+              </div>
+              <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center border">
+                <span className="text-2xl font-bold text-green-700 flex items-center gap-1">
+                  {user.orders?.reduce((sum, order) => {
+                    const data = order.orderInfo || order;
+                    return sum + (data.totalCarbonSaved || data.carbonFootprint || 0);
+                  }, 0).toFixed(1) || '0'} <Leaf className="w-5 h-5 text-green-400" />
+                </span>
+                <span className="text-gray-600 mt-1">CO₂ Saved (kg)</span>
+              </div>
+              <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center border">
+                <span className="text-2xl font-bold text-green-600">₹{user.orders?.reduce((sum, order) => {
+                  const data = order.orderInfo || order;
+                  return sum + (data.moneySaved || 0);
+                }, 0).toLocaleString() || '0'}</span>
+                <span className="text-gray-600 mt-1">Money Saved</span>
+              </div>
+            </div>
+
+            {/* Orders List */}
+            <div className="bg-white rounded-lg shadow-sm border p-4 sm:p-6">
+              <h3 className="text-base sm:text-lg font-semibold mb-4">Recent Orders</h3>
+              <div className="space-y-4">
+                {user.orders && user.orders.length > 0 ? (
+                  user.orders.slice().reverse().map((order, idx) => {
+                    const data = order.orderInfo || order;
+                    return (
+                      <div key={order._id || idx} className="bg-gray-50 rounded-xl p-4 hover:shadow-md transition-shadow">
+                        <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+                          <div className="flex-1">
+                            <h4 className="text-lg font-semibold text-gray-800">{data.summary?.name || data.name || `Order #${idx + 1}`}</h4>
+                            <div className="flex items-center gap-2 text-gray-500 text-sm mt-1">
+                              <Calendar className="w-4 h-4" />
+                              <span>Ordered on {new Date(data.orderDate || data.date).toLocaleDateString()}</span>
+                            </div>
+                            <div className="mt-2">
+                              <span className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                                {data.status || 'Completed'}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-xl font-bold text-green-600">
+                              ₹{(data.totalAmount || data.price || 0).toLocaleString()}
+                            </div>
+                            <div className="text-sm text-gray-600 mt-1">
+                              {data.items?.length || 1} {data.items?.length === 1 ? 'item' : 'items'}
+                            </div>
+                            <div className="text-xs text-green-700 mt-1 flex items-center gap-1">
+                              Saved {(data.totalCarbonSaved || data.carbonFootprint || 0).toFixed(1)} kg <Leaf className="w-4 h-4" />
+                            </div>
+                          </div>
                         </div>
+                        {/* Order Items */}
+                        {data.items && data.items.length > 0 && (
+                          <div className="mt-4 pt-4 border-t">
+                            <h5 className="text-sm font-medium text-gray-700 mb-2">Order Items:</h5>
+                            <div className="space-y-2">
+                              {data.items.map((item: any, itemIdx: number) => (
+                                <div key={itemIdx} className="flex justify-between text-sm">
+                                  <span className="text-gray-600">
+                                    {item.name} x {item.quantity}
+                                  </span>
+                                  <span className="text-gray-800">
+                                    ₹{(item.price * item.quantity).toLocaleString()}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </div>
-                      <div className="text-right w-full sm:w-auto">
-                        <div className="font-semibold text-base sm:text-lg">{info.price}</div>
-                        <div className="text-xs sm:text-sm text-green-600">Saved {info.carbonFootprint || 0} kg CO₂</div>
-                      </div>
-                    </div>
-                  );
-                })
-              ) : (
-                <div className="text-gray-500 text-center py-8">No orders yet. Start shopping to see your orders here!</div>
-              )}
+                    );
+                  })
+                ) : (
+                  <div className="text-gray-500 text-center py-8">
+                    <Package className="w-12 h-12 mx-auto mb-4 text-gray-300" />
+                    <div className="text-lg font-semibold mb-1">No orders yet</div>
+                    <div className="text-sm">Start shopping to see your orders here!</div>
+                  </div>
+                )}
+              </div>
             </div>
           </motion.div>
         )}

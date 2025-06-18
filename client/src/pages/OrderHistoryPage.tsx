@@ -1,23 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import { ordersAPI } from '../services/api';
-import { Leaf, Package, Calendar, Loader2 } from 'lucide-react';
+import { Leaf, Package, Calendar, Loader2, IndianRupee } from 'lucide-react';
+
+interface OrderItem {
+  name: string;
+  quantity: number;
+  price: number;
+  carbonFootprint: number;
+  ecoScore: number;
+}
 
 interface Order {
   _id: string;
   orderInfo?: {
-    name: string;
-    image?: string;
-    price: number;
-    date: string;
-    carbonFootprint?: number;
-    status?: string;
+    items: OrderItem[];
+    totalAmount: number;
+    totalEcoScore: number;
+    totalCarbonSaved: number;
+    moneySaved: number;
+    orderDate: string;
+    status: string;
+    summary: {
+      name: string;
+      price: number;
+      carbonFootprint: number;
+      date: string;
+      status: string;
+    };
   };
-  name?: string;
-  image?: string;
-  price?: number;
-  date?: string;
-  carbonFootprint?: number;
+  items?: OrderItem[];
+  totalAmount?: number;
+  totalEcoScore?: number;
+  totalCarbonSaved?: number;
+  moneySaved?: number;
+  orderDate?: string;
   status?: string;
+  summary?: {
+    name: string;
+    price: number;
+    carbonFootprint: number;
+    date: string;
+    status: string;
+  };
 }
 
 const OrderHistoryPage: React.FC = () => {
@@ -28,10 +52,17 @@ const OrderHistoryPage: React.FC = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const data = await ordersAPI.getUserOrders();
-        setOrders(data.orders || data);
+        const response = await ordersAPI.getUserOrders();
+        console.log('Orders response:', response); // Debug log
+        if (response.status && Array.isArray(response.orders)) {
+          setOrders(response.orders);
+        } else {
+          console.error('Invalid orders response:', response);
+          setError('Failed to load orders: Invalid response format');
+        }
       } catch (err) {
-        setError('Failed to load orders.');
+        console.error('Error fetching orders:', err);
+        setError('Failed to load orders. Please try again later.');
       } finally {
         setLoading(false);
       }
@@ -39,10 +70,41 @@ const OrderHistoryPage: React.FC = () => {
     fetchOrders();
   }, []);
 
+  // Helper function to get order data
+  const getOrderData = (order: Order) => {
+    const data = order.orderInfo || order;
+    return {
+      items: data.items || [],
+      totalAmount: data.totalAmount || 0,
+      totalEcoScore: data.totalEcoScore || 0,
+      totalCarbonSaved: data.totalCarbonSaved || 0,
+      moneySaved: data.moneySaved || 0,
+      orderDate: data.orderDate || data.date || new Date().toISOString(),
+      status: data.status || 'Completed',
+      summary: data.summary || {
+        name: 'Order',
+        price: data.totalAmount || 0,
+        carbonFootprint: data.totalCarbonSaved || 0,
+        date: data.orderDate || data.date || new Date().toISOString(),
+        status: data.status || 'Completed'
+      }
+    };
+  };
+
   // Summary calculations
   const totalOrders = orders.length;
-  const totalCO2 = orders.reduce((sum, o) => sum + (o.orderInfo?.carbonFootprint || o.carbonFootprint || 0), 0);
-  const totalSpent = orders.reduce((sum, o) => sum + (o.orderInfo?.price || o.price || 0), 0);
+  const totalCO2 = orders.reduce((sum, order) => {
+    const data = getOrderData(order);
+    return sum + data.totalCarbonSaved;
+  }, 0);
+  const totalSpent = orders.reduce((sum, order) => {
+    const data = getOrderData(order);
+    return sum + data.totalAmount;
+  }, 0);
+  const totalSaved = orders.reduce((sum, order) => {
+    const data = getOrderData(order);
+    return sum + data.moneySaved;
+  }, 0);
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-10">
@@ -50,20 +112,28 @@ const OrderHistoryPage: React.FC = () => {
         <Package className="w-8 h-8 text-green-500" /> Order History
       </h1>
       {/* Summary */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8">
         <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center border">
           <span className="text-2xl font-bold text-green-600">{totalOrders}</span>
           <span className="text-gray-600 mt-1">Total Orders</span>
         </div>
         <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center border">
-          <span className="text-2xl font-bold text-blue-600">₹{totalSpent}</span>
+          <span className="text-2xl font-bold text-blue-600 flex items-center">
+            <IndianRupee className="w-5 h-5" />{totalSpent.toLocaleString()}
+          </span>
           <span className="text-gray-600 mt-1">Total Spent</span>
         </div>
         <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center border">
           <span className="text-2xl font-bold text-green-700 flex items-center gap-1">
-            {totalCO2} <Leaf className="w-5 h-5 text-green-400" />
+            {totalCO2.toFixed(1)} <Leaf className="w-5 h-5 text-green-400" />
           </span>
           <span className="text-gray-600 mt-1">CO₂ Saved (kg)</span>
+        </div>
+        <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center border">
+          <span className="text-2xl font-bold text-green-600 flex items-center">
+            <IndianRupee className="w-5 h-5" />{totalSaved.toLocaleString()}
+          </span>
+          <span className="text-gray-600 mt-1">Money Saved</span>
         </div>
       </div>
       {/* Orders List */}
@@ -77,35 +147,53 @@ const OrderHistoryPage: React.FC = () => {
         <div className="text-gray-500 text-center py-16 text-lg">No orders yet. Start shopping to see your order history!</div>
       ) : (
         <div className="grid gap-6">
-          {orders.slice().reverse().map((order, idx) => {
-            const info = order.orderInfo || order;
+          {orders.map((order, idx) => {
+            const data = getOrderData(order);
             return (
-              <div key={order._id || idx} className="bg-white rounded-xl shadow-md border flex flex-col sm:flex-row items-center p-4 gap-4 hover:shadow-lg transition-shadow">
-                <img
-                  src={info.image || 'https://images.pexels.com/photos/1029236/pexels-photo-1029236.jpeg?auto=compress&cs=tinysrgb&w=100'}
-                  alt={info.name}
-                  className="w-24 h-24 object-cover rounded-lg border"
-                />
-                <div className="flex-1 w-full flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                  <div>
-                    <h2 className="text-lg font-semibold text-gray-800">{info.name}</h2>
+              <div key={order._id || idx} className="bg-white rounded-xl shadow-md border p-6 hover:shadow-lg transition-shadow">
+                <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+                  <div className="flex-1">
+                    <h2 className="text-lg font-semibold text-gray-800">{data.summary.name}</h2>
                     <div className="flex items-center gap-2 text-gray-500 text-sm mt-1">
                       <Calendar className="w-4 h-4" />
-                      <span>Ordered on {info.date ? new Date(info.date).toLocaleDateString() : '-'}</span>
+                      <span>Ordered on {new Date(data.orderDate).toLocaleDateString()}</span>
                     </div>
                     <div className="mt-2">
                       <span className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
-                        {info.status || 'Delivered'}
+                        {data.status}
                       </span>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-xl font-bold text-green-600">₹{info.price}</div>
+                    <div className="text-xl font-bold text-green-600 flex items-center justify-end">
+                      <IndianRupee className="w-5 h-5" />{data.totalAmount.toLocaleString()}
+                    </div>
+                    <div className="text-sm text-gray-600 mt-1">
+                      {data.items.length} {data.items.length === 1 ? 'item' : 'items'}
+                    </div>
                     <div className="text-xs text-green-700 mt-1 flex items-center gap-1">
-                      Saved {info.carbonFootprint || 0} kg <Leaf className="w-4 h-4" />
+                      Saved {data.totalCarbonSaved.toFixed(1)} kg <Leaf className="w-4 h-4" />
                     </div>
                   </div>
                 </div>
+                {/* Order Items */}
+                {data.items.length > 0 && (
+                  <div className="mt-4 pt-4 border-t">
+                    <h3 className="text-sm font-medium text-gray-700 mb-2">Order Items:</h3>
+                    <div className="space-y-2">
+                      {data.items.map((item, itemIdx) => (
+                        <div key={itemIdx} className="flex justify-between text-sm">
+                          <span className="text-gray-600">
+                            {item.name} x {item.quantity}
+                          </span>
+                          <span className="text-gray-800">
+                            <IndianRupee className="w-3 h-3 inline" />{(item.price * item.quantity).toLocaleString()}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             );
           })}

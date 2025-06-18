@@ -264,11 +264,25 @@ router.get('/orders', authenticate, async (req, res) => {
   try {
     const user = await User.findById(req.userId);
     if (!user) {
-      return res.status(404).json({ status: false, message: 'User not found' });
+      return res.status(404).json({ status: false, message: "User not found" });
     }
-    res.status(200).json({ orders: user.orders });
+
+    // Flatten orders if they are stored as { orderInfo: { ... } }
+    const orders = user.orders
+      .map(order => order.orderInfo ? { ...order.orderInfo, _id: order._id } : order)
+      .reverse();
+
+    res.status(200).json({ 
+      status: true,
+      orders: orders 
+    });
   } catch (error) {
-    res.status(500).json({ status: false, message: 'Failed to fetch orders' });
+    console.error("Fetch orders error:", error);
+    res.status(500).json({ 
+      status: false, 
+      message: "Failed to fetch orders",
+      error: error.message 
+    });
   }
 });
 
@@ -406,15 +420,29 @@ router.post('/orders', authenticate, async (req, res) => {
 
     const { items, totalAmount, totalEcoScore, totalCarbonSaved, moneySaved } = req.body;
 
-    // Create order object
+    // Create order object with detailed information
     const orderInfo = {
-      items,
+      items: items.map(item => ({
+        name: item.name,
+        quantity: item.quantity,
+        price: item.price,
+        carbonFootprint: item.carbonFootprint,
+        ecoScore: item.ecoScore
+      })),
       totalAmount,
       totalEcoScore,
       totalCarbonSaved,
       moneySaved,
       orderDate: new Date(),
-      status: 'completed'
+      status: 'completed',
+      // Add summary information for easy display
+      summary: {
+        name: items[0].name + (items.length > 1 ? ` +${items.length - 1} more items` : ''),
+        price: totalAmount,
+        carbonFootprint: totalCarbonSaved,
+        date: new Date(),
+        status: 'completed'
+      }
     };
 
     // Update user stats

@@ -43,7 +43,30 @@ const userSchema = new mongoose.Schema({
     }
   ],
   orders: [
-    {}
+    {
+      orderInfo: {
+        items: [{
+          name: String,
+          quantity: Number,
+          price: Number,
+          carbonFootprint: Number,
+          ecoScore: Number
+        }],
+        totalAmount: Number,
+        totalEcoScore: Number,
+        totalCarbonSaved: Number,
+        moneySaved: Number,
+        orderDate: Date,
+        status: String,
+        summary: {
+          name: String,
+          price: Number,
+          carbonFootprint: Number,
+          date: Date,
+          status: String
+        }
+      }
+    }
   ],
   location: {
     city: { type: String, default: '' },
