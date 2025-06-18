@@ -37,6 +37,7 @@ interface Challenge {
 }
 
 interface Badge {
+  id?: string;
   name: string;
   description?: string;
   iconUrl?: string;
@@ -56,7 +57,12 @@ interface User {
   moneySaved: number;
   circularityScore: number;
   achievements?: string[];
-  location: string;
+  location: string | {
+    city: string;
+    state: string;
+    country: string;
+    pin: string;
+  };
   currentChallenges: Challenge[];
   badges: Badge[];
 }

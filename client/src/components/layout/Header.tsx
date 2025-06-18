@@ -85,7 +85,11 @@ const Header = () => {
             <MapPin className="w-4 h-4" />
             <div>
               <div className="text-xs text-gray-300">Deliver to</div>
-              <div className="font-semibold">{user?.location || 'India'}</div>
+              <div className="font-semibold">
+                {user?.location && typeof user.location === 'object' && user.location.city
+                  ? `${user.location.city}, ${user.location.state}, ${user.location.country} - ${user.location.pin}`
+                  : typeof user?.location === 'string' ? user.location : 'India'}
+              </div>
             </div>
           </div>
 
@@ -214,14 +218,30 @@ const Header = () => {
               </div>
 
               {/* Mobile User Section */}
-              <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+              <div className="mb-6 p-4 bg-gray-50 rounded-lg flex flex-col items-start gap-2">
                 {user ? (
-                  <div>
-                    <div className="font-semibold text-gray-900">Hello, {user.name.split(' ')[0]}</div>
-                    <div className="text-sm text-gray-600">Eco Score: {user.ecoScore || 75}</div>
-                  </div>
+                  <>
+                    <div className="flex items-center gap-2">
+                      <User className="w-5 h-5 text-green-600" />
+                      <span className="font-semibold text-gray-900">Hello, {user.name.split(' ')[0]}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <Leaf className="w-4 h-4 text-green-500" /> Eco Score: <span className="font-semibold">{user.ecoScore}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <MapPin className="w-4 h-4 text-blue-500" />
+                      <span>
+                        {user.location && typeof user.location === 'object' && user.location.city
+                          ? `${user.location.city}, ${user.location.state}, ${user.location.country} - ${user.location.pin}`
+                          : typeof user.location === 'string' ? user.location : 'No location set'}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <span className="font-semibold">CO₂ Saved:</span> {user.carbonSaved} kg
+                    </div>
+                  </>
                 ) : (
-                  <div>
+                  <div className="flex flex-col gap-1">
                     <div className="font-semibold text-gray-900">Hello, Sign in</div>
                     <div className="text-sm text-gray-600">Account & Lists</div>
                   </div>

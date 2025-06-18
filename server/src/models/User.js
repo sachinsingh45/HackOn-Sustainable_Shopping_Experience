@@ -46,8 +46,10 @@ const userSchema = new mongoose.Schema({
     {}
   ],
   location: {
-    type: String,
-    default: ''
+    city: { type: String, default: '' },
+    state: { type: String, default: '' },
+    country: { type: String, default: '' },
+    pin: { type: String, default: '' }
   },
   carbonSaved: {
     type: Number,

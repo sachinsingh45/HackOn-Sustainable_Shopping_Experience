@@ -322,11 +322,11 @@ router.post('/challenges/complete/:challengeId', authenticate, async (req, res) 
 // POST: Update user location
 router.post('/api/update-location', authenticate, async (req, res) => {
   try {
-    const { location } = req.body;
+    const { city, state, country, pin } = req.body;
     const user = await User.findById(req.userId);
-    user.location = location;
+    user.location = { city, state, country, pin };
     await user.save();
-    res.status(200).json({ status: true, message: 'Location updated', location });
+    res.status(200).json({ status: true, message: 'Location updated', location: user.location });
   } catch (error) {
     res.status(500).json({ status: false, message: 'Failed to update location' });
   }
