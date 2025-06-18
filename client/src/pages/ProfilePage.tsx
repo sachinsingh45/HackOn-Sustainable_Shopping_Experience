@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useStore } from '../store/useStore';
 import axios from 'axios';
 import { useToast } from '../context/ToastContext';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 
 // Badge icons and date formatting (copied from EcoChallengesPage for consistency)
 const BADGE_ICONS = {
@@ -67,9 +68,19 @@ const ProfilePage = () => {
   const monthlyCO2: Record<string, number> = {};
   if (user && user.orders) {
     user.orders.forEach(order => {
-      const date = new Date(order.orderInfo?.date || order.date);
+      // Try all possible date fields
+      const rawDate = order.orderInfo?.date || order.orderInfo?.orderDate || order.orderDate || order.date;
+      const date = rawDate ? new Date(rawDate) : null;
+      if (!date || isNaN(date.getTime())) return; // skip invalid dates
       const month = date.toLocaleString('default', { month: 'short', year: 'numeric' });
-      const co2 = order.orderInfo?.carbonFootprint || order.carbonFootprint || 0;
+      // Try all possible CO2 fields
+      const co2 =
+        order.orderInfo?.carbonFootprint ||
+        order.orderInfo?.totalCarbonSaved ||
+        order.orderInfo?.summary?.carbonFootprint ||
+        order.totalCarbonSaved ||
+        order.carbonFootprint ||
+        0;
       if (!monthlyCO2[month]) monthlyCO2[month] = 0;
       monthlyCO2[month] += co2;
     });
@@ -206,19 +217,16 @@ const ProfilePage = () => {
                   <div className="text-sm">Your monthly CO₂ savings will appear here after your first order.</div>
                 </div>
               ) : (
-                <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
-                  {monthlyData.map((data, index) => (
-                    <div key={index} className="text-center">
-                      <div className="mb-2">
-                        <div
-                          className="bg-green-500 rounded-t mx-auto"
-                          style={{ height: `${(data.co2Saved / 40) * 100}px`, width: '18px' }}
-                        />
-                        <div className="text-xs text-gray-600 mt-1">{data.month}</div>
-                      </div>
-                      <div className="text-xs sm:text-sm font-medium">{typeof data.co2Saved === 'number' ? data.co2Saved : Number(data.co2Saved)} kg</div>
-                    </div>
-                  ))}
+                <div className="w-full h-64">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={monthlyData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="month" />
+                      <YAxis label={{ value: 'CO₂ Saved (kg)', angle: -90, position: 'insideLeft' }} />
+                      <Tooltip formatter={(value) => `${value} kg`} />
+                      <Bar dataKey="co2Saved" fill="#22c55e" radius={[6, 6, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
                 </div>
               )}
             </div>
@@ -232,6 +240,72 @@ const ProfilePage = () => {
                     const challenge = challenges.find(
                       (c) => c._id === challengeId || c.id === challengeId
                     );
+                    // Progress logic (from EcoChallengesPage)
+                    let progressText = '';
+                    let progress = 0;
+                    let target = 1;
+                    if (challenge && user && (challenge.frequency === 'daily' || challenge.frequency === 'monthly' || challenge.frequency === 'weekly')) {
+                      const now = new Date();
+                      if (challenge.frequency === 'weekly') {
+                        // Start of week (Monday)
+                        const day = now.getDay();
+                        const diffToMonday = (day === 0 ? -6 : 1) - day;
+                        const weekStart = new Date(now);
+                        weekStart.setDate(now.getDate() + diffToMonday);
+                        weekStart.setHours(0, 0, 0, 0);
+                        let co2Saved = 0;
+                        user.orders.forEach((order: any) => {
+                          const orderDate = new Date(order?.orderInfo?.date || order?.orderInfo?.orderDate || order?.orderDate || order?.date);
+                          if (orderDate >= weekStart && orderDate <= now) {
+                            const carbonFootprint =
+                              order?.orderInfo?.carbonFootprint ||
+                              order?.orderInfo?.totalCarbonSaved ||
+                              order?.orderInfo?.summary?.carbonFootprint ||
+                              order?.totalCarbonSaved ||
+                              order?.carbonFootprint ||
+                              0;
+                            co2Saved += carbonFootprint;
+                          }
+                        });
+                        target = 5;
+                        progressText = `CO₂ saved this week: ${co2Saved.toFixed(2)}/5 kg`;
+                        progress = co2Saved;
+                      } else {
+                        let ecoCount = 0;
+                        user.orders.forEach((order: any) => {
+                          const orderDate = new Date(order?.orderInfo?.date || order?.orderInfo?.orderDate || order?.orderDate || order?.date);
+                          const isEco = order?.orderInfo?.isEcoFriendly === true ||
+                            (order?.orderInfo?.ecoScore && order.orderInfo.ecoScore > 0) ||
+                            (order?.orderInfo?.items && order.orderInfo.items.some((item: any) =>
+                              item?.isEcoFriendly === true || (item?.ecoScore && item.ecoScore > 0)
+                            ));
+                          if (challenge.frequency === 'daily') {
+                            if (
+                              orderDate.getDate() === now.getDate() &&
+                              orderDate.getMonth() === now.getMonth() &&
+                              orderDate.getFullYear() === now.getFullYear() &&
+                              isEco
+                            ) {
+                              ecoCount++;
+                            }
+                            target = 1;
+                            progressText = `Eco-friendly products bought today: ${ecoCount}/1`;
+                            progress = ecoCount;
+                          } else if (challenge.frequency === 'monthly') {
+                            if (
+                              orderDate.getMonth() === now.getMonth() &&
+                              orderDate.getFullYear() === now.getFullYear() &&
+                              isEco
+                            ) {
+                              ecoCount++;
+                            }
+                            target = 10;
+                            progressText = `Eco-friendly products bought this month: ${ecoCount}/10`;
+                            progress = ecoCount;
+                          }
+                        });
+                      }
+                    }
                     return (
                       <div key={challengeId || idx} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 sm:p-4 bg-green-50 rounded-lg gap-2 sm:gap-0">
                         <div>
@@ -252,6 +326,18 @@ const ProfilePage = () => {
                                   </>
                                 )}
                               </div>
+                              {/* Progress bar for joined and not completed */}
+                              {(challenge.frequency === 'daily' || challenge.frequency === 'monthly' || challenge.frequency === 'weekly') && progressText && (
+                                <div className="mt-2">
+                                  <div className="text-xs text-blue-700 font-semibold">{progressText}</div>
+                                  <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
+                                    <div
+                                      className={`h-2 rounded-full ${progress >= target ? 'bg-green-500' : 'bg-blue-400'}`}
+                                      style={{ width: `${Math.min((progress / target) * 100, 100)}%` }}
+                                    ></div>
+                                  </div>
+                                </div>
+                              )}
                             </>
                           ) : (
                             <h4 className="font-medium text-base sm:text-lg text-red-500">Challenge not found</h4>
