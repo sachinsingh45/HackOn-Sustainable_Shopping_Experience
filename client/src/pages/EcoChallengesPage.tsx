@@ -135,44 +135,63 @@ const EcoChallengesPage = () => {
                 let progressText = '';
                 let progress = 0;
                 let target = 1;
-                if (user && (challenge.frequency === 'daily' || challenge.frequency === 'monthly')) {
+                if (user && (challenge.frequency === 'daily' || challenge.frequency === 'monthly' || challenge.frequency === 'weekly')) {
                   const now = new Date();
-                  let ecoCount = 0;
-                  user.orders?.forEach(order => {
-                    const orderDate = new Date(order.orderInfo?.date || order.date);
-                    const isEco = order.orderInfo?.isEcoFriendly || order.orderInfo?.ecoScore > 0 || order.orderInfo?.isEcoFriendly === true;
-                    if (challenge.frequency === 'daily') {
-                      if (
-                        orderDate.getDate() === now.getDate() &&
-                        orderDate.getMonth() === now.getMonth() &&
-                        orderDate.getFullYear() === now.getFullYear() &&
-                        isEco
-                      ) {
-                        ecoCount++;
+                  if (challenge.frequency === 'weekly') {
+                    // Calculate start of week (Monday)
+                    const day = now.getDay();
+                    const diffToMonday = (day === 0 ? -6 : 1) - day; // Sunday=0, so shift to previous Monday
+                    const weekStart = new Date(now);
+                    weekStart.setDate(now.getDate() + diffToMonday);
+                    weekStart.setHours(0, 0, 0, 0);
+                    let co2Saved = 0;
+                    user.orders?.forEach(order => {
+                      const orderDate = new Date(order.orderInfo?.date || order.date);
+                      if (orderDate >= weekStart && orderDate <= now) {
+                        co2Saved += order.orderInfo?.carbonFootprint || order.carbonFootprint || 0;
                       }
-                      target = 1;
-                      progressText = `Eco-friendly products bought today: ${ecoCount}/1`;
-                      progress = ecoCount;
-                    } else if (challenge.frequency === 'monthly') {
-                      if (
-                        orderDate.getMonth() === now.getMonth() &&
-                        orderDate.getFullYear() === now.getFullYear() &&
-                        isEco
-                      ) {
-                        ecoCount++;
+                    });
+                    target = 5;
+                    progressText = `CO₂ saved this week: ${co2Saved.toFixed(2)}/5 kg`;
+                    progress = co2Saved;
+                  } else {
+                    let ecoCount = 0;
+                    user.orders?.forEach(order => {
+                      const orderDate = new Date(order.orderInfo?.date || order.date);
+                      const isEco = order.orderInfo?.isEcoFriendly || order.orderInfo?.ecoScore > 0 || order.orderInfo?.isEcoFriendly === true;
+                      if (challenge.frequency === 'daily') {
+                        if (
+                          orderDate.getDate() === now.getDate() &&
+                          orderDate.getMonth() === now.getMonth() &&
+                          orderDate.getFullYear() === now.getFullYear() &&
+                          isEco
+                        ) {
+                          ecoCount++;
+                        }
+                        target = 1;
+                        progressText = `Eco-friendly products bought today: ${ecoCount}/1`;
+                        progress = ecoCount;
+                      } else if (challenge.frequency === 'monthly') {
+                        if (
+                          orderDate.getMonth() === now.getMonth() &&
+                          orderDate.getFullYear() === now.getFullYear() &&
+                          isEco
+                        ) {
+                          ecoCount++;
+                        }
+                        target = 10;
+                        progressText = `Eco-friendly products bought this month: ${ecoCount}/10`;
+                        progress = ecoCount;
                       }
-                      target = 10;
-                      progressText = `Eco-friendly products bought this month: ${ecoCount}/10`;
-                      progress = ecoCount;
-                    }
-                  });
+                    });
+                  }
                 }
                 // Custom descriptions
                 let customDescription = challenge.description;
                 if (challenge.frequency === 'daily') {
                   customDescription = 'Buy at least 1 eco-friendly product today to complete this challenge.';
                 } else if (challenge.frequency === 'weekly') {
-                  customDescription = 'Place at least 1 order this week to complete this challenge.';
+                  customDescription = 'Save at least 5kg of CO₂ this week to complete this challenge.';
                 } else if (challenge.frequency === 'monthly') {
                   customDescription = 'Buy at least 10 eco-friendly products this month to complete this challenge.';
                 }
@@ -194,7 +213,7 @@ const EcoChallengesPage = () => {
                         </div>
                         <h3 className="font-semibold text-gray-900 text-lg mb-1">{challenge.name}</h3>
                         <p className="text-gray-600 mb-2 text-sm">{customDescription}</p>
-                        {(challenge.frequency === 'daily' || challenge.frequency === 'monthly') && joined && !completed && (
+                        {(challenge.frequency === 'daily' || challenge.frequency === 'monthly' || challenge.frequency === 'weekly') && joined && !completed && (
                           <div className="mb-2">
                             <div className="text-xs text-blue-700 font-semibold">{progressText}</div>
                             <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
@@ -290,8 +309,7 @@ const EcoChallengesPage = () => {
                 })}
               </div>
             </div>
-
-            {/* Quick Actions */}
+            {/* Quick Actions / Rewards */}
             <div className="bg-white rounded-xl shadow-lg p-6">
               <h3 className="text-xl font-bold text-gray-900 mb-4">Quick Actions</h3>
               <div className="space-y-3">
