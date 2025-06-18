@@ -10,35 +10,29 @@ const GreenStorePage = () => {
   const [sortBy, setSortBy] = useState('eco-score');
   const [priceRange, setPriceRange] = useState([0, 10000]);
 
-  // Calculate category counts
-  const categoryCounts = products.reduce((acc, product) => {
-    const category = product.category?.toLowerCase() || 'general';
-    acc[category] = (acc[category] || 0) + 1;
-    return acc;
-  }, {} as { [key: string]: number });
+  // Get all unique categories from products (case-insensitive, trimmed)
+  const allCategoriesSet = new Set<string>();
+  products.forEach(product => {
+    const cat = (product.category?.trim() || 'General');
+    allCategoriesSet.add(cat);
+  });
+  const allCategories = Array.from(allCategoriesSet);
 
-  const categories = [
-    { id: 'all', name: 'All Green Products', count: products.length },
-    { id: 'electronics', name: 'Green Electronics', count: categoryCounts['electronics'] || 0 },
-    { id: 'fashion', name: 'Sustainable Fashion', count: categoryCounts['fashion'] || 0 },
-    { id: 'home', name: 'Eco Home & Garden', count: categoryCounts['home'] || 0 },
-    { id: 'beauty', name: 'Organic Beauty', count: categoryCounts['beauty'] || 0 },
-    { id: 'books', name: 'Eco Books', count: categoryCounts['books'] || 0 }
-  ];
+  // Helper to normalize category id
+  const normalizeCatId = (cat: string) => cat.trim().toLowerCase().replace(/\s+/g, '-');
 
-  const sortOptions = [
-    { value: 'eco-score', label: 'Highest Eco Score' },
-    { value: 'carbon-footprint', label: 'Lowest Carbon Footprint' },
-    { value: 'price-low', label: 'Price: Low to High' },
-    { value: 'price-high', label: 'Price: High to Low' },
-    { value: 'rating', label: 'Customer Rating' }
-  ];
-
+  // Compute filteredProducts based on selectedCategory
   const filteredProducts = products
-    .filter(product => product.isEcoFriendly)
     .filter(product => {
-      if (selectedCategory === 'all') return true;
-      return product.category?.toLowerCase() === selectedCategory;
+      if (selectedCategory === 'all') return product.isEcoFriendly;
+      if (selectedCategory === 'general') {
+        return normalizeCatId(product.category || 'General') === 'general';
+      }
+      // For other categories, show only eco-friendly products in that category
+      return (
+        product.isEcoFriendly &&
+        normalizeCatId(product.category || 'General') === selectedCategory
+      );
     })
     .filter(product => {
       const price = parseFloat(product.price.replace(/[^0-9.]/g, ''));
@@ -47,7 +41,6 @@ const GreenStorePage = () => {
     .sort((a, b) => {
       const priceA = parseFloat(a.price.replace(/[^0-9.]/g, ''));
       const priceB = parseFloat(b.price.replace(/[^0-9.]/g, ''));
-      
       switch (sortBy) {
         case 'eco-score':
           return (b.ecoScore || 0) - (a.ecoScore || 0);
@@ -63,6 +56,31 @@ const GreenStorePage = () => {
           return 0;
       }
     });
+
+  // Build categories array with correct counts for each filter
+  const categories = [
+    {
+      id: 'all',
+      name: 'All Green Products',
+      count: products.filter(p => p.isEcoFriendly).length
+    },
+    ...allCategories.map(cat => ({
+      id: normalizeCatId(cat),
+      name: cat,
+      count:
+        normalizeCatId(cat) === 'general'
+          ? products.filter(p => normalizeCatId(p.category || 'General') === 'general').length
+          : products.filter(p => p.isEcoFriendly && normalizeCatId(p.category || 'General') === normalizeCatId(cat)).length
+    }))
+  ];
+
+  const sortOptions = [
+    { value: 'eco-score', label: 'Highest Eco Score' },
+    { value: 'carbon-footprint', label: 'Lowest Carbon Footprint' },
+    { value: 'price-low', label: 'Price: Low to High' },
+    { value: 'price-high', label: 'Price: High to Low' },
+    { value: 'rating', label: 'Customer Rating' }
+  ];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -223,7 +241,7 @@ const GreenStorePage = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <ProductCard product={product} />
+                  <ProductCard product={{ ...product, carbonFootprint: product.carbonFootprint ? Number(product.carbonFootprint).toFixed(2) : undefined }} />
                 </motion.div>
               ))}
             </div>
