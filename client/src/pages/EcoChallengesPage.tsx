@@ -102,8 +102,13 @@ const EcoChallengesPage = () => {
   };
 
   const filteredChallenges = challenges?.filter(
-    (challenge) =>
-      selectedCategory === 'all' || challenge?.frequency === selectedCategory
+    (challenge) => {
+      // Exclude expired challenges
+      const now = new Date();
+      const endDate = new Date(challenge?.endDate);
+      const notExpired = !challenge?.endDate || endDate > now;
+      return notExpired && (selectedCategory === 'all' || challenge?.frequency === selectedCategory);
+    }
   ) || [];
 
   return (
