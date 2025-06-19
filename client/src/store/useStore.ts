@@ -3,7 +3,6 @@ import { authAPI, productsAPI, cartAPI, ordersAPI, challengeAPI, aiAPI } from '.
 
 interface Product {
   _id: string;
-  id: string;
   name: string;
   price: string;
   value: string;
@@ -255,8 +254,7 @@ export const useStore = create<Store>((set, get) => ({
         price: product.price || '₹0',
         value: product.value || '0',
         accValue: product.accValue || 0,
-        id: product.id || product._id,
-        _id: product._id || product.id
+        _id: product._id
       }));
       
       set({ products: enhancedProducts });
@@ -403,7 +401,7 @@ export const useStore = create<Store>((set, get) => ({
   getEcoAlternatives: async (productId) => {
     try {
       const state = get();
-      const product = state.products.find(p => p.id === productId);
+      const product = state.products.find(p => p._id === productId);
       if (!product) return { alternatives: [] };
 
       const userHistory = state.user?.orders || [];

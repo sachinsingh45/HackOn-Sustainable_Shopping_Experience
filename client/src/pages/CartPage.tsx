@@ -180,7 +180,7 @@ const CartPage = () => {
                     }}
                   />
                   <div className="flex-1 w-full">
-                    <Link to={`/product/${item.cartItem.id}`} 
+                    <Link to={`/product/${item.cartItem._id}`} 
                       className="text-base sm:text-lg font-medium text-gray-900 hover:text-green-600 block truncate sm:whitespace-normal sm:line-clamp-2 line-clamp-1 max-w-full break-words"
                       style={{ wordBreak: 'break-word', overflowWrap: 'anywhere' }}
                     >
@@ -277,7 +277,7 @@ const CartPage = () => {
                     Eco-Friendly Alternatives
                   </h4>
                   <div className="space-y-1">
-                    {getEcoAlternatives(item.id).map((alt, index) => (
+                    {getEcoAlternatives(item.cartItem._id).map((alt, index) => (
                       <div key={index} className="flex justify-between items-center text-xs sm:text-sm">
                         <span className="text-green-700">{alt.name}</span>
                         <span className="text-green-600 font-medium">Save {alt.savings}</span>

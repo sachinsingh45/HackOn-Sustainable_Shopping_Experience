@@ -45,7 +45,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     }
     
     try {
-      await addToCart(product.id);
+      await addToCart(product._id);
       showToast(`${product.name} added to cart successfully!`, 'success');
     } catch (error) {
       console.error('Failed to add to cart:', error);
@@ -57,7 +57,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const price = parseFloat(product.price.replace(/[^0-9.]/g, ''));
 
   return (
-    <Link to={`/product/${product.id}`} className="block group">
+    <Link to={`/product/${product._id}`} className="block group">
       <motion.div
         whileHover={{ y: -6, scale: 1.03 }}
         className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 overflow-hidden h-full flex flex-col group-hover:border-green-400"

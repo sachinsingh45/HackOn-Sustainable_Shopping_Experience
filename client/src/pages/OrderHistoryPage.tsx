@@ -182,7 +182,7 @@ const OrderHistoryPage: React.FC = () => {
                     <h3 className="text-sm font-medium text-gray-700 mb-2">Order Items:</h3>
                     <div className="space-y-2">
                       {data.items.map((item, itemIdx) => (
-                        <div key={itemIdx} className="flex justify-between text-sm">
+                        <div key={item._id || itemIdx} className="flex justify-between text-sm">
                           <span className="text-gray-600">
                             {item.name} x {item.quantity}
                           </span>

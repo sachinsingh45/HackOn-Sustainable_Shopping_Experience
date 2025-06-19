@@ -1,6 +1,5 @@
 const productsData = [
     {
-      id: "1",
       url: "images/products/1.jpg",
       resUrl: "../images/products/1res.jpg",
       price: "₹61,990.00",
@@ -28,7 +27,6 @@ const productsData = [
       groupBuyEligible: false
     },
     {
-      id: "2",
       url: "images/products/2.jpg",
       resUrl: "../images/products/2res.jpg",
       price: "₹39,499.00",
@@ -57,7 +55,6 @@ const productsData = [
       groupBuyEligible: true
     },
     {
-      id: "3",
       url: "images/products/3.jpg",
       price: "₹21,900.00",
       name: "New Apple AirPods Pro with MagSafe Charging Case",
@@ -85,7 +82,6 @@ const productsData = [
       groupBuyEligible: true
     },
     {
-      id: "4",
       url: "images/products/4.jpg",
       price: "₹1,299.00",
       name: "boAt Airdopes 121v2 True Wireless Earbuds with Upto 14 Hours Playback, Lightweight Earbuds, 8MM Drivers, LED Indicators and Multifunction Controls(Active Black)",
@@ -114,7 +110,6 @@ const productsData = [
     },
     {
       id: "5",
-      url: "images/products/5.jpg",
       price: "₹999.00",
       name: "Classic Mosquito Net for Double Bed, Embroidery, King Size, Polyester, Strong 30GSM, PVC Coated Steel (L200cm X W200cm X H145cm) Foldable for Double Bed - King Size, Blue",
       category: "home",
@@ -141,7 +136,6 @@ const productsData = [
       groupBuyEligible: false
     },
     {
-      id: "6",
       url: "images/products/6.jpg",
       price: "₹2,097.00",
       name: "crocs Unisex-Adult Bayaband Clog",
@@ -169,7 +163,6 @@ const productsData = [
       groupBuyEligible: false
     },
     {
-      id: "7",
       url: "images/products/7.jpg",
       price: "₹1,619.00",
       name: "INDO ERA Women's Viscose Embroidered Straight Kurta Palazzo With Dupatta Set",
@@ -195,7 +188,6 @@ const productsData = [
       groupBuyEligible: false
     },
     {
-      id: "8",
       url: "images/products/8.jpg",
       price: "₹2,884.00",
       name: "QUBO Smart Cam 360 | 1080p Full HD Wi-Fi Camera | Trust of Hero Group | 360° Deg Coverage with Pan & Tilt | Intruder Alarm | Full Color in Low Light | Two Way Talk | Alexa & OK Google | Made in India",
@@ -223,7 +215,6 @@ const productsData = [
       groupBuyEligible: false
     },
     {
-      id: "9",
       url: "images/products/9.jpg",
       price: "₹1,299.00",
       name: "TIMEX Analog Men's Watch",
@@ -251,7 +242,6 @@ const productsData = [
       groupBuyEligible: false
     },
     {
-      id: "10",
       url: "images/products/10.jpg",
       price: "₹429.00",
       name: "Yogabar Dark Chocolate & Cranberry Muesli 700g - Breakfast Cereal with 83% Nuts & Seeds, Dried Fruits, & Whole Grains - Vegan & Gluten Free Snack",
@@ -279,7 +269,6 @@ const productsData = [
       groupBuyEligible: false
     },
     {
-      id: "11",
       url: "images/products/11.jpg",
       price: "₹358.00",
       name: "Integriti Men Sweatshirt",
@@ -307,7 +296,6 @@ const productsData = [
       groupBuyEligible: false
     },
     {
-      id: "12",
       url: "images/products/12.jpg",
       price: "₹630.00",
       name: "Harpa Synthetic a-line Dress (GR5759_Navy_Small)",
@@ -334,7 +322,6 @@ const productsData = [
       groupBuyEligible: false
     },
     {
-      id: "13",
       url: "images/products/13.jpg",
       price: "₹3,999.00",
       name: "boAt Stone 1200 14W Bluetooth Speaker with Upto 9 Hours Battery, RGB LEDs, IPX7 and TWS Feature(Blue)",
@@ -361,7 +348,6 @@ const productsData = [
       groupBuyEligible: false
     },
     {
-      id: "14",
       price: "₹699.00",
       value: "699",
       accValue: "699",
@@ -389,7 +375,6 @@ const productsData = [
       groupBuyEligible: false
     },
     {
-      id: "15",
       price: "₹499.00",
       url: "images/products/15.jpg",
       name: "Urban Born Cast Iron Metal Flower vase for Home Decor and Living Room Vintage Antique Decor (Gold, 15 x 15 x 15 cm)",
@@ -416,7 +401,6 @@ const productsData = [
       groupBuyEligible: false
     },
     {
-      id: "16",
       price: "₹999.00",
       url: "images/products/16.jpg",
       name: "Livpure Smart Solid Window Polyester 5 feet Curtains with tieback( Beige ) Set",
@@ -443,7 +427,6 @@ const productsData = [
       groupBuyEligible: false
     },
     {
-      id: "17",
       price: "₹1,399.00",
       url: "images/products/17.jpg",
       name: "NEW LEAF 220 GSM All-Season Printed Super Soft Light Weight Cotton Comforter Set with 1 Bedsheet 2 Pillow Covers (Double, Blue, Orange) -4 Pieces",
@@ -470,7 +453,6 @@ const productsData = [
       groupBuyEligible: false
     },
     {
-      id: "18",
       price: "₹329.00",
       url: "images/products/18.jpg",
       name: "Kaameri Bazaar Bronze Color Metal Bird cage Tea Light Holder with Butter Pot tealight Glass for Home Décor",
@@ -497,7 +479,6 @@ const productsData = [
       groupBuyEligible: false
     },
     {
-      id: "19",
       price: "₹549.00",
       url: "images/products/19.jpg",
       name: "The Vintage Artefacts Donut White, Ceramic Pot and vase Handcrafted, Round Shaped (vase)",
@@ -524,7 +505,6 @@ const productsData = [
       groupBuyEligible: false
     },
     {
-      id: "20",
       price: "₹1,499.00",
       url: "images/products/20.jpg",
       name: "JH Gallery Handcrafted and Emboss Painted Colorful Wood Elephant Shape Garden Table (8 Inches Height, Red)",
@@ -551,501 +531,6 @@ const productsData = [
       groupBuyEligible: false
     },
     {
-      id: "1001",
-      url: "images/products/eco-bottle.jpg",
-      resUrl: "../images/products/eco-bottle-res.jpg",
-      price: "₹299.00",
-      value: "299",
-      accValue: "299",
-      discount: "-25%",
-      mrp: "₹399.00",
-      name: "Eco-Friendly Water Bottle (In Stock)",
-      category: "home",
-      subCategory: "bottle",
-      points: [
-        "Made from 100% recycled materials",
-        "BPA-free and dishwasher safe",
-        "Keeps drinks cold for 12 hours"
-      ],
-      unitsInStock: 20,
-      unitsSold: 1,
-      rating: 4.2,
-      reviews: 320,
-      carbonFootprint: 1.8,
-      ecoScore: 72,
-      isEcoFriendly: true,
-      groupBuyEligible: false
-    },
-    {
-      id: "1002",
-      url: "images/products/eco-bag.jpg",
-      resUrl: "../images/products/eco-bag-res.jpg",
-      price: "₹149.00",
-      value: "149",
-      accValue: "149",
-      discount: "-10%",
-      mrp: "₹165.00",
-      name: "Reusable Shopping Bag (Out of Stock)",
-      category: "fashion",
-      subCategory: "bag",
-      points: [
-        "Durable and washable",
-        "Folds into a compact pouch",
-        "Supports up to 20kg weight"
-      ],
-      unitsInStock: 20,
-      unitsSold: 7,
-      rating: 4.2,
-      reviews: 320,
-      carbonFootprint: 1.8,
-      ecoScore: 72,
-      isEcoFriendly: true,
-      groupBuyEligible: false
-    },
-    {
-      id: "101",
-      url: "images/products/eco-laptop-1.jpg",
-      resUrl: "../images/products/eco-laptop-1res.jpg",
-      price: "₹69,999.00",
-      value: "69,999",
-      accValue: "69999",
-      discount: "-30%",
-      mrp: "₹99,999.00",
-      name: "EcoSmart Ultra Laptop (Recycled Aluminum, Solar Powered)",
-      category: "electronics",
-      subCategory: "laptop",
-      points: [
-        "Body made from 90% recycled aluminum",
-        "Solar charging support for up to 8 hours",
-        "Energy Star certified, ultra-low power consumption"
-      ],
-      unitsInStock: 10,
-      unitsSold: 2,
-      rating: 4.9,
-      reviews: 540,
-      carbonFootprint: 0.5,
-      ecoScore: 95,
-      isEcoFriendly: true,
-      groupBuyEligible: true
-    },
-    {
-      id: "102",
-      url: "images/products/eco-earbuds-1.jpg",
-      resUrl: "../images/products/eco-earbuds-1res.jpg",
-      price: "₹2,499.00",
-      value: "2,499",
-      accValue: "2499",
-      discount: "-20%",
-      mrp: "₹3,099.00",
-      name: "GreenPods True Wireless Earbuds (Biodegradable Case)",
-      category: "electronics",
-      subCategory: "earbuds",
-      points: [
-        "Case made from biodegradable materials",
-        "Low EMF, energy-efficient Bluetooth 5.2",
-        "Eco-friendly packaging"
-      ],
-      unitsInStock: 15,
-      unitsSold: 1,
-      rating: 4.7,
-      reviews: 210,
-      carbonFootprint: 0.7,
-      ecoScore: 92,
-      isEcoFriendly: true,
-      groupBuyEligible: false
-    },
-    {
-      id: "103",
-      url: "images/products/eco-mobile-1.jpg",
-      resUrl: "../images/products/eco-mobile-1res.jpg",
-      price: "₹44,999.00",
-      value: "44,999",
-      accValue: "44999",
-      discount: "-15%",
-      mrp: "₹52,999.00",
-      name: "EcoPhone X (Recycled Plastic, Modular Design)",
-      category: "electronics",
-      subCategory: "mobile",
-      points: [
-        "Body made from 80% recycled plastic",
-        "Modular design for easy repairs and upgrades",
-        "Low power AMOLED display"
-      ],
-      unitsInStock: 12,
-      unitsSold: 3,
-      rating: 4.8,
-      reviews: 320,
-      carbonFootprint: 0.8,
-      ecoScore: 90,
-      isEcoFriendly: true,
-      groupBuyEligible: true
-    },
-    {
-      id: "104",
-      url: "images/products/eco-kurta-1.jpg",
-      resUrl: "../images/products/eco-kurta-1res.jpg",
-      price: "₹1,899.00",
-      value: "1,899",
-      accValue: "1899",
-      discount: "-10%",
-      mrp: "₹2,099.00",
-      name: "Organic Cotton Kurta (Handwoven, Plant Dyed)",
-      category: "fashion",
-      subCategory: "kurta",
-      points: [
-        "100% organic cotton, handwoven",
-        "Plant-based dyes, no chemicals",
-        "Fair trade certified"
-      ],
-      unitsInStock: 8,
-      unitsSold: 1,
-      rating: 4.6,
-      reviews: 110,
-      carbonFootprint: 0.4,
-      ecoScore: 93,
-      isEcoFriendly: true,
-      groupBuyEligible: false
-    },
-    {
-      id: "105",
-      url: "images/products/eco-mosquito-net-1.jpg",
-      resUrl: "../images/products/eco-mosquito-net-1res.jpg",
-      price: "₹1,299.00",
-      value: "1,299",
-      accValue: "1299",
-      discount: "-20%",
-      mrp: "₹1,599.00",
-      name: "EcoGuard Mosquito Net (Organic Cotton, Plant Dyed)",
-      category: "home",
-      subCategory: "mosquito net",
-      points: [
-        "Made from 100% organic cotton",
-        "Plant-based, non-toxic dyes",
-        "Biodegradable packaging"
-      ],
-      unitsInStock: 10,
-      unitsSold: 1,
-      rating: 4.7,
-      reviews: 90,
-      carbonFootprint: 0.3,
-      ecoScore: 94,
-      isEcoFriendly: true,
-      groupBuyEligible: false
-    },
-    {
-      id: "106",
-      url: "images/products/eco-clogs-1.jpg",
-      resUrl: "../images/products/eco-clogs-1res.jpg",
-      price: "₹2,499.00",
-      value: "2,499",
-      accValue: "2499",
-      discount: "-18%",
-      mrp: "₹3,049.00",
-      name: "GreenStep Clogs (Recycled EVA, Vegan)",
-      category: "fashion",
-      subCategory: "clogs",
-      points: [
-        "Made from 80% recycled EVA",
-        "Vegan, cruelty-free manufacturing",
-        "Eco-friendly dyes"
-      ],
-      unitsInStock: 12,
-      unitsSold: 2,
-      rating: 4.8,
-      reviews: 120,
-      carbonFootprint: 0.6,
-      ecoScore: 91,
-      isEcoFriendly: true,
-      groupBuyEligible: true
-    },
-    {
-      id: "107",
-      url: "images/products/eco-watch-1.jpg",
-      resUrl: "../images/products/eco-watch-1res.jpg",
-      price: "₹2,199.00",
-      value: "2,199",
-      accValue: "2199",
-      discount: "-22%",
-      mrp: "₹2,799.00",
-      name: "EcoTime Analog Watch (Bamboo, Solar Powered)",
-      category: "fashion",
-      subCategory: "watch",
-      points: [
-        "Case and strap made from sustainable bamboo",
-        "Solar powered movement",
-        "Plastic-free packaging"
-      ],
-      unitsInStock: 8,
-      unitsSold: 1,
-      rating: 4.9,
-      reviews: 75,
-      carbonFootprint: 0.2,
-      ecoScore: 97,
-      isEcoFriendly: true,
-      groupBuyEligible: false
-    },
-    {
-      id: "108",
-      url: "images/products/eco-bottle-2.jpg",
-      resUrl: "../images/products/eco-bottle-2res.jpg",
-      price: "₹349.00",
-      value: "349",
-      accValue: "349",
-      discount: "-15%",
-      mrp: "₹410.00",
-      name: "PureSip Eco Bottle (Glass, Bamboo Lid)",
-      category: "home",
-      subCategory: "bottle",
-      points: [
-        "Borosilicate glass, BPA-free",
-        "Bamboo lid, compostable",
-        "Zero plastic packaging"
-      ],
-      unitsInStock: 20,
-      unitsSold: 3,
-      rating: 4.8,
-      reviews: 60,
-      carbonFootprint: 0.1,
-      ecoScore: 98,
-      isEcoFriendly: true,
-      groupBuyEligible: false
-    },
-    {
-      id: "109",
-      url: "images/products/eco-bag-2.jpg",
-      resUrl: "../images/products/eco-bag-2res.jpg",
-      price: "₹199.00",
-      value: "199",
-      accValue: "199",
-      discount: "-12%",
-      mrp: "₹225.00",
-      name: "GreenCarry Shopping Bag (Jute, Reusable)",
-      category: "fashion",
-      subCategory: "bag",
-      points: [
-        "Made from 100% natural jute",
-        "Reusable, washable, and compostable",
-        "Supports up to 25kg weight"
-      ],
-      unitsInStock: 25,
-      unitsSold: 4,
-      rating: 4.7,
-      reviews: 85,
-      carbonFootprint: 0.2,
-      ecoScore: 96,
-      isEcoFriendly: true,
-      groupBuyEligible: true
-    },
-    {
-      id: "21",
-      url: "images/products/21.jpg",
-      price: "₹3,499.00",
-      name: "EcoVision Smart Cam 2K (Solar, Recycled Plastic)",
-      category: "electronics",
-      subCategory: "camera",
-      resUrl: "../images/products/21res.jpg",
-      value: "3,499",
-      accValue: "3499",
-      discount: "-30%",
-      mrp: "₹4,999.00",
-      points: [
-        "Solar-powered, no wiring needed",
-        "Body made from 70% recycled plastic",
-        "AI motion detection, cloud storage"
-      ],
-      unitsInStock: 15,
-      unitsSold: 4,
-      rating: 4.6,
-      reviews: 180,
-      carbonFootprint: 0.7,
-      ecoScore: 91,
-      isEcoFriendly: true,
-      groupBuyEligible: true
-    },
-    {
-      id: "22",
-      url: "images/products/22.jpg",
-      price: "₹2,799.00",
-      name: "GreenGrain Muesli (Organic, Vegan, 1kg)",
-      category: "beauty",
-      subCategory: "muesli",
-      resUrl: "../images/products/22res.jpg",
-      value: "2,799",
-      accValue: "2799",
-      discount: "-20%",
-      mrp: "₹3,499.00",
-      points: [
-        "100% organic grains and fruits",
-        "No added sugar, vegan",
-        "Compostable packaging"
-      ],
-      unitsInStock: 30,
-      unitsSold: 8,
-      rating: 4.7,
-      reviews: 95,
-      carbonFootprint: 0.2,
-      ecoScore: 95,
-      isEcoFriendly: true,
-      groupBuyEligible: false
-    },
-    {
-      id: "23",
-      url: "images/products/23.jpg",
-      price: "₹499.00",
-      name: "EarthyWear Organic Sweatshirt",
-      category: "fashion",
-      subCategory: "sweatshirt",
-      resUrl: "../images/products/23res.jpg",
-      value: "499",
-      accValue: "499",
-      discount: "-60%",
-      mrp: "₹1,249.00",
-      points: [
-        "100% organic cotton",
-        "Plant-based dyes, unisex",
-        "Plastic-free packaging"
-      ],
-      unitsInStock: 18,
-      unitsSold: 6,
-      rating: 4.5,
-      reviews: 60,
-      carbonFootprint: 0.3,
-      ecoScore: 94,
-      isEcoFriendly: true,
-      groupBuyEligible: false
-    },
-    {
-      id: "24",
-      url: "images/products/24.jpg",
-      price: "₹1,299.00",
-      name: "EcoChic Summer Dress (Bamboo Fiber)",
-      category: "fashion",
-      subCategory: "dress",
-      resUrl: "../images/products/24res.jpg",
-      value: "1,299",
-      accValue: "1299",
-      discount: "-35%",
-      mrp: "₹1,999.00",
-      points: [
-        "Made from bamboo fiber",
-        "Naturally dyed, breathable",
-        "Biodegradable packaging"
-      ],
-      unitsInStock: 12,
-      unitsSold: 3,
-      rating: 4.8,
-      reviews: 45,
-      carbonFootprint: 0.2,
-      ecoScore: 97,
-      isEcoFriendly: true,
-      groupBuyEligible: false
-    },
-    {
-      id: "25",
-      url: "images/products/25.jpg",
-      price: "₹4,499.00",
-      name: "EcoBeats Bluetooth Speaker (Recycled Wood)",
-      category: "electronics",
-      subCategory: "speaker",
-      resUrl: "../images/products/25res.jpg",
-      value: "4,499",
-      accValue: "4499",
-      discount: "-25%",
-      mrp: "₹5,999.00",
-      points: [
-        "Enclosure made from recycled wood",
-        "Low energy Bluetooth 5.3",
-        "Solar charging support"
-      ],
-      unitsInStock: 10,
-      unitsSold: 2,
-      rating: 4.7,
-      reviews: 70,
-      carbonFootprint: 0.4,
-      ecoScore: 93,
-      isEcoFriendly: true,
-      groupBuyEligible: true
-    },
-    {
-      id: "26",
-      url: "images/products/26.jpg",
-      price: "₹1,199.00",
-      name: "GreenCurtain Eco Window Curtain (Organic Cotton)",
-      category: "home",
-      subCategory: "curtain",
-      resUrl: "../images/products/26res.jpg",
-      value: "1,199",
-      accValue: "1199",
-      discount: "-20%",
-      mrp: "₹1,499.00",
-      points: [
-        "100% organic cotton",
-        "Plant-based dyes, blocks 90% sunlight",
-        "Compostable packaging"
-      ],
-      unitsInStock: 14,
-      unitsSold: 5,
-      rating: 4.6,
-      reviews: 40,
-      carbonFootprint: 0.2,
-      ecoScore: 95,
-      isEcoFriendly: true,
-      groupBuyEligible: false
-    },
-    {
-      id: "27",
-      url: "images/products/27.jpg",
-      price: "₹2,199.00",
-      name: "EcoComfort All-Season Comforter (Bamboo Fill)",
-      category: "home",
-      subCategory: "comforter",
-      resUrl: "../images/products/27res.jpg",
-      value: "2,199",
-      accValue: "2199",
-      discount: "-27%",
-      mrp: "₹2,999.00",
-      points: [
-        "Filling made from bamboo fiber",
-        "Cover: organic cotton, hypoallergenic",
-        "Biodegradable packaging"
-      ],
-      unitsInStock: 11,
-      unitsSold: 2,
-      rating: 4.7,
-      reviews: 35,
-      carbonFootprint: 0.3,
-      ecoScore: 96,
-      isEcoFriendly: true,
-      groupBuyEligible: false
-    },
-    {
-      id: "28",
-      url: "images/products/28.jpg",
-      price: "₹2,499.00",
-      name: "GreenTable Mini (Bamboo, Foldable)",
-      category: "home",
-      subCategory: "table",
-      resUrl: "../images/products/28res.jpg",
-      value: "2,499",
-      accValue: "2499",
-      discount: "-15%",
-      mrp: "₹2,999.00",
-      points: [
-        "Made from 100% bamboo",
-        "Foldable, lightweight",
-        "No plastic parts"
-      ],
-      unitsInStock: 7,
-      unitsSold: 1,
-      rating: 4.8,
-      reviews: 22,
-      carbonFootprint: 0.2,
-      ecoScore: 97,
-      isEcoFriendly: true,
-      groupBuyEligible: false
-    },
-    {
-      id: "29",
       url: "images/products/29.jpg",
       price: "₹799.00",
       name: "EcoVase (Recycled Glass)",
@@ -1072,26 +557,6 @@ const productsData = [
     }
   ]
   
-  const normalizedProductsData = productsData.map(product => ({
-    ...product,
-    resUrl: product.resUrl || '',
-    price: product.price || '₹0',
-    value: product.value || '0',
-    accValue: typeof product.accValue === 'string' ? Number(product.accValue.replace(/[^0-9.]/g, '')) : (product.accValue ?? 0),
-    discount: product.discount || '',
-    mrp: product.mrp || '',
-    name: product.name || '',
-    category: product.category || 'General',
-    subCategory: product.subCategory || '',
-    points: Array.isArray(product.points) ? product.points : [],
-    rating: typeof product.rating === 'number' ? product.rating : 4,
-    reviews: typeof product.reviews === 'number' ? product.reviews : 100,
-    carbonFootprint: typeof product.carbonFootprint === 'number' ? product.carbonFootprint : 2.5,
-    ecoScore: typeof product.ecoScore === 'number' ? product.ecoScore : 50,
-    isEcoFriendly: typeof product.isEcoFriendly === 'boolean' ? product.isEcoFriendly : true,
-    groupBuyEligible: typeof product.groupBuyEligible === 'boolean' ? product.groupBuyEligible : false,
-    unitsInStock: typeof product.unitsInStock === 'number' ? product.unitsInStock : 0,
-    unitsSold: typeof product.unitsSold === 'number' ? product.unitsSold : 0,
-  }));
+  const normalizedProductsData = productsData.map(({ id, ...rest }) => ({ ...rest }));
 
   module.exports = normalizedProductsData;

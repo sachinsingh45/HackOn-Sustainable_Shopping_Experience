@@ -27,12 +27,9 @@ router.get("/product/:id", async (req, res) => {
     const { id } = req.params;
     let individualData;
 
+    // Only use MongoDB _id for lookup
     if (id.match(/^[0-9a-fA-F]{24}$/)) {
       individualData = await Product.findById(id);
-    }
-
-    if (!individualData) {
-      individualData = await Product.findOne({ id: parseInt(id) });
     }
 
     if (!individualData) {
@@ -193,33 +190,23 @@ router.post('/addtocart/:id', authenticate, async (req, res) => {
     const { id } = req.params;
     let product = id.match(/^[0-9a-fA-F]{24}$/)
       ? await Product.findById(id)
-      : await Product.findOne({ id: parseInt(id) });
+      : null;
 
     if (!product) {
       return res.status(404).json({ status: false, message: "Product not found" });
     }
 
+    // Use _id for cart item
     const user = await User.findById(req.userId);
-    if (!user) {
-      return res.status(400).json({ status: false, message: "Invalid User" });
-    }
-
-    const cartItem = user.cart.find(item => item.id == product.id);
+    const cartItem = user.cart.find(item => item.id == product._id.toString());
     if (cartItem) {
-      await User.updateOne(
-        { _id: req.userId, 'cart.id': product.id },
-        { $inc: { 'cart.$.qty': 1 } }
-      );
-    } else {
-      await user.addToCart(product.id, product);
+      return res.status(400).json({ status: false, message: "Product already in cart" });
     }
-
-    const updatedUser = await User.findById(req.userId);
-    res.status(201).json({ status: true, message: updatedUser });
-
+    await user.addToCart(product._id.toString(), product);
+    res.status(200).json({ status: true, message: "Product added to cart" });
   } catch (error) {
     console.error("Add to cart error:", error);
-    res.status(500).json({ status: false, message: "Error adding item to cart", error: error.message });
+    res.status(500).json({ status: false, message: "Failed to add to cart" });
   }
 });
 

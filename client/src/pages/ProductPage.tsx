@@ -49,7 +49,7 @@ const ProductPage = () => {
       
       try {
         // First try to find the product in the local store
-        let foundProduct = products.find(p => p.id === id || p._id === id);
+        let foundProduct = products.find(p => p._id === id);
         
         // If not found in local store, try to fetch from server
         if (!foundProduct) {
@@ -68,8 +68,7 @@ const ProductPage = () => {
               price: fetchedProduct.price || '₹0',
               value: fetchedProduct.value || '0',
               accValue: fetchedProduct.accValue || 0,
-              id: fetchedProduct.id || fetchedProduct._id,
-              _id: fetchedProduct._id || fetchedProduct.id
+              _id: fetchedProduct._id
             };
           }
         }
@@ -123,7 +122,7 @@ const ProductPage = () => {
     }
 
     try {
-      await addToCart(product.id);
+      await addToCart(product._id);
       showToast(`${product.name} added to cart successfully!`, 'success');
     } catch (error) {
       console.error('Failed to add to cart:', error);
@@ -139,7 +138,7 @@ const ProductPage = () => {
     }
 
     try {
-      const response = await orderProduct(product.id);
+      const response = await orderProduct(product._id);
       if (response.status) {
         showToast('Order placed successfully!', 'success');
       } else {
