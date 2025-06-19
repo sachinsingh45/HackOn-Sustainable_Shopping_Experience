@@ -15,6 +15,10 @@ const productSchema = new mongoose.Schema({
     type: String,
     default: 'General'
   },
+  subCategory: {
+    type: String,
+    default: ''
+  },
   points: [{
     type: String
   }],
@@ -32,7 +36,7 @@ const productSchema = new mongoose.Schema({
   },
   ecoScore: {
     type: Number,
-    default: 75
+    default: 50
   },
   isEcoFriendly: {
     type: Boolean,
@@ -41,8 +45,28 @@ const productSchema = new mongoose.Schema({
   groupBuyEligible: {
     type: Boolean,
     default: false
+  },
+  // Number of units currently in stock
+  unitsInStock: {
+    type: Number,
+    default: 0,
+    min: 0
+  },
+  // Number of units sold
+  unitsSold: {
+    type: Number,
+    default: 0,
+    min: 0
   }
 });
+
+// Virtual field for out of stock status
+productSchema.virtual('outOfStock').get(function() {
+  return this.unitsSold >= this.unitsInStock;
+});
+
+productSchema.set('toJSON', { virtuals: true });
+productSchema.set('toObject', { virtuals: true });
 
 const Product = new mongoose.model("products", productSchema);
 

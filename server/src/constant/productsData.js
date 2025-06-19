@@ -10,13 +10,16 @@ const productsData = [
       mrp: "₹1,15,668.00",
       name: "Lenovo ThinkBook 14 Intel Core i5 11th Gen 14 inch (35.56cm) FHD IPS Thin & Light Laptop (16GB RAM/512GB SSD/Windows 11 Home/MS Office 2021/FPR/Intel Iris Xe Graphics Mineral Grey/1.4 kg), 20VDA0TLIH",
       category: "electronics",
+      subCategory: "laptop",
       points: [
         "ThinkBook 14 Reliability tested on 12 MIL-STD-810H Methods and 22 Procedures | Body Material: Aluminium | Surface Treatment: Anodizing sandblasting | Built to withstand rugged usage and can handle accidental knocks, drops, and even spills",
         "Processor: 11th Gen Intel Core i5-1135G7, 2.4 Ghz base clock, 4.2 Ghz max boost clock, 4 Cores, 8 MB Cache | Memory: 16GB (8GB soldered + 8GB SO-DIMM) RAM DDR4-3200 MHz upgradable upto 40 GB | Storage: 512GB SSD M.2",
         "Operating System: Preloaded Windows 11 Home with Lifetime Validity | Pre-installed software: Microsoft Office Home & Student 2021",
         "Display: 14-inch (35.56 cm) screen with (1920X1080) Full HD IPS 250 nits Antiglare display | Graphics: Integrated Intel Iris Xe Graphics comes with DirectX 12 enables amazing graphics | Monitor Support: Supports up to 4 independent displays",
         "Ports: 2x USB 3.2 Gen 1 (1x Always On), 1x USB-C 3.2 Gen 2 (support data transfer, PD 3.0 and DP 1.4), 1x Thunderbolt 4 / USB4 40Gbps (support data transfer, PD 3.0 and DP 1.4), 1x HDMI 1.4b, 1x Card reader, 1x Ethernet (RJ-45), 1x Headphone / microphone combo jack (3.5mm)"
-      ]
+      ],
+      unitsInStock: 20,
+      unitsSold: 7
     },
     {
       id: "2",
@@ -25,6 +28,7 @@ const productsData = [
       price: "₹39,499.00",
       name: "Samsung Galaxy S20 FE 5G (Cloud Navy, 8GB RAM, 128GB Storage) with No Cost EMI & Additional Exchange Offers",
       category: "electronics",
+      subCategory: "mobile",
       resUrl: "../images/products/2res.jpg",
       value: "39,499",
       accValue: "39499",
@@ -36,7 +40,9 @@ const productsData = [
         "6.5-inch(16.40 centimeters) Infinity-O Super AMOLED Display with 120Hz Refresh rate, 1080 x 2400 (FHD+) Resolution",
         "4500 mAh battery (Non -removable) with Super Fast Charging, FAst Wireless Charging & Finger Print sensor",
         "IP68 Rated, MicroSD Card Slot (Expandable upto 1 TB), Dual Nano Sim, Hybrid Sim Slot, 5G+5G Dual stand by"
-      ]
+      ],
+      unitsInStock: 20,
+      unitsSold: 13
     },
     {
       id: "3",
@@ -44,6 +50,7 @@ const productsData = [
       price: "₹21,900.00",
       name: "New Apple AirPods Pro with MagSafe Charging Case",
       category: "electronics",
+      subCategory: "earbuds",
       resUrl: "../images/products/3res.jpg",
       value: "21,900",
       accValue: "21900",
@@ -55,7 +62,9 @@ const productsData = [
         "Spatial audio with dynamic head tracking places sound all around you",
         "Adaptive EQ automatically tunes music to your ears",
         "Three sizes of soft, tapered silicone tips for a customisable fit"
-      ]
+      ],
+      unitsInStock: 20,
+      unitsSold: 2
     },
     {
       id: "4",
@@ -63,6 +72,7 @@ const productsData = [
       price: "₹1,299.00",
       name: "boAt Airdopes 121v2 True Wireless Earbuds with Upto 14 Hours Playback, Lightweight Earbuds, 8MM Drivers, LED Indicators and Multifunction Controls(Active Black)",
       category: "electronics",
+      subCategory: "earbuds",
       resUrl: "../images/products/4res.jpg",
       value: "1,299",
       accValue: "1299",
@@ -74,7 +84,9 @@ const productsData = [
         "Drivers- It possesses powerful 8mm drivers that pump out immersive auditory experience all day long",
         "Battery Indicator- Its carry cum charge case also has the battery LED indicator that shows the remaining power for the case",
         "Controls- The true wireless earbuds offer easy access multifunction button controls with stereo calling feature for an overall seamless user experience."
-      ]
+      ],
+      unitsInStock: 20,
+      unitsSold: 19
     },
     {
       id: "5",
@@ -82,6 +94,7 @@ const productsData = [
       price: "₹999.00",
       name: "Classic Mosquito Net for Double Bed, Embroidery, King Size, Polyester, Strong 30GSM, PVC Coated Steel (L200cm X W200cm X H145cm) Foldable for Double Bed - King Size, Blue",
       category: "home",
+      subCategory: "mosquito net",
       resUrl: "../images/products/5res.jpg",
       value: "999",
       accValue: "999",
@@ -93,7 +106,9 @@ const productsData = [
         "Pops up in an Instant and Automatically, Can be folded in less than 30 Seconds.",
         "Storage Bag Included at free of cost, comes with patches to cover the future accidental holes in the mosquito net, Provided with large Zipper gates on two Sides with inner and outer runner for easy and convenient Entry and Exit.",
         "Easy to fold, Easy to carry, it offers a healthy environment to sleep in."
-      ]
+      ],
+      unitsInStock: 20,
+      unitsSold: 0
     },
     {
       id: "6",
@@ -101,6 +116,7 @@ const productsData = [
       price: "₹2,097.00",
       name: "crocs Unisex-Adult Bayaband Clog",
       category: "fashion",
+      subCategory: "clogs",
       resUrl: "../images/products/6res.jpg",
       value: "2,097",
       accValue: "2097",
@@ -112,7 +128,9 @@ const productsData = [
         "Shoe Width: Regular",
         "Outer Material: EVA. Washes off with soap and water",
         "Closure Type: Slip On"
-      ]
+      ],
+      unitsInStock: 20,
+      unitsSold: 11
     },
     {
       id: "7",
@@ -120,6 +138,7 @@ const productsData = [
       price: "₹1,619.00",
       name: "INDO ERA Women's Viscose Embroidered Straight Kurta Palazzo With Dupatta Set",
       category: "fashion",
+      subCategory: "kurta",
       resUrl: "../images/products/7res.jpg",
       value: "1,619",
       accValue: "1619",
@@ -129,7 +148,9 @@ const productsData = [
         "Care Instructions: Dry Clean Only",
         "Fit Type: Regular",
         "Print & Pattern : Solid ; Package Contant : Kurta, Palazzo With Dupatta",
-      ]
+      ],
+      unitsInStock: 20,
+      unitsSold: 20
     },
     {
       id: "8",
@@ -137,6 +158,7 @@ const productsData = [
       price: "₹2,884.00",
       name: "QUBO Smart Cam 360 | 1080p Full HD Wi-Fi Camera | Trust of Hero Group | 360° Deg Coverage with Pan & Tilt | Intruder Alarm | Full Color in Low Light | Two Way Talk | Alexa & OK Google | Made in India",
       category: "electronics",
+      subCategory: "camera",
       resUrl: "../images/products/8res.jpg",
       value: "2,884",
       accValue: "2884",
@@ -148,7 +170,9 @@ const productsData = [
         "360 COVERAGE: Multi-Directional rotation of the lens ensures that there are no blind spots. NOTE: Qubo Smart Cam 360 is designed to be used indoors only.",
         "THEFT PROOF CLOUD STORAGE: Secure all your recordings on cloud storage based in India. Your private home moments stay with you even if the device is stolen.",
         "PERSON DETECTION WITH INTRUDER ALARM : Advanced AI capabilities that can smartly detect & notify whenever a person is detected. You can also ring an automatic loud siren in case of an intrusion."
-      ]
+      ],
+      unitsInStock: 20,
+      unitsSold: 5
     },
     {
       id: "9",
@@ -156,6 +180,7 @@ const productsData = [
       price: "₹1,299.00",
       name: "TIMEX Analog Men's Watch",
       category: "fashion",
+      subCategory: "watch",
       resUrl: "../images/products/9res.jpg",
       value: "1,299",
       accValue: "1299",
@@ -167,7 +192,9 @@ const productsData = [
         "Case Material: Brass, Case Diameter: 40 millimeters, Brass Bezel ; Case Thickness: 8.8mm",
         "Water Resistance Depth: 30 meters, Buckle Clasp",
         "Ideal for birthday, anniversary and wedding gift"
-      ]
+      ],
+      unitsInStock: 20,
+      unitsSold: 16
     },
     {
       id: "10",
@@ -175,6 +202,7 @@ const productsData = [
       price: "₹429.00",
       name: "Yogabar Dark Chocolate & Cranberry Muesli 700g - Breakfast Cereal with 83% Nuts & Seeds, Dried Fruits, & Whole Grains - Vegan & Gluten Free Snack",
       category: "beauty",
+      subCategory: "muesli",
       resUrl: "../images/products/10res.jpg",
       value: "429",
       accValue: "429",
@@ -186,7 +214,9 @@ const productsData = [
         "Rich in nuts and dried fruits: almonds, raisins, dried cranberries rich in seeds: pumpkin, chia and flax",
         "Antioxidant rich dark chocolate + cranberry",
         "Slow-roasted, slow ground in small batches for superior flavour"
-      ]
+      ],
+      unitsInStock: 20,
+      unitsSold: 3
     },
     {
       id: "11",
@@ -194,6 +224,7 @@ const productsData = [
       price: "₹358.00",
       name: "Integriti Men Sweatshirt",
       category: "fashion",
+      subCategory: "sweatshirt",
       resUrl: "../images/products/11res.jpg",
       value: "358",
       accValue: "358",
@@ -205,7 +236,9 @@ const productsData = [
         "Hooded,Long Sleeve,Print",
         "Sweatshirt",
         "Package Dimensions: 10.7 L x 39.6 H x 38.0 W (centimeters)"
-      ]
+      ],
+      unitsInStock: 20,
+      unitsSold: 10
     },
     {
       id: "12",
@@ -224,7 +257,9 @@ const productsData = [
         "100% Polyester",
         "Hand wash; A-line",
         "Sleeveless"
-      ]
+      ],
+      unitsInStock: 20,
+      unitsSold: 15
     },
     {
       id: "13",
@@ -243,7 +278,9 @@ const productsData = [
         "Carry your splashproof speakers to anywhere with IPX7 splash & water shield leaving behind the tension of water running over",
         "Add a second speaker with our TWS technology and enjoy sound, twice as powerful, Battery Capacity (mAh) - 3600 mAh, Playback Time - 9 hours, Charging Time - 4 hours, Standby Time 360 hours",
         "Its 360-degree ergonomic design makes it ideal to be carried around anywhere you go. It also comes with a carry strap making it very convenient for you to carry it around."
-      ]
+      ],
+      unitsInStock: 20,
+      unitsSold: 12
     },
     {
       id: "14",
@@ -254,6 +291,7 @@ const productsData = [
       mrp: "₹1,499",
       url: "images/products/14.jpg",
       category: "home",
+      subCategory: "bottle",
       resUrl: "../images/products/14res.jpg",
       name: "Interiocrafts Cast Iron Degchi Style Dhoop and Tealight Candle Holder",
       points: [
@@ -262,7 +300,9 @@ const productsData = [
         "✔ Rajasthan is famous for its handicrafts and the creativity of the artists can clearly be seen with use of artifacts.",
         "✔ It will not get heated up while use;It is easy to hold for doing 'Dhuni' in your entire house.",
         "✔ It can be used for inserting loban, bakhoor, samarni dhoop incense sticks",
-      ]
+      ],
+      unitsInStock: 20,
+      unitsSold: 17
     },
     {
       id: "15",
@@ -281,7 +321,9 @@ const productsData = [
         "Package contains -1pc Flower vase without Flowers.Good-quality and stylish products.Flowers are for illustration purpose not with Vase.",
         "This flower vase is made from one Piece of Iron with unique Decorative design.",
         "Great for gifting purposes in Diwali, Birthday, Anniversary, Corporate party etc."
-      ]
+      ],
+      unitsInStock: 20,
+      unitsSold: 18
     },
     {
       id: "16",
@@ -300,7 +342,9 @@ const productsData = [
         "Unique 3-Weave Technology: Livpure curtains are made using Triple Weave Technology with three layers of fabric strongly interwoven to ensure effective blackout, protection from the UV rays and insulate your home",
         "Hanging Style: These curtains are easy to install and come with high quality eyelet rings Eyelet Rings: Detachable with 1.5 in inner diameter for the curtain to fit nicely Wash Care: Hands & Machine washable after removing the eyelets, Do not bleed color",
         "Product color may slightly vary due to photographic lighting sources or your monitor settings"
-      ]
+      ],
+      unitsInStock: 20,
+      unitsSold: 9
     },
     {
       id: "17",
@@ -319,7 +363,9 @@ const productsData = [
         "The cover and filling are made of 100% Microfiber.",
         "The geometric classic pattern is easy to match your bedroom decor, offering you an elegant and classic feeling.",
         "Machine wash cold, gentle cycle, only non-chlorine bleach when needed, tumble dry low, steam if needed, do not iron. No shrinkage, No colour fading and No unravelling after washing."
-      ]
+      ],
+      unitsInStock: 20,
+      unitsSold: 14
     },
     {
       id: "18",
@@ -338,7 +384,9 @@ const productsData = [
         "BENEFITS: They can accent your home or office for the right decor. Perfect for adding a decorative touch to any room's decor",
         "Made from high quality material, Durable and Long lasting",
         "Ideal For: Decoration, Gifting, Diwali Decoration, Christmas Party Decoration, Home Decor, Candle Light Dinner"
-      ]
+      ],
+      unitsInStock: 20,
+      unitsSold: 8
     },
     {
       id: "19",
@@ -357,7 +405,9 @@ const productsData = [
         "BENEFITS: They can accent your home or office for the right decor. Perfect for adding a decorative touch to any room's decor",
         "Made from high quality material, Durable and Long lasting",
         "Ideal For: Decoration, Gifting, Diwali Decoration, Christmas Party Decoration, Home Decor, Candle Light Dinner"
-      ]
+      ],
+      unitsInStock: 20,
+      unitsSold: 6
     },
     {
       id: "20",
@@ -376,7 +426,49 @@ const productsData = [
         "Perfect For Decor as Table It's very suitable for gifting as it comes in best packaging as well. Perfect for using end table nightstand, kids step stool, night stand, keeping your planters, as a stand",
         "Care Instruction : table away from warmth , heat and sunshine. Use dry/wet cotton cloth to remove dirt.",
         "100% Handmade :- Handmade by recognized Artisans from JH Gallery Rajasthan, product created under Make in INDIA"
-      ]
+      ],
+      unitsInStock: 20,
+      unitsSold: 4
+    },
+    {
+      id: "1001",
+      url: "images/products/eco-bottle.jpg",
+      resUrl: "../images/products/eco-bottle-res.jpg",
+      price: "₹299.00",
+      value: "299",
+      accValue: "299",
+      discount: "-25%",
+      mrp: "₹399.00",
+      name: "Eco-Friendly Water Bottle (In Stock)",
+      category: "home",
+      subCategory: "bottle",
+      points: [
+        "Made from 100% recycled materials",
+        "BPA-free and dishwasher safe",
+        "Keeps drinks cold for 12 hours"
+      ],
+      unitsInStock: 20,
+      unitsSold: 1
+    },
+    {
+      id: "1002",
+      url: "images/products/eco-bag.jpg",
+      resUrl: "../images/products/eco-bag-res.jpg",
+      price: "₹149.00",
+      value: "149",
+      accValue: "149",
+      discount: "-10%",
+      mrp: "₹165.00",
+      name: "Reusable Shopping Bag (Out of Stock)",
+      category: "fashion",
+      subCategory: "bag",
+      points: [
+        "Durable and washable",
+        "Folds into a compact pouch",
+        "Supports up to 20kg weight"
+      ],
+      unitsInStock: 20,
+      unitsSold: 7
     }
   ]
   

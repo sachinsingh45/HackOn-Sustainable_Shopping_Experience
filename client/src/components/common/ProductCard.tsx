@@ -24,6 +24,8 @@ interface Product {
   mrp?: string;
   discount?: string;
   category?: string;
+  outOfStock?: boolean;
+  unitsInStock?: number;
 }
 
 interface ProductCardProps {
@@ -86,6 +88,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 {product.discount}
               </span>
             )}
+            {/* Out of Stock Badge */}
+            {(product.outOfStock || product.unitsInStock === 0) && (
+              <span className="bg-gray-700 text-white text-xs px-2 py-1 rounded-full shadow-md">
+                Out of Stock
+              </span>
+            )}
           </div>
           {/* Prime Badge */}
           {product.prime && (
@@ -126,7 +134,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </div>
           <button
             onClick={handleAddToCart}
-            className="w-full bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white py-2 px-4 rounded-xl font-semibold transition-colors text-sm mt-auto shadow-md"
+            className={`w-full bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white py-2 px-4 rounded-xl font-semibold transition-colors text-sm mt-auto shadow-md ${product.outOfStock || product.unitsInStock === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+            disabled={product.outOfStock || product.unitsInStock === 0}
           >
             Add to Cart
           </button>

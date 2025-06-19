@@ -291,6 +291,12 @@ const ProductPage = () => {
 
           {/* Quantity and Add to Cart */}
           <div className="space-y-4">
+            {/* Out of Stock Message */}
+            {(product.outOfStock || product.unitsInStock === 0) ? (
+              <div className="text-red-600 font-semibold mb-2">Out of Stock</div>
+            ) : (
+              <div className="text-green-700 text-sm mb-2">{product.unitsInStock} units available</div>
+            )}
             <div className="flex items-center space-x-4">
               <span className="font-medium">Quantity:</span>
               <div className="flex items-center border rounded-lg">
@@ -299,6 +305,7 @@ const ProductPage = () => {
                   whileTap={{ scale: 0.9 }}
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   className="p-2 hover:bg-gray-100"
+                  disabled={product.outOfStock || product.unitsInStock === 0}
                 >
                   <Minus className="w-4 h-4" />
                 </motion.button>
@@ -308,6 +315,7 @@ const ProductPage = () => {
                   whileTap={{ scale: 0.9 }}
                   onClick={() => setQuantity(quantity + 1)}
                   className="p-2 hover:bg-gray-100"
+                  disabled={product.outOfStock || product.unitsInStock === 0 || quantity >= product.unitsInStock}
                 >
                   <Plus className="w-4 h-4" />
                 </motion.button>
@@ -319,7 +327,8 @@ const ProductPage = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={handleAddToCart}
-                className="flex-1 bg-yellow-400 hover:bg-yellow-500 text-gray-900 py-3 px-6 rounded-lg font-semibold transition-colors flex items-center justify-center"
+                className={`flex-1 bg-yellow-400 hover:bg-yellow-500 text-gray-900 py-3 px-6 rounded-lg font-semibold transition-colors flex items-center justify-center ${product.outOfStock || product.unitsInStock === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                disabled={product.outOfStock || product.unitsInStock === 0}
               >
                 <ShoppingCart className="w-5 h-5 mr-2" />
                 Add to Cart
@@ -328,7 +337,8 @@ const ProductPage = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={handleBuyNow}
-                className="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-3 px-6 rounded-lg font-semibold transition-colors flex items-center justify-center"
+                className={`flex-1 bg-orange-500 hover:bg-orange-600 text-white py-3 px-6 rounded-lg font-semibold transition-colors flex items-center justify-center ${product.outOfStock || product.unitsInStock === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                disabled={product.outOfStock || product.unitsInStock === 0}
               >
                 <Zap className="w-5 h-5 mr-2" />
                 Buy Now
