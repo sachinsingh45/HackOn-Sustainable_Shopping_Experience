@@ -876,11 +876,11 @@ async function getIntentFromCohere(userMessage) {
 }
 
 // Helper: Cohere chat (generate)
-async function continueChatWithCohere(userMessage) {
+async function continueChatWithCohere(userMessage, maxWords = 30) {
   const data = {
     model: "command",
-    prompt: `You are Green Partner, a helpful, friendly, and eco-conscious AI assistant for an Amazon-like platform. You can answer questions about sustainability, eco-friendly living, or just have a friendly chat. Be positive, supportive, and engaging. Answer in a short, concise way (under 30 words) unless the user asks for more detail.\nUser: ${userMessage}\nAssistant:`,
-    max_tokens: 80,
+    prompt: `You are Green Partner, a helpful, friendly, and eco-conscious AI assistant for an Amazon-like platform. If the user asks about global sustainability, carbon emissions, or general eco questions (like 'which items in the world generate most carbon'), answer with real-world facts and context, not just platform data. Always answer in a short, concise way (no more than ${maxWords} words). Be positive, supportive, and engaging.\nUser: ${userMessage}\nAssistant:`,
+    max_tokens: 80, // adjust as needed
     temperature: 0.7,
     k: 0,
     stop_sequences: ["User:"],
@@ -896,14 +896,47 @@ async function continueChatWithCohere(userMessage) {
       }
     }
   );
-  return response.data.generations[0].text.trim();
+  let reply = response.data.generations[0].text.trim();
+  // Enforce word limit
+  if (reply.split(' ').length > maxWords) {
+    reply = reply.split(' ').slice(0, maxWords).join(' ') + '...';
+  }
+  return reply;
 }
 
 // POST: Chat intent detection and routing
 router.post('/chat', async (req, res) => {
   const { message, userId } = req.body;
   try {
-    const intent = await getIntentFromCohere(message);
+    let intent = await getIntentFromCohere(message);
+
+    // If the query is about global context, force 'chat' intent
+    const globalPhrases = [
+      "in the world",
+      "globally",
+      "worldwide",
+      "on earth",
+      "across the world",
+      "across the globe"
+    ];
+    if (globalPhrases.some(phrase => message.toLowerCase().includes(phrase))) {
+      intent = "chat";
+    }
+
+    // Only trigger 'carbon_footprint' for queries about the user's own footprint
+    const myFootprintPhrases = [
+      "my carbon footprint",
+      "my co2",
+      "my emissions",
+      "my carbon usage",
+      "my monthly carbon",
+      "my carbon",
+      "my footprint"
+    ];
+    if (intent === "carbon_footprint" && !myFootprintPhrases.some(phrase => message.toLowerCase().includes(phrase))) {
+      intent = "chat";
+    }
+
     let reply = "";
 
     if (["cart_alternative", "my_challenges", "carbon_footprint"].includes(intent) && !userId) {
@@ -1069,7 +1102,7 @@ router.post('/chat', async (req, res) => {
       }
       case "chat":
       default:
-        reply = await continueChatWithCohere(message);
+        reply = await continueChatWithCohere(message, 30); // 30 words max
     }
     res.json({ reply, intent });
   } catch (err) {
