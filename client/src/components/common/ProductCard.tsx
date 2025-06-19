@@ -7,7 +7,6 @@ import { useToast } from '../../context/ToastContext';
 
 interface Product {
   _id: string;
-  id: string;
   name: string;
   price: string;
   value: string;

@@ -22,7 +22,6 @@ interface Product {
 }
 
 interface CartItem {
-  id: string;
   cartItem: Product;
   qty: number;
 }

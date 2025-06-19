@@ -5,7 +5,7 @@ import { useStore } from '../store/useStore';
 import ProductCard from '../components/common/ProductCard';
 
 const GreenStorePage = () => {
-  const { products, addToCart } = useStore();
+  const { products } = useStore();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('eco-score');
   const [priceRange, setPriceRange] = useState([0, 10000]);

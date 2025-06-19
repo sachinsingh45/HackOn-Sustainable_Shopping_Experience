@@ -18,6 +18,12 @@ interface Message {
   badges?: any[];
 }
 
+interface Product {
+  _id: string;
+  name: string;
+  // ... other properties ...
+}
+
 const GreenPartnerChat = () => {
   const { chatOpen, toggleChat, user, cart, products, chatWithAI, chatPrefillMessage, setChatPrefillMessage } = useStore();
   const navigate = useNavigate();
@@ -151,7 +157,7 @@ const GreenPartnerChat = () => {
       // Only consider products with the same subCategory (not category)
       const similar = products.filter(
         (p) =>
-          p.id !== item.id &&
+          p._id !== item._id &&
           p.subCategory === item.subCategory &&
           p.ecoScore > (item.ecoScore || 0)
       );
@@ -322,7 +328,7 @@ const GreenPartnerChat = () => {
               </div>
               <div className="flex flex-col gap-2">
                 {entry.alternatives.map((alt) => (
-                  <div key={alt.id} className="flex items-center gap-2 bg-white rounded-lg p-1 border border-green-100 hover:shadow-md transition group relative overflow-hidden">
+                  <div key={alt._id} className="flex items-center gap-2 bg-white rounded-lg p-1 border border-green-100 hover:shadow-md transition group relative overflow-hidden">
                     <img
                       src={alt.image || alt.url || fallbackProductImage}
                       alt={alt.name}
@@ -331,7 +337,7 @@ const GreenPartnerChat = () => {
                     />
                     <div className="flex-1 min-w-0 flex flex-col items-start justify-center">
                       <Link
-                        to={`/product/${alt.id}`}
+                        to={`/product/${alt._id}`}
                         className="text-green-900 font-semibold text-xs underline hover:text-green-600 transition-colors max-w-[140px] line-clamp-2 leading-tight"
                         target="_blank"
                         rel="noopener noreferrer"
