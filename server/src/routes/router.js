@@ -938,7 +938,7 @@ router.post('/chat', async (req, res) => {
         break;
       }
       case "carbon_footprint": {
-        // Sum carbonFootprint for all orders in the current month and return breakdown
+        // Sum only item.carbonFootprint for all items in all orders for the current month
         const user = await User.findById(userId);
         if (!user) {
           reply = "User not found.";
@@ -950,37 +950,30 @@ router.post('/chat', async (req, res) => {
         let total = 0;
         const breakdown = [];
         user.orders.forEach(order => {
-          const d = order.orderInfo.orderDate || order.orderInfo.date;
+          const d = order.orderInfo?.date || order.orderInfo?.orderDate || order.orderDate || order.date;
           if (d && new Date(d).getMonth() === month && new Date(d).getFullYear() === year) {
             let orderTotal = 0;
-            if (order.orderInfo.items && order.orderInfo.items.length) {
+            if (order.orderInfo?.items && order.orderInfo.items.length) {
               order.orderInfo.items.forEach(item => {
                 orderTotal += item.carbonFootprint || 0;
               });
-              breakdown.push({
-                date: d,
-                items: order.orderInfo.items.map(item => ({
-                  name: item.name,
-                  carbonFootprint: item.carbonFootprint || 0
-                })),
-                orderTotal
-              });
-            } else if (order.orderInfo.carbonFootprint) {
-              orderTotal += order.orderInfo.carbonFootprint;
-              breakdown.push({
-                date: d,
-                items: [],
-                orderTotal
-              });
             }
+            breakdown.push({
+              date: d,
+              items: order.orderInfo.items ? order.orderInfo.items.map(item => ({
+                name: item.name,
+                carbonFootprint: item.carbonFootprint || 0
+              })) : [],
+              orderTotal
+            });
             total += orderTotal;
           }
         });
-        reply = `Your estimated CO₂ footprint this month is ${total.toFixed(2)} kg.`;
+        reply = `Your estimated CO₂ saved this month is ${total.toFixed(2)} kg.`;
         return res.json({ reply, intent, breakdown, total });
       }
       case "my_challenges": {
-        // List current challenges and badges with details
+        // List current challenges and badges with details and progress
         const user = await User.findById(userId);
         if (!user) {
           reply = "User not found.";
@@ -989,17 +982,87 @@ router.post('/chat', async (req, res) => {
         // Get all challenge objects
         const allChallenges = await Challenge.find({});
         const userChallenges = allChallenges.filter(ch => user.currentChallenges.includes(ch._id.toString()) || user.currentChallenges.includes(ch.id));
-        const challengeDetails = userChallenges.map(ch => ({
-          id: ch._id,
-          name: ch.name,
-          description: ch.description,
-          frequency: ch.frequency,
-          rewardBadge: ch.rewardBadge,
-          isActive: ch.isActive,
-          startDate: ch.startDate,
-          endDate: ch.endDate,
-          status: user.badges.some(b => b.challengeId?.toString() === ch._id.toString()) ? 'completed' : 'active'
-        }));
+        const now = new Date();
+        const challengeDetails = userChallenges.map(ch => {
+          let progress = 0;
+          let target = ch.targetValue;
+          let progressText = '';
+          let completed = user.badges.some(b => b.challengeId?.toString() === ch._id.toString());
+          if (completed) {
+            progress = target;
+            progressText = 'Completed!';
+          } else if (ch.frequency === 'weekly') {
+            // Weekly: sum CO2 saved this week
+            const day = now.getDay();
+            const diffToMonday = (day === 0 ? -6 : 1) - day;
+            const weekStart = new Date(now);
+            weekStart.setDate(now.getDate() + diffToMonday);
+            weekStart.setHours(0, 0, 0, 0);
+            let co2Saved = 0;
+            user.orders.forEach(order => {
+              const orderDate = new Date(order.orderInfo?.date || order.orderInfo?.orderDate);
+              if (orderDate >= weekStart && orderDate <= now) {
+                const carbonFootprint = order.orderInfo?.carbonFootprint || order.orderInfo?.totalCarbonSaved || order.orderInfo?.summary?.carbonFootprint || 0;
+                co2Saved += carbonFootprint;
+              }
+            });
+            progress = co2Saved;
+            progressText = `CO₂ saved this week: ${co2Saved.toFixed(2)}/${target} kg`;
+          } else if (ch.frequency === 'daily' || ch.frequency === 'monthly') {
+            // Daily/Monthly: count eco-friendly products bought today/this month
+            let ecoCount = 0;
+            user.orders.forEach(order => {
+              const orderDate = new Date(order.orderInfo?.date || order.orderInfo?.orderDate);
+              const isEco = order.orderInfo?.isEcoFriendly === true ||
+                (order.orderInfo?.ecoScore && order.orderInfo.ecoScore > 0) ||
+                (order.orderInfo?.items && order.orderInfo.items.some(item => item?.isEcoFriendly === true || (item?.ecoScore && item.ecoScore > 0)));
+              if (ch.frequency === 'daily') {
+                if (
+                  orderDate.getDate() === now.getDate() &&
+                  orderDate.getMonth() === now.getMonth() &&
+                  orderDate.getFullYear() === now.getFullYear() &&
+                  isEco
+                ) {
+                  ecoCount++;
+                }
+                target = 1;
+                progressText = `Eco-friendly products bought today: ${ecoCount}/1`;
+                progress = ecoCount;
+              } else if (ch.frequency === 'monthly') {
+                if (
+                  orderDate.getMonth() === now.getMonth() &&
+                  orderDate.getFullYear() === now.getFullYear() &&
+                  isEco
+                ) {
+                  ecoCount++;
+                }
+                target = 10;
+                progressText = `Eco-friendly products bought this month: ${ecoCount}/10`;
+                progress = ecoCount;
+              }
+            });
+          } else {
+            // Fallback for other types
+            progress = 0;
+            progressText = '';
+          }
+          return {
+            id: ch._id,
+            name: ch.name,
+            description: ch.description,
+            frequency: ch.frequency,
+            type: ch.type,
+            targetValue: target,
+            rewardBadge: ch.rewardBadge,
+            isActive: ch.isActive,
+            startDate: ch.startDate,
+            endDate: ch.endDate,
+            status: completed ? 'completed' : 'active',
+            progress,
+            target,
+            progressText
+          };
+        });
         const badges = user.badges || [];
         reply = `Here are your current challenges and badges!`;
         return res.json({ reply, intent, challenges: challengeDetails, badges });
