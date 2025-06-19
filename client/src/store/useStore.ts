@@ -1,6 +1,5 @@
 import { create } from 'zustand';
-import { authAPI, productsAPI, cartAPI, ordersAPI, challengeAPI } from '../services/api';
-import { geminiAI } from '../services/geminiAI';
+import { authAPI, productsAPI, cartAPI, ordersAPI, challengeAPI, aiAPI } from '../services/api';
 
 interface Product {
   _id: string;
@@ -408,7 +407,8 @@ export const useStore = create<Store>((set, get) => ({
       if (!product) return { alternatives: [] };
 
       const userHistory = state.user?.orders || [];
-      return await geminiAI.getEcoAlternatives(product, state.products, userHistory);
+      // Remove GeminiAI call, return empty or static for now
+      return { alternatives: [], insights: 'Not available' };
     } catch (error) {
       return { alternatives: [], insights: 'Unable to get recommendations' };
     }
@@ -416,8 +416,13 @@ export const useStore = create<Store>((set, get) => ({
 
   analyzeCart: async () => {
     try {
-      const state = get();
-      return await geminiAI.analyzeCartSustainability(state.cart, state.products);
+      // Remove GeminiAI call, return static for now
+      return {
+        totalCarbonFootprint: "0",
+        wasteGenerated: "0",
+        ecoScore: 50,
+        improvements: []
+      };
     } catch (error) {
       return {
         totalCarbonFootprint: "0",
@@ -432,11 +437,8 @@ export const useStore = create<Store>((set, get) => ({
     try {
       const state = get();
       if (!state.user) return { challenges: [] };
-      
-      return await geminiAI.generatePersonalizedChallenges(
-        state.user,
-        state.user.orders
-      );
+      // Remove GeminiAI call, return static for now
+      return { challenges: [] };
     } catch (error) {
       return { challenges: [] };
     }
@@ -445,13 +447,10 @@ export const useStore = create<Store>((set, get) => ({
   chatWithAI: async (message) => {
     try {
       const state = get();
-      const context = {
-        user: state.user,
-        cart: state.cart,
-        recentProducts: state.products.slice(0, 10)
-      };
-      
-      return await geminiAI.chatResponse(message, context);
+      const userId = state.user?._id;
+      // Use new backend DeepSeek/Cohere endpoint
+      const response = await aiAPI.greenPartnerChat(message, userId);
+      return response; // Return all fields for custom rendering
     } catch (error) {
       return {
         message: "I'm here to help you make sustainable choices!",

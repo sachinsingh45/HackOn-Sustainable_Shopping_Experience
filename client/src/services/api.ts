@@ -128,6 +128,12 @@ export const aiAPI = {
     const response = await api.post('/ai/chat', { message, context });
     return response.data;
   },
+
+  // Green Partner DeepSeek chat
+  greenPartnerChat: async (message: string, userId: string) => {
+    const response = await api.post('/chat', { message, userId });
+    return response.data;
+  },
 };
 
 // Challenge API

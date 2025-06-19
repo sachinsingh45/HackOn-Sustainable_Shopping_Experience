@@ -6,6 +6,9 @@ const bcrypt = require('bcryptjs');
 const authenticate = require('../middleware/authenticate');
 const { check, validationResult } = require('express-validator');
 const Challenge = require('../models/Challenge');
+const axios = require("axios");
+require('dotenv').config({ path: '../../.env' });
+const COHERE_API_KEY = process.env.COHERE_API_KEY;
 
 // GET: All products
 router.get("/products", async (req, res) => {
@@ -844,6 +847,174 @@ router.get('/user/profile', authenticate, async (req, res) => {
   } catch (error) {
     console.error('Get user profile error:', error);
     res.status(500).json({ status: false, message: 'Failed to get user profile' });
+  }
+});
+
+// Helper: Cohere intent detection using generate endpoint
+async function getIntentFromCohere(userMessage) {
+  const prompt = `You are an assistant that classifies user queries into one of the following:\n\n1. cart_alternative → if the user asks about eco-friendly product replacements or shopping suggestions.\n2. my_challenges → if the user asks about their environmental challenges or progress.\n3. carbon_footprint → if the user asks about their CO2 usage, impact, or monthly footprint.\n4. chat → if the query is general conversation, fun facts, or unrelated.\n\nOnly reply with one of these 4 words exactly.\n\nUser: ${userMessage}\nAssistant:`;
+  const data = {
+    model: "command",
+    prompt,
+    max_tokens: 10,
+    temperature: 0,
+    k: 0,
+    stop_sequences: ["\n"],
+    return_likelihoods: "NONE"
+  };
+  const response = await axios.post(
+    "https://api.cohere.ai/v1/generate",
+    data,
+    {
+      headers: {
+        "Authorization": `Bearer ${COHERE_API_KEY}`,
+        "Content-Type": "application/json"
+      }
+    }
+  );
+  return response.data.generations[0].text.trim();
+}
+
+// Helper: Cohere chat (generate)
+async function continueChatWithCohere(userMessage) {
+  const data = {
+    model: "command",
+    prompt: `You are Green Partner, a helpful and eco-friendly assistant.\nUser: ${userMessage}\nAssistant:`,
+    max_tokens: 80,
+    temperature: 0.7,
+    k: 0,
+    stop_sequences: ["User:"],
+    return_likelihoods: "NONE"
+  };
+  const response = await axios.post(
+    "https://api.cohere.ai/v1/generate",
+    data,
+    {
+      headers: {
+        "Authorization": `Bearer ${COHERE_API_KEY}`,
+        "Content-Type": "application/json"
+      }
+    }
+  );
+  return response.data.generations[0].text.trim();
+}
+
+// POST: Chat intent detection and routing
+router.post('/chat', async (req, res) => {
+  const { message, userId } = req.body;
+  try {
+    const intent = await getIntentFromCohere(message);
+    let reply = "";
+
+    if (["cart_alternative", "my_challenges", "carbon_footprint"].includes(intent) && !userId) {
+      return res.status(400).json({ reply: "User ID required for this intent.", intent });
+    }
+
+    switch (intent) {
+      case "cart_alternative": {
+        // Find user's last ordered product's category
+        const user = await User.findById(userId);
+        if (!user || !user.orders.length) {
+          reply = "No recent orders found to suggest alternatives.";
+          break;
+        }
+        // Get last ordered product
+        const lastOrder = user.orders[user.orders.length - 1];
+        const lastItem = lastOrder.orderInfo.items[0];
+        if (!lastItem) {
+          reply = "No items found in your last order.";
+          break;
+        }
+        // Find higher ecoScore product in same category
+        const category = lastItem.category || "General";
+        const products = await Product.find({ category });
+        const better = products.filter(p => p.ecoScore > (lastItem.ecoScore || 0));
+        if (better.length) {
+          const best = better.sort((a, b) => b.ecoScore - a.ecoScore)[0];
+          reply = `Try switching to ${best.name} (EcoScore: ${best.ecoScore}) for a greener choice!`;
+        } else {
+          reply = "You're already using one of the best eco-friendly options!";
+        }
+        break;
+      }
+      case "carbon_footprint": {
+        // Sum carbonFootprint for all orders in the current month and return breakdown
+        const user = await User.findById(userId);
+        if (!user) {
+          reply = "User not found.";
+          break;
+        }
+        const now = new Date();
+        const month = now.getMonth();
+        const year = now.getFullYear();
+        let total = 0;
+        const breakdown = [];
+        user.orders.forEach(order => {
+          const d = order.orderInfo.orderDate || order.orderInfo.date;
+          if (d && new Date(d).getMonth() === month && new Date(d).getFullYear() === year) {
+            let orderTotal = 0;
+            if (order.orderInfo.items && order.orderInfo.items.length) {
+              order.orderInfo.items.forEach(item => {
+                orderTotal += item.carbonFootprint || 0;
+              });
+              breakdown.push({
+                date: d,
+                items: order.orderInfo.items.map(item => ({
+                  name: item.name,
+                  carbonFootprint: item.carbonFootprint || 0
+                })),
+                orderTotal
+              });
+            } else if (order.orderInfo.carbonFootprint) {
+              orderTotal += order.orderInfo.carbonFootprint;
+              breakdown.push({
+                date: d,
+                items: [],
+                orderTotal
+              });
+            }
+            total += orderTotal;
+          }
+        });
+        reply = `Your estimated CO₂ footprint this month is ${total.toFixed(2)} kg.`;
+        return res.json({ reply, intent, breakdown, total });
+      }
+      case "my_challenges": {
+        // List current challenges and badges with details
+        const user = await User.findById(userId);
+        if (!user) {
+          reply = "User not found.";
+          break;
+        }
+        // Get all challenge objects
+        const allChallenges = await Challenge.find({});
+        const userChallenges = allChallenges.filter(ch => user.currentChallenges.includes(ch._id.toString()) || user.currentChallenges.includes(ch.id));
+        const challengeDetails = userChallenges.map(ch => ({
+          id: ch._id,
+          name: ch.name,
+          description: ch.description,
+          frequency: ch.frequency,
+          rewardBadge: ch.rewardBadge,
+          isActive: ch.isActive,
+          startDate: ch.startDate,
+          endDate: ch.endDate,
+          status: user.badges.some(b => b.challengeId?.toString() === ch._id.toString()) ? 'completed' : 'active'
+        }));
+        const badges = user.badges || [];
+        reply = `Here are your current challenges and badges!`;
+        return res.json({ reply, intent, challenges: challengeDetails, badges });
+      }
+      case "chat":
+      default:
+        reply = await continueChatWithCohere(message);
+    }
+    res.json({ reply, intent });
+  } catch (err) {
+    console.error("/chat error:", err);
+    if (err.response) {
+      console.error("Cohere API error response:", err.response.data);
+    }
+    res.status(500).json({ reply: "Something went wrong.", intent: null, error: err.stack });
   }
 });
 

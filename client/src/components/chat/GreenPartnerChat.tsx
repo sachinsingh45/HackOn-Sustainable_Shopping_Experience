@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Mic, Camera, Leaf, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../../store/useStore';
+import { useNavigate } from 'react-router-dom';
 
 interface Message {
   id: string;
@@ -9,10 +10,17 @@ interface Message {
   content: string;
   timestamp: Date;
   suggestions?: string[];
+  intent?: string;
+  breakdown?: any[];
+  total?: number;
+  reply?: string;
+  challenges?: any[];
+  badges?: any[];
 }
 
 const GreenPartnerChat = () => {
   const { chatOpen, toggleChat, user, cart, chatWithAI, chatPrefillMessage, setChatPrefillMessage } = useStore();
+  const navigate = useNavigate();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -83,7 +91,13 @@ const GreenPartnerChat = () => {
         type: 'bot',
         content: aiResponse.message,
         timestamp: new Date(),
-        suggestions: aiResponse.suggestions
+        suggestions: aiResponse.suggestions,
+        intent: aiResponse.intent,
+        breakdown: aiResponse.breakdown,
+        total: aiResponse.total,
+        reply: aiResponse.reply,
+        challenges: aiResponse.challenges,
+        badges: aiResponse.badges
       };
 
       setMessages(prev => [...prev, botMessage]);
@@ -103,6 +117,106 @@ const GreenPartnerChat = () => {
   const handleSuggestionClick = (suggestion: string) => {
     sendMessage(suggestion);
   };
+
+  // Helper to render bot message with rich UI for special intents
+  function renderBotMessage(message: any) {
+    if (message.intent === 'carbon_footprint' && (message.breakdown || message.total !== undefined)) {
+      return (
+        <div className="space-y-2">
+          <div className="font-semibold text-green-700">{message.reply}</div>
+          {Array.isArray(message.breakdown) && message.breakdown.length > 0 && (
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-xs border rounded-lg bg-white">
+                <thead>
+                  <tr className="bg-green-50">
+                    <th className="px-2 py-1 text-left">Date</th>
+                    <th className="px-2 py-1 text-left">Products</th>
+                    <th className="px-2 py-1 text-right">CO₂ (kg)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {message.breakdown.map((order: any, idx: number) => (
+                    <tr key={idx} className="border-t">
+                      <td className="px-2 py-1">{new Date(order.date).toLocaleDateString()}</td>
+                      <td className="px-2 py-1">
+                        {order.items && order.items.length > 0 ? (
+                          <ul className="list-disc pl-4">
+                            {order.items.map((item: any, i: number) => (
+                              <li key={i}>{item.name} <span className="text-gray-400">({item.carbonFootprint} kg)</span></li>
+                            ))}
+                          </ul>
+                        ) : <span className="text-gray-400">-</span>}
+                      </td>
+                      <td className="px-2 py-1 text-right font-semibold">{order.orderTotal.toFixed(2)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+          <button
+            className="mt-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition"
+            onClick={() => navigate('/profile')}
+          >
+            View Full Eco Profile
+          </button>
+        </div>
+      );
+    }
+    if (message.intent === 'my_challenges' && Array.isArray(message.challenges)) {
+      return (
+        <div className="space-y-2">
+          <div className="font-semibold text-green-700">{message.reply}</div>
+          <div className="grid grid-cols-1 gap-3">
+            {message.challenges.map((ch: any) => (
+              <div key={ch.id} className={`rounded-xl border shadow-sm p-3 flex items-center space-x-4 bg-gradient-to-r from-green-50 to-green-100 ${ch.status === 'completed' ? 'opacity-70' : ''}`}>
+                <img src={ch.rewardBadge?.iconUrl || '/daily-badge.png'} alt="badge" className="w-10 h-10 rounded-full border" />
+                <div className="flex-1">
+                  <div className="font-semibold text-green-800 flex items-center gap-2">{ch.name} <span className="text-xs px-2 py-0.5 rounded bg-green-200 text-green-800 ml-2">{ch.frequency}</span></div>
+                  <div className="text-xs text-gray-700 mb-1">{ch.description}</div>
+                  <div className="text-xs text-gray-500">{ch.status === 'completed' ? 'Completed' : 'Active'}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* Modern Badges Row */}
+          {Array.isArray(message.badges) && message.badges.length > 0 && (
+            <div className="mt-4">
+              <div className="font-semibold text-green-700 mb-2">Your Badges</div>
+              <div className="flex space-x-4 overflow-x-auto pb-2">
+                {message.badges.map((badge: any, idx: number) => {
+                  let icon = '/daily-badge.png';
+                  if (badge.name?.toLowerCase().includes('weekly')) icon = '/weekly-badge.png';
+                  else if (badge.name?.toLowerCase().includes('monthly')) icon = '/monthly-badge.png';
+                  return (
+                    <div key={idx} className="flex flex-col items-center min-w-[72px]">
+                      <img
+                        src={icon}
+                        alt={badge.name}
+                        className="w-12 h-12 rounded-full border-2 border-green-400 shadow-md bg-white"
+                      />
+                      <div className="text-xs font-medium text-green-800 mt-1 text-center truncate max-w-[64px]">{badge.name}</div>
+                      {badge.dateEarned && (
+                        <div className="text-[10px] text-gray-500">{new Date(badge.dateEarned).toLocaleDateString()}</div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+          <button
+            className="mt-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition"
+            onClick={() => navigate('/challenges')}
+          >
+            See All Eco Challenges
+          </button>
+        </div>
+      );
+    }
+    // Fallback: plain text
+    return <span>{message.content || message.reply}</span>;
+  }
 
   return (
     <>
@@ -222,7 +336,7 @@ const GreenPartnerChat = () => {
                           : 'bg-gray-100 text-gray-900'
                       }`}
                     >
-                      {message.content}
+                      {message.type === 'bot' ? renderBotMessage(message) : message.content}
                     </div>
                   </div>
                   
