@@ -98,6 +98,7 @@ interface Store {
   loading: boolean;
   error: string | null;
   challenges: Challenge[];
+  chatPrefillMessage: string;
   
   // Actions
   setUser: (user: User | null) => void;
@@ -143,6 +144,8 @@ interface Store {
   calculateCartFootprint: () => number;
 
   // If you need to implement orderProduct, use ordersAPI.createOrder or similar here
+
+  setChatPrefillMessage: (msg: string) => void;
 }
 
 export const useStore = create<Store>((set, get) => ({
@@ -155,6 +158,7 @@ export const useStore = create<Store>((set, get) => ({
   loading: false,
   error: null,
   challenges: [],
+  chatPrefillMessage: '',
 
   setUser: (user) => set({ user, cart: user?.cart || [] }),
   setProducts: (products) => set({ products }),
@@ -497,4 +501,6 @@ export const useStore = create<Store>((set, get) => ({
   },
 
   // If you need to implement orderProduct, use ordersAPI.createOrder or similar here
+
+  setChatPrefillMessage: (msg: string) => set({ chatPrefillMessage: msg }),
 }));

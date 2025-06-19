@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, Mic, Camera, Leaf } from 'lucide-react';
+import { MessageCircle, X, Send, Mic, Camera, Leaf, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../../store/useStore';
 
@@ -12,7 +12,7 @@ interface Message {
 }
 
 const GreenPartnerChat = () => {
-  const { chatOpen, toggleChat, user, cart, chatWithAI } = useStore();
+  const { chatOpen, toggleChat, user, cart, chatWithAI, chatPrefillMessage, setChatPrefillMessage } = useStore();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -30,6 +30,11 @@ const GreenPartnerChat = () => {
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(() => {
+    // Show onboarding only for first-time users (localStorage flag)
+    return localStorage.getItem('greenPartnerOnboarded') !== 'true';
+  });
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -38,6 +43,22 @@ const GreenPartnerChat = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    if (showOnboarding) {
+      const timer = setTimeout(() => setShowOnboarding(false), 6000);
+      localStorage.setItem('greenPartnerOnboarded', 'true');
+      return () => clearTimeout(timer);
+    }
+  }, [showOnboarding]);
+
+  useEffect(() => {
+    if (chatOpen && chatPrefillMessage) {
+      setInputMessage(chatPrefillMessage);
+      setChatPrefillMessage('');
+    }
+    // Only run when chatOpen or chatPrefillMessage changes
+  }, [chatOpen, chatPrefillMessage, setChatPrefillMessage]);
 
   const sendMessage = async (content: string) => {
     if (!content.trim()) return;
@@ -86,23 +107,74 @@ const GreenPartnerChat = () => {
   return (
     <>
       {/* Chat Button */}
-      <motion.button
-        onClick={toggleChat}
-        className={`fixed bottom-6 right-6 w-14 h-14 rounded-full shadow-lg z-50 flex items-center justify-center ${
-          chatOpen ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'
-        } transition-colors`}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-      >
-        {chatOpen ? (
-          <X className="w-6 h-6 text-white" />
-        ) : (
-          <div className="relative">
-            <MessageCircle className="w-6 h-6 text-white" />
-            <div className="absolute -top-1 -right-1 w-3 h-3 bg-orange-400 rounded-full animate-pulse" />
-          </div>
-        )}
-      </motion.button>
+      <div className="fixed bottom-6 right-6 z-50">
+        <motion.button
+          onClick={toggleChat}
+          onMouseEnter={() => setShowTooltip(true)}
+          onMouseLeave={() => setShowTooltip(false)}
+          className={`w-16 h-16 rounded-full shadow-xl flex items-center justify-center relative transition-colors
+            ${chatOpen ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'}
+            ${!chatOpen ? 'animate-glow' : ''}
+            sm:w-16 sm:h-16 w-12 h-12
+          `}
+          whileHover={{ scale: 1.12 }}
+          whileTap={{ scale: 0.95 }}
+          aria-label="Open Green Partner Chat"
+          style={{ zIndex: 60 }}
+        >
+          {chatOpen ? (
+            <X className="sm:w-7 sm:h-7 w-6 h-6 text-white" />
+          ) : (
+            <div className="relative flex flex-col items-center">
+              <Sparkles className="sm:w-7 sm:h-7 w-6 h-6 text-white animate-spin-slow" />
+              <Leaf className="sm:w-4 sm:h-4 w-3 h-3 text-green-200 absolute -bottom-2 left-1/2 -translate-x-1/2 animate-bounce" />
+              <span className="sr-only">Open Green Partner Chat</span>
+            </div>
+          )}
+        </motion.button>
+        {/* Tooltip */}
+        <AnimatePresence>
+          {showTooltip && !chatOpen && (
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              className="fixed sm:bottom-24 sm:right-8 sm:w-64 bottom-24 right-2 w-[90vw] max-w-xs bg-white text-gray-800 px-4 py-2 rounded shadow-lg text-xs border border-green-200 z-50"
+              style={{ maxWidth: '90vw' }}
+            >
+              <b>Green Partner AI</b><br />
+              Ask about eco-friendly shopping, carbon footprint, green challenges, and more!
+            </motion.div>
+          )}
+        </AnimatePresence>
+        {/* Onboarding Popover */}
+        <AnimatePresence>
+          {showOnboarding && !chatOpen && (
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              className="fixed sm:bottom-40 sm:right-8 sm:w-72 bottom-36 right-2 w-[95vw] max-w-sm bg-green-50 border border-green-300 px-5 py-3 rounded-lg shadow-xl z-50"
+              style={{ maxWidth: '98vw' }}
+            >
+              <div className="flex items-center mb-2">
+                <Sparkles className="w-5 h-5 text-green-400 mr-2 animate-pulse" />
+                <span className="font-semibold text-green-800">Meet your Green Partner!</span>
+              </div>
+              <ul className="list-disc pl-5 text-xs text-green-900">
+                <li>Get eco-friendly product suggestions</li>
+                <li>Calculate your carbon footprint</li>
+                <li>Discover green challenges</li>
+                <li>Ask anything about sustainability</li>
+              </ul>
+              <button
+                className="mt-3 text-xs text-green-700 underline hover:text-green-900"
+                onClick={() => setShowOnboarding(false)}
+              >Got it!</button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
       {/* Chat Window */}
       <AnimatePresence>
@@ -111,7 +183,7 @@ const GreenPartnerChat = () => {
             initial={{ opacity: 0, y: 100, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 100, scale: 0.9 }}
-            className="fixed bottom-24 right-6 w-80 h-96 bg-white rounded-lg shadow-2xl z-50 flex flex-col border border-gray-200"
+            className="fixed sm:bottom-24 sm:right-6 sm:w-[420px] sm:h-96 bottom-4 right-2 w-[calc(100vw-1rem)] h-[70vh] max-w-full bg-white rounded-lg shadow-2xl z-50 flex flex-col border border-gray-200"
           >
             {/* Header */}
             <div className="bg-green-500 text-white p-4 rounded-t-lg">
@@ -219,3 +291,21 @@ const GreenPartnerChat = () => {
 };
 
 export default GreenPartnerChat;
+
+/* Add this to the bottom of the file, outside the component */
+// Glowing animation for the button
+const style = document.createElement('style');
+style.innerHTML = `
+@keyframes glow {
+  0% { box-shadow: 0 0 0px 0 #34d399; }
+  50% { box-shadow: 0 0 24px 8px #34d39988; }
+  100% { box-shadow: 0 0 0px 0 #34d399; }
+}
+.animate-glow {
+  animation: glow 2s infinite;
+}
+.animate-spin-slow {
+  animation: spin 3s linear infinite;
+}
+`;
+document.head.appendChild(style);

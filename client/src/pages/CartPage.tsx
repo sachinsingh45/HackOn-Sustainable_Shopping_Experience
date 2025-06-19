@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Trash2, Plus, Minus, Package, Truck, Shield, CreditCard, Leaf, AlertTriangle, BarChart3, Users } from 'lucide-react';
+import { Trash2, Plus, Minus, Package, Truck, Shield, CreditCard, Leaf, AlertTriangle, BarChart3, Users, MessageCircle, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../store/useStore';
 import { useToast } from '../context/ToastContext';
 
 const CartPage = () => {
-  const { cart, removeFromCart, updateQuantity, user, checkout } = useStore();
+  const { cart, removeFromCart, updateQuantity, user, checkout, toggleChat, setChatPrefillMessage } = useStore();
   const { showToast } = useToast();
   const [loading, setLoading] = useState(false);
   const [selectedPackaging, setSelectedPackaging] = useState<{ [key: string]: string }>({});
@@ -77,6 +77,11 @@ const CartPage = () => {
     }
   };
 
+  const handleEcoAltCTA = () => {
+    setChatPrefillMessage('Show eco alternatives for my cart');
+    toggleChat();
+  };
+
   if (cart.length === 0) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-12">
@@ -97,6 +102,31 @@ const CartPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
+      {/* Eco-Friendly Alternatives CTA */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="mb-8 flex items-center justify-between bg-gradient-to-r from-green-200 via-green-50 to-blue-100 border border-green-300 rounded-xl p-6 shadow-lg relative overflow-hidden"
+      >
+        <div className="flex items-center space-x-4">
+          <Sparkles className="w-10 h-10 text-green-500 animate-spin-slow" />
+          <div>
+            <h2 className="text-xl font-bold text-green-900 mb-1 flex items-center">
+              <MessageCircle className="w-5 h-5 mr-2 text-green-600 animate-bounce" />
+              Get Eco-Friendly Alternatives!
+            </h2>
+            <p className="text-green-800 text-sm">Let our AI suggest greener options for your cart and help you shop more sustainably.</p>
+          </div>
+        </div>
+        <div className="absolute right-0 top-0 w-32 h-32 bg-green-100 rounded-full opacity-30 blur-2xl animate-pulse pointer-events-none" />
+        <button
+          onClick={handleEcoAltCTA}
+          className="ml-6 px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-full font-semibold shadow transition-all text-base animate-pulse"
+        >
+          Ask Green Partner
+        </button>
+      </motion.div>
       <h1 className="text-3xl font-bold text-gray-900 mb-8">Shopping Cart</h1>
       
       <div className="grid lg:grid-cols-3 gap-8">
