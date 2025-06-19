@@ -259,8 +259,17 @@ const GreenPartnerChat = () => {
         </div>
       );
     }
-    // Fallback: plain text
-    return <span>{message.content || message.reply}</span>;
+    // Friendly styled bubble for general chat
+    return (
+      <div className="flex items-start gap-2">
+        <div className="flex-shrink-0 w-7 h-7 rounded-full bg-green-200 flex items-center justify-center">
+          <Leaf className="w-4 h-4 text-green-700" />
+        </div>
+        <div className="bg-green-50 text-green-900 px-3 py-2 rounded-lg shadow max-w-xs">
+          {message.reply || message.content}
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -272,14 +281,16 @@ const GreenPartnerChat = () => {
           onMouseEnter={() => setShowTooltip(true)}
           onMouseLeave={() => setShowTooltip(false)}
           className={`w-16 h-16 rounded-full shadow-xl flex items-center justify-center relative transition-colors
-            ${chatOpen ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'}
+            ${chatOpen ? 'bg-red-500' : 'bg-green-500 hover:bg-green-600'}
             ${!chatOpen ? 'animate-glow' : ''}
             sm:w-16 sm:h-16 w-12 h-12
+            ${chatOpen ? 'cursor-not-allowed opacity-60' : ''}
           `}
-          whileHover={{ scale: 1.12 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={!chatOpen ? { scale: 1.12 } : {}}
+          whileTap={!chatOpen ? { scale: 0.95 } : {}}
           aria-label="Open Green Partner Chat"
           style={{ zIndex: 60 }}
+          disabled={chatOpen}
         >
           {chatOpen ? (
             <X className="sm:w-7 sm:h-7 w-6 h-6 text-white" />
@@ -343,11 +354,11 @@ const GreenPartnerChat = () => {
             animate={{ opacity: 1, y: 12 }}
             exit={{ opacity: 0, y: 40 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-6 right-[10%] z-50 w-full max-w-md"
+            className="fixed bottom-2 right-4 sm:bottom-6 sm:right-4 z-50 w-auto max-w-full sm:max-w-md"
           >
-            <div className="bg-white rounded-2xl shadow-2xl border border-green-100 flex flex-col h-[480px]">
+            <div className="bg-white rounded-2xl shadow-2xl border border-green-100 flex flex-col h-[70vh] sm:h-[480px]">
               {/* Header */}
-              <div className="flex items-center justify-between px-4 py-3 border-b bg-gradient-to-r from-green-100 to-blue-100 rounded-t-2xl">
+              <div className="flex items-center justify-between px-2 sm:px-4 py-2 sm:py-3 border-b bg-gradient-to-r from-green-100 to-blue-100 rounded-t-2xl">
                 <div className="flex items-center gap-2">
                   <Leaf className="w-6 h-6 text-green-600" />
                   <span className="font-bold text-green-800 text-lg">Green Partner</span>
@@ -452,6 +463,14 @@ const GreenPartnerChat = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Backdrop overlay for closing chat by clicking outside */}
+      {chatOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-10 z-40"
+          onClick={() => toggleChat(false)}
+        />
+      )}
     </>
   );
 };

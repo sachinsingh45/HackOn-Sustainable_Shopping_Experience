@@ -879,7 +879,7 @@ async function getIntentFromCohere(userMessage) {
 async function continueChatWithCohere(userMessage) {
   const data = {
     model: "command",
-    prompt: `You are Green Partner, a helpful and eco-friendly assistant.\nUser: ${userMessage}\nAssistant:`,
+    prompt: `You are Green Partner, a helpful, friendly, and eco-conscious AI assistant for an Amazon-like platform. You can answer questions about sustainability, eco-friendly living, or just have a friendly chat. Be positive, supportive, and engaging. Answer in a short, concise way (under 30 words) unless the user asks for more detail.\nUser: ${userMessage}\nAssistant:`,
     max_tokens: 80,
     temperature: 0.7,
     k: 0,
