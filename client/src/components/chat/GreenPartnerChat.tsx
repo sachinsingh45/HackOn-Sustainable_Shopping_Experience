@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Mic, Camera, Leaf, Sparkles, Trash2, RotateCcw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../../store/useStore';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 interface Message {
   id: string;
@@ -19,7 +19,7 @@ interface Message {
 }
 
 const GreenPartnerChat = () => {
-  const { chatOpen, toggleChat, user, cart, chatWithAI, chatPrefillMessage, setChatPrefillMessage } = useStore();
+  const { chatOpen, toggleChat, user, cart, products, chatWithAI, chatPrefillMessage, setChatPrefillMessage } = useStore();
   const navigate = useNavigate();
   const defaultBotMessage: Message = {
     id: '1',
@@ -44,6 +44,7 @@ const GreenPartnerChat = () => {
     // Show onboarding only for first-time users (localStorage flag)
     return localStorage.getItem('greenPartnerOnboarded') !== 'true';
   });
+  const fallbackProductImage = 'https://images.pexels.com/photos/1029236/pexels-photo-1029236.jpeg?auto=compress&cs=tinysrgb&w=400';
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -84,9 +85,23 @@ const GreenPartnerChat = () => {
     setIsTyping(true);
 
     try {
-      // Get AI response
+      // If user asks for eco alternatives for cart, handle locally
+      if (/eco alternative|eco alternatives|eco-friendly alternative|eco alternatives for my cart/i.test(content)) {
+        setMessages(prev => [
+          ...prev,
+          {
+            id: (Date.now() + 1).toString(),
+            type: 'bot',
+            content: '',
+            timestamp: new Date(),
+            intent: 'eco_alternatives_cart'
+          }
+        ]);
+        setIsTyping(false);
+        return;
+      }
+      // Otherwise, get AI response
       const aiResponse = await chatWithAI(content);
-      
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
         type: 'bot',
@@ -100,7 +115,6 @@ const GreenPartnerChat = () => {
         challenges: aiResponse.challenges,
         badges: aiResponse.badges
       };
-
       setMessages(prev => [...prev, botMessage]);
     } catch (error) {
       const errorMessage: Message = {
@@ -127,6 +141,31 @@ const GreenPartnerChat = () => {
     }]);
     setInputMessage('');
   };
+
+  // Helper to find eco alternatives for cart items
+  function getEcoAlternativesForCart() {
+    if (!cart || !products) return [];
+    const alternatives = [];
+    cart.forEach((cartItem) => {
+      const item = cartItem.cartItem;
+      // Only consider products with the same subCategory (not category)
+      const similar = products.filter(
+        (p) =>
+          p.id !== item.id &&
+          p.subCategory === item.subCategory &&
+          p.ecoScore > (item.ecoScore || 0)
+      );
+      if (similar.length > 0) {
+        // Sort by highest ecoScore first
+        similar.sort((a, b) => (b.ecoScore || 0) - (a.ecoScore || 0));
+        alternatives.push({
+          original: item,
+          alternatives: similar.slice(0, 3) // top 3 alternatives
+        });
+      }
+    });
+    return alternatives;
+  }
 
   // Helper to render bot message with rich UI for special intents
   function renderBotMessage(message: any) {
@@ -256,6 +295,74 @@ const GreenPartnerChat = () => {
           >
             Go to Eco Challenges
           </button>
+        </div>
+      );
+    }
+    // Show eco alternatives for cart intent
+    if (message.intent === 'eco_alternatives_cart') {
+      if (!cart || cart.length === 0) {
+        return <div className="text-green-700">Your cart is empty. Add items to your cart to get eco-friendly recommendations.</div>;
+      }
+      const ecoAlts = getEcoAlternativesForCart();
+      if (ecoAlts.length === 0) {
+        return <div className="text-green-700">No better eco alternatives found for your cart items.</div>;
+      }
+      return (
+        <div className="space-y-5">
+          {ecoAlts.map((entry, idx) => (
+            <div key={idx} className="bg-gradient-to-br from-green-50 to-blue-50 border border-green-200 rounded-xl p-2 shadow flex flex-col gap-2">
+              <div className="mb-1 flex flex-col gap-0.5">
+                <span className="text-gray-700 text-[11px]">Alternatives for</span>
+                <span
+                  className="text-green-900 font-bold text-sm underline leading-tight max-w-[180px] line-clamp-2"
+                  style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
+                >
+                  {entry.original.name}
+                </span>
+              </div>
+              <div className="flex flex-col gap-2">
+                {entry.alternatives.map((alt) => (
+                  <div key={alt.id} className="flex items-center gap-2 bg-white rounded-lg p-1 border border-green-100 hover:shadow-md transition group relative overflow-hidden">
+                    <img
+                      src={alt.image || alt.url || fallbackProductImage}
+                      alt={alt.name}
+                      className="w-10 h-10 rounded object-cover border bg-white shadow group-hover:scale-105 transition-transform duration-200 flex-shrink-0"
+                      onError={e => { e.currentTarget.src = fallbackProductImage; }}
+                    />
+                    <div className="flex-1 min-w-0 flex flex-col items-start justify-center">
+                      <Link
+                        to={`/product/${alt.id}`}
+                        className="text-green-900 font-semibold text-xs underline hover:text-green-600 transition-colors max-w-[140px] line-clamp-2 leading-tight"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
+                      >
+                        {alt.name}
+                      </Link>
+                      <div className="flex flex-col gap-0.5 mt-0.5 w-full">
+                        <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-green-100 text-green-800 border border-green-300 w-fit">
+                          🌱 Eco Score: <span className="ml-1 font-bold">{alt.ecoScore}</span>
+                        </span>
+                        <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-yellow-100 text-yellow-800 border border-yellow-300 w-fit">
+                          💰 Price: <span className="ml-1 font-bold">{alt.price}</span>
+                        </span>
+                        {alt.isEcoFriendly && (
+                          <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-emerald-100 text-emerald-700 border border-emerald-300 w-fit">
+                            <Leaf className="w-3 h-3 mr-1" /> Eco-Friendly
+                          </span>
+                        )}
+                        {alt.groupBuyEligible && (
+                          <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-blue-100 text-blue-700 border border-blue-300 shadow w-fit">
+                            Group Buy
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       );
     }

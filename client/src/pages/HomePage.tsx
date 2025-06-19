@@ -160,17 +160,11 @@ const HomePage = () => {
       <section className="py-8 sm:py-12">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-8 gap-2">
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Today's Green Deals</h2>
-            <Link
-              to="/deals"
-              className="text-green-600 hover:text-green-700 font-medium inline-flex items-center text-sm sm:text-base"
-            >
-              See all deals <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 ml-1" />
-            </Link>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">All Products</h2>
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-            {products.slice(0, 8).map((product) => (
+            {products.map((product) => (
               <ProductCard
                 key={product.id}
                 product={product}
@@ -204,23 +198,6 @@ const HomePage = () => {
                   </span>
                 </div>
               </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Recommended Products */}
-      <section className="py-8 sm:py-12 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-gray-900">
-            Personalized Green Recommendations
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-            {products.slice(8, 12).map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-              />
             ))}
           </div>
         </div>

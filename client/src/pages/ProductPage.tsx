@@ -295,7 +295,7 @@ const ProductPage = () => {
             {(product.outOfStock || product.unitsInStock === 0) ? (
               <div className="text-red-600 font-semibold mb-2">Out of Stock</div>
             ) : (
-              <div className="text-green-700 text-sm mb-2">{product.unitsInStock} units available</div>
+              <div className="text-green-700 text-sm mb-2">{product.unitsInStock - product.unitsSold} of {product.unitsInStock} units available</div>
             )}
             <div className="flex items-center space-x-4">
               <span className="font-medium">Quantity:</span>

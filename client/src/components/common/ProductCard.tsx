@@ -65,7 +65,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <div className="relative">
           <img
             src={product.image || product.url}
-            alt={product.name}
+            alt={product.name || ''}
             className="w-full h-40 sm:h-52 object-cover transition-transform duration-300 group-hover:scale-105"
             onError={(e) => {
               (e.target as HTMLImageElement).src = 'https://images.pexels.com/photos/1029236/pexels-photo-1029236.jpeg?auto=compress&cs=tinysrgb&w=400';
@@ -73,23 +73,23 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           />
           {/* Badges */}
           <div className="absolute top-2 left-2 flex flex-col gap-2 z-10">
-            {product.isEcoFriendly && (
+            {(product.isEcoFriendly ?? true) && (
               <span className="bg-green-600 text-white text-xs px-2 py-1 rounded-full flex items-center shadow-md">
                 <Leaf className="w-4 h-4 mr-1" /> Eco-Friendly
               </span>
             )}
-            {product.groupBuyEligible && (
+            {(product.groupBuyEligible ?? false) && (
               <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded-full flex items-center shadow-md">
                 <Users className="w-4 h-4 mr-1" /> Group Buy
               </span>
             )}
-            {discount > 0 && (
+            {(product.discount || '').length > 0 && (
               <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full shadow-md">
                 {product.discount}
               </span>
             )}
             {/* Out of Stock Badge */}
-            {(product.outOfStock || product.unitsInStock === 0) && (
+            {((product.outOfStock) || (product.unitsInStock ?? 0) === 0) && (
               <span className="bg-gray-700 text-white text-xs px-2 py-1 rounded-full shadow-md">
                 Out of Stock
               </span>
@@ -106,36 +106,36 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
         <div className="p-4 flex-1 flex flex-col">
           <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 text-base sm:text-lg group-hover:text-green-700 transition-colors">
-            {product.name}
+            {product.name || ''}
           </h3>
           <div className="flex items-center mb-2 gap-2">
             <div className="flex items-center">
               {[...Array(5)].map((_, i) => (
                 <Star
                   key={i}
-                  className={`w-4 h-4 ${i < Math.floor(product.rating || 4) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
+                  className={`w-4 h-4 ${i < Math.floor(product.rating ?? 4) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
                 />
               ))}
             </div>
-            <span className="ml-1 text-xs text-gray-500">{product.reviews?.toLocaleString() || '0'} reviews</span>
+            <span className="ml-1 text-xs text-gray-500">{(product.reviews ?? 100).toLocaleString()} reviews</span>
           </div>
           <div className="flex items-baseline justify-between mb-3 flex-wrap gap-1">
             <div className="flex items-baseline flex-wrap gap-2">
-              <span className="text-lg font-bold text-green-700">{product.price}</span>
+              <span className="text-lg font-bold text-green-700">{product.price || '₹0'}</span>
               {product.mrp && (
                 <span className="text-xs text-gray-400 line-through">{product.mrp}</span>
               )}
             </div>
-            {product.carbonFootprint && (
+            {(product.carbonFootprint ?? 2.5) && (
               <span className="text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
-                {product.carbonFootprint} kg CO₂
+                {product.carbonFootprint ?? 2.5} kg CO₂
               </span>
             )}
           </div>
           <button
             onClick={handleAddToCart}
-            className={`w-full bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white py-2 px-4 rounded-xl font-semibold transition-colors text-sm mt-auto shadow-md ${product.outOfStock || product.unitsInStock === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
-            disabled={product.outOfStock || product.unitsInStock === 0}
+            className={`w-full bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white py-2 px-4 rounded-xl font-semibold transition-colors text-sm mt-auto shadow-md ${(product.outOfStock || (product.unitsInStock ?? 0) === 0) ? 'opacity-50 cursor-not-allowed' : ''}`}
+            disabled={product.outOfStock || (product.unitsInStock ?? 0) === 0}
           >
             Add to Cart
           </button>
