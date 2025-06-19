@@ -245,7 +245,6 @@ export const useStore = create<Store>((set, get) => ({
         ...product,
         rating: Math.random() * 2 + 3, // Random rating between 3-5
         reviews: Math.floor(Math.random() * 5000) + 100,
-        carbonFootprint: Math.random() * 5 + 0.5,
         isEcoFriendly: Math.random() > 0.6,
         groupBuyEligible: Math.random() > 0.7,
         category: product.category || 'General',

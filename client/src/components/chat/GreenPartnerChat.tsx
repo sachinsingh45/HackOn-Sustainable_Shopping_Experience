@@ -178,17 +178,18 @@ const GreenPartnerChat = () => {
 
   // Helper to render bot message with rich UI for special intents
   function renderBotMessage(message: any) {
-    if (message.intent === 'carbon_footprint' && (message.breakdown || message.total !== undefined)) {
-      // Modern, minimal UI for carbon footprint breakdown
-      return (
-        <div className="space-y-6">
-          {/* Summary Card */}
-          <div className="flex flex-col items-center justify-center bg-gradient-to-r from-green-200 to-blue-100 rounded-2xl p-6 shadow-md mb-2">
-            <div className="text-lg font-semibold text-green-700 mb-1">Monthly CO₂ Saved</div>
-            <div className="text-5xl font-extrabold text-green-800 mb-1">{message.total?.toFixed(2)} <span className="text-2xl font-bold text-green-500">kg</span></div>
-          </div>
-          {/* Breakdown Table */}
-          {Array.isArray(message.breakdown) && message.breakdown.length > 0 && (
+    if (message.intent === 'carbon_footprint') {
+      // Always show the reply, even if no breakdown or total
+      if (message.breakdown && message.breakdown.length > 0 && typeof message.total === 'number') {
+        // Modern, minimal UI for carbon footprint breakdown
+        return (
+          <div className="space-y-6">
+            {/* Summary Card */}
+            <div className="flex flex-col items-center justify-center bg-gradient-to-r from-green-200 to-blue-100 rounded-2xl p-6 shadow-md mb-2">
+              <div className="text-lg font-semibold text-green-700 mb-1">Monthly CO₂ Saved</div>
+              <div className="text-5xl font-extrabold text-green-800 mb-1">{message.total?.toFixed(2)} <span className="text-2xl font-bold text-green-500">kg</span></div>
+            </div>
+            {/* Breakdown Table */}
             <div className="overflow-x-auto">
               <table className="min-w-full text-xs border rounded-lg bg-white shadow">
                 <thead>
@@ -225,18 +226,23 @@ const GreenPartnerChat = () => {
                 </tbody>
               </table>
             </div>
-          )}
-          <button
-            className="mt-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition shadow"
-            onClick={() => {
-              toggleChat();
-              setTimeout(() => navigate('/profile'), 100);
-            }}
-          >
-            View Full Eco Profile
-          </button>
-        </div>
-      );
+            <button
+              className="mt-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition shadow"
+              onClick={() => {
+                toggleChat();
+                setTimeout(() => navigate('/profile'), 100);
+              }}
+            >
+              View Full Eco Profile
+            </button>
+          </div>
+        );
+      } else {
+        // Show fallback message from backend
+        return (
+          <div className="text-green-700 font-semibold py-2">{message.reply || message.content}</div>
+        );
+      }
     }
     if (message.intent === 'my_challenges' && Array.isArray(message.challenges)) {
       return (

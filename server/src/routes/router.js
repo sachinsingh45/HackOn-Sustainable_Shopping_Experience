@@ -950,7 +950,7 @@ router.post('/chat', async (req, res) => {
         break;
       }
       case "carbon_footprint": {
-        // Sum only item.carbonFootprint for all items in all orders for the current month
+        // Sum item.carbonFootprint for all items in all orders for the current month (support both old and new order structures)
         const user = await User.findById(userId);
         if (!user) {
           reply = "User not found.";
@@ -961,27 +961,44 @@ router.post('/chat', async (req, res) => {
         const year = now.getFullYear();
         let total = 0;
         const breakdown = [];
+        let foundOrder = false;
         user.orders.forEach(order => {
-          const d = order.orderInfo?.date || order.orderInfo?.orderDate || order.orderDate || order.date;
+          // Support both new (orderDate) and old (orderInfo.orderDate/date) structures
+          const d = order.orderDate || order.date || order.orderInfo?.date || order.orderInfo?.orderDate;
           if (d && new Date(d).getMonth() === month && new Date(d).getFullYear() === year) {
             let orderTotal = 0;
-            if (order.orderInfo?.items && order.orderInfo.items.length) {
+            let items = [];
+            if (order.items && order.items.length) {
+              // New structure
+              items = order.items;
+              order.items.forEach(item => {
+                orderTotal += item.carbonFootprint || 0;
+              });
+            } else if (order.orderInfo?.items && order.orderInfo.items.length) {
+              // Old structure
+              items = order.orderInfo.items;
               order.orderInfo.items.forEach(item => {
                 orderTotal += item.carbonFootprint || 0;
               });
             }
+            if (orderTotal > 0) foundOrder = true;
             breakdown.push({
               date: d,
-              items: order.orderInfo.items ? order.orderInfo.items.map(item => ({
+              items: items.map(item => ({
                 name: item.name,
                 carbonFootprint: item.carbonFootprint || 0
-              })) : [],
+              })),
               orderTotal
             });
             total += orderTotal;
           }
         });
+        if (!foundOrder) {
+          reply = "No carbon footprint data found for this month. Place an order to start tracking your impact!";
+          return res.json({ reply, intent, breakdown: [], total: 0 });
+        }
         reply = `Your estimated CO₂ saved this month is ${total.toFixed(2)} kg.`;
+        console.log(`[carbon_footprint] userId=${userId}, total=${total}, breakdown=`, breakdown);
         return res.json({ reply, intent, breakdown, total });
       }
       case "my_challenges": {
