@@ -154,12 +154,15 @@ const GreenPartnerChat = () => {
     const alternatives = [];
     cart.forEach((cartItem) => {
       const item = cartItem.cartItem;
-      // Only consider products with the same subCategory (not category)
+      // Use subCategory if present, otherwise fallback to category
+      const itemSubCat = item.subCategory || item.category;
+      const itemEcoScore = typeof item.ecoScore === 'number' ? item.ecoScore : 0;
       const similar = products.filter(
         (p) =>
           p._id !== item._id &&
-          p.subCategory === item.subCategory &&
-          p.ecoScore > (item.ecoScore || 0)
+          (p.subCategory || p.category) === itemSubCat &&
+          typeof p.ecoScore === 'number' &&
+          p.ecoScore > itemEcoScore
       );
       if (similar.length > 0) {
         // Sort by highest ecoScore first

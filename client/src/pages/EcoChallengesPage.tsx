@@ -193,12 +193,12 @@ const EcoChallengesPage = () => {
                     weekStart.setHours(0, 0, 0, 0);
                     let co2Saved = 0;
                     user?.orders?.forEach((order: any) => {
-                      const orderDate = new Date(order?.orderInfo?.date || order?.orderInfo?.orderDate);
+                      const orderDate = new Date(order?.orderDate || order?.orderDate);
                       if (orderDate >= weekStart && orderDate <= now) {
                         // Try multiple possible fields for carbon footprint
-                        const carbonFootprint = order?.orderInfo?.carbonFootprint || 
-                                               order?.orderInfo?.totalCarbonSaved ||
-                                               order?.orderInfo?.summary?.carbonFootprint ||
+                        const carbonFootprint = order?.carbonFootprint || 
+                                               order?.totalCarbonSaved ||
+                                               order?.carbonFootprint ||
                                                0;
                         co2Saved += carbonFootprint;
                         
@@ -216,12 +216,12 @@ const EcoChallengesPage = () => {
                   } else {
                     let ecoCount = 0;
                     user?.orders?.forEach((order: any) => {
-                      const orderDate = new Date(order?.orderInfo?.date || order?.orderInfo?.orderDate);
+                      const orderDate = new Date(order?.orderDate || order?.orderDate);
                       
                       // Improved eco-friendly detection logic
-                      const isEco = order?.orderInfo?.isEcoFriendly === true || 
-                                   (order?.orderInfo?.ecoScore && order.orderInfo.ecoScore > 0) ||
-                                   (order?.orderInfo?.items && order.orderInfo.items.some((item: OrderItem) => 
+                      const isEco = order?.isEcoFriendly === true || 
+                                   (order?.ecoScore && order.ecoScore > 0) ||
+                                   (order?.items && order.items.some((item: OrderItem) => 
                                      item?.isEcoFriendly === true || (item?.ecoScore && item.ecoScore > 0)
                                    ));
                       
@@ -406,14 +406,14 @@ const EcoChallengesPage = () => {
                     weekStart.setHours(0, 0, 0, 0);
                     
                     const weeklyOrders = user?.orders?.filter(order => {
-                      const orderDate = new Date(order?.orderInfo?.date || order?.orderInfo?.orderDate);
+                      const orderDate = new Date(order?.orderDate || order?.orderDate);
                       return orderDate >= weekStart && orderDate <= now;
                     }) || [];
                     
                     const totalWeeklyCo2 = weeklyOrders.reduce((sum, order) => {
-                      const carbonFootprint = order?.orderInfo?.carbonFootprint || 
-                                             order?.orderInfo?.totalCarbonSaved ||
-                                             order?.orderInfo?.summary?.carbonFootprint ||
+                      const carbonFootprint = order?.carbonFootprint || 
+                                             order?.totalCarbonSaved ||
+                                             order?.carbonFootprint ||
                                              0;
                       return sum + carbonFootprint;
                     }, 0);

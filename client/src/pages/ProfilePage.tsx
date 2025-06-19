@@ -5,6 +5,7 @@ import { useStore } from '../store/useStore';
 import axios from 'axios';
 import { useToast } from '../context/ToastContext';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
+import { api } from '../services/api';
 
 // Badge icons and date formatting (copied from EcoChallengesPage for consistency)
 const BADGE_ICONS = {
@@ -59,8 +60,8 @@ const ProfilePage = () => {
   }, [user, setUser]);
 
   const handleManualLocation = async () => {
-    await axios.post('/api/update-location', { location: manualLocation });
-    setUser({ ...(user as any), location: manualLocation });
+    await api.post('/update-location', locationDetails);
+    setUser({ ...(user as any), location: locationDetails });
     setLocationPrompt(false);
   };
 
@@ -566,7 +567,7 @@ const ProfilePage = () => {
                     if (locationDetails.city && locationDetails.state && locationDetails.country && locationDetails.pin) {
                       setLocationDetailsLoading(true);
                       try {
-                        await axios.post('/api/update-location', locationDetails);
+                        await api.post('/update-location', locationDetails);
                         setUser({ ...(user as any), location: locationDetails });
                         setLocationDetails({ city: '', state: '', country: '', pin: '' });
                         showToast('Location updated successfully!', 'success');

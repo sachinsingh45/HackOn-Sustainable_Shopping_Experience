@@ -57,13 +57,6 @@ const ProductPage = () => {
           if (fetchedProduct) {
             foundProduct = {
               ...fetchedProduct,
-              rating: fetchedProduct.rating || Math.random() * 2 + 3,
-              reviews: fetchedProduct.reviews || Math.floor(Math.random() * 5000) + 100,
-              carbonFootprint: fetchedProduct.carbonFootprint || Math.random() * 5 + 0.5,
-              ecoScore: fetchedProduct.ecoScore || Math.floor(Math.random() * 40) + 60,
-              isEcoFriendly: fetchedProduct.isEcoFriendly || Math.random() > 0.6,
-              groupBuyEligible: fetchedProduct.groupBuyEligible || Math.random() > 0.7,
-              category: fetchedProduct.category || 'General',
               image: fetchedProduct.image || fetchedProduct.url || fallbackImage,
               price: fetchedProduct.price || '₹0',
               value: fetchedProduct.value || '0',

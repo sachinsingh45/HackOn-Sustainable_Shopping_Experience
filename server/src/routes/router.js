@@ -64,9 +64,6 @@ router.post('/register', [
     .matches(/[0-9]/).withMessage("Password must contain a number")
     .matches(/[!@#$%^&*(),.?":{}|<>]/).withMessage("Password must contain a special character"),
 
-  check('confirmPassword')
-    .not().isEmpty().withMessage("Confirm Password can't be empty"),
-
   check('email')
     .not().isEmpty().withMessage("Email can't be empty")
     .isEmail().withMessage("Email format is invalid")
@@ -81,13 +78,8 @@ router.post('/register', [
     });
   }
 
-  const { name, number, email, password, confirmPassword } = req.body;
+  const { name, number, email, password } = req.body;
   const customErrors = [];
-
-  if (password !== confirmPassword) {
-    customErrors.push({ msg: "Passwords don't match" });
-    return res.status(400).json({ status: false, message: customErrors });
-  }
 
   try {
     const salt = await bcrypt.genSalt(10);
@@ -366,7 +358,7 @@ router.post('/challenges/complete/:challengeId', authenticate, async (req, res) 
 });
 
 // POST: Update user location
-router.post('/api/update-location', authenticate, async (req, res) => {
+router.post('/update-location', authenticate, async (req, res) => {
   try {
     const { city, state, country, pin } = req.body;
     const user = await User.findById(req.userId);

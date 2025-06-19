@@ -55,6 +55,34 @@ const productsData = [
       groupBuyEligible: true
     },
     {
+      url: "images/products/2.jpg",
+      resUrl: "../images/products/2res.jpg",
+      price: "₹39,499.00",
+      name: "Samsung Galaxy S10 FE 5G (Cloud Navy, 8GB RAM, 128GB Storage) with No Cost EMI & Additional Exchange Offers",
+      category: "electronics",
+      subCategory: "mobile",
+      resUrl: "../images/products/2res.jpg",
+      value: "39,499",
+      accValue: "39499",
+      discount: "-47%",
+      mrp: "₹74,999.00",
+      points: [
+        "5G Ready powered by Qualcomm Snapdragon 865 Octa-Core processor, 8GB RAM, 128GB internal memory expandable up to 1TB, Android 11.0 operating system and dual SIM",
+        "Triple Rear Camera Setup - 12MP (Dual Pixel) OIS F1.8 Wide Rear Camera + 8MP OIS Tele Camera + 12MP Ultra Wide | 30X Space Zoom, Single Take & Night Mode | 32MP F2.2 Front Punch Hole Camera",
+        "6.5-inch(16.40 centimeters) Infinity-O Super AMOLED Display with 120Hz Refresh rate, 1080 x 2400 (FHD+) Resolution",
+        "4500 mAh battery (Non -removable) with Super Fast Charging, FAst Wireless Charging & Finger Print sensor",
+        "IP68 Rated, MicroSD Card Slot (Expandable upto 1 TB), Dual Nano Sim, Hybrid Sim Slot, 5G+5G Dual stand by"
+      ],
+      unitsInStock: 20,
+      unitsSold: 13,
+      rating: 3.7,
+      reviews: 210,
+      carbonFootprint: 2.9,
+      ecoScore: 95,
+      isEcoFriendly: true,
+      groupBuyEligible: true
+    },
+    {
       url: "images/products/3.jpg",
       price: "₹21,900.00",
       name: "New Apple AirPods Pro with MagSafe Charging Case",
@@ -210,7 +238,7 @@ const productsData = [
       rating: 4.2,
       reviews: 320,
       carbonFootprint: 1.8,
-      ecoScore: 72,
+      ecoScore: 40,
       isEcoFriendly: true,
       groupBuyEligible: false
     },
