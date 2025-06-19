@@ -181,7 +181,7 @@ const GreenPartnerChat = () => {
           <button
             className="mt-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition shadow"
             onClick={() => {
-              toggleChat(false);
+              toggleChat();
               setTimeout(() => navigate('/profile'), 100);
             }}
           >
@@ -250,7 +250,7 @@ const GreenPartnerChat = () => {
           <button
             className="mt-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition"
             onClick={() => {
-              toggleChat(false);
+              toggleChat();
               setTimeout(() => navigate('/challenges'), 100);
             }}
           >
@@ -374,7 +374,7 @@ const GreenPartnerChat = () => {
                   </button>
                   <button
                     className="ml-1 p-2 rounded-full hover:bg-green-200 transition"
-                    onClick={() => toggleChat(false)}
+                    onClick={() => toggleChat()}
                     title="Close"
                   >
                     <X className="w-5 h-5 text-green-700" />
@@ -468,7 +468,7 @@ const GreenPartnerChat = () => {
       {chatOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-10 z-40"
-          onClick={() => toggleChat(false)}
+          onClick={() => toggleChat()}
         />
       )}
     </>
