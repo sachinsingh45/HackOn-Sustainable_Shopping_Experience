@@ -19,7 +19,13 @@ const productsData = [
         "Ports: 2x USB 3.2 Gen 1 (1x Always On), 1x USB-C 3.2 Gen 2 (support data transfer, PD 3.0 and DP 1.4), 1x Thunderbolt 4 / USB4 40Gbps (support data transfer, PD 3.0 and DP 1.4), 1x HDMI 1.4b, 1x Card reader, 1x Ethernet (RJ-45), 1x Headphone / microphone combo jack (3.5mm)"
       ],
       unitsInStock: 20,
-      unitsSold: 7
+      unitsSold: 7,
+      rating: 3.5,
+      reviews: 120,
+      carbonFootprint: 2.1,
+      ecoScore: 67,
+      isEcoFriendly: true,
+      groupBuyEligible: false
     },
     {
       id: "2",
@@ -42,7 +48,13 @@ const productsData = [
         "IP68 Rated, MicroSD Card Slot (Expandable upto 1 TB), Dual Nano Sim, Hybrid Sim Slot, 5G+5G Dual stand by"
       ],
       unitsInStock: 20,
-      unitsSold: 13
+      unitsSold: 13,
+      rating: 3.5,
+      reviews: 120,
+      carbonFootprint: 2.1,
+      ecoScore: 67,
+      isEcoFriendly: true,
+      groupBuyEligible: false
     },
     {
       id: "3",
@@ -64,7 +76,13 @@ const productsData = [
         "Three sizes of soft, tapered silicone tips for a customisable fit"
       ],
       unitsInStock: 20,
-      unitsSold: 2
+      unitsSold: 2,
+      rating: 3.5,
+      reviews: 120,
+      carbonFootprint: 2.1,
+      ecoScore: 67,
+      isEcoFriendly: true,
+      groupBuyEligible: false
     },
     {
       id: "4",
@@ -86,7 +104,13 @@ const productsData = [
         "Controls- The true wireless earbuds offer easy access multifunction button controls with stereo calling feature for an overall seamless user experience."
       ],
       unitsInStock: 20,
-      unitsSold: 19
+      unitsSold: 19,
+      rating: 3.5,
+      reviews: 120,
+      carbonFootprint: 2.1,
+      ecoScore: 67,
+      isEcoFriendly: true,
+      groupBuyEligible: false
     },
     {
       id: "5",
@@ -108,7 +132,13 @@ const productsData = [
         "Easy to fold, Easy to carry, it offers a healthy environment to sleep in."
       ],
       unitsInStock: 20,
-      unitsSold: 0
+      unitsSold: 0,
+      rating: 3.5,
+      reviews: 120,
+      carbonFootprint: 2.1,
+      ecoScore: 67,
+      isEcoFriendly: true,
+      groupBuyEligible: false
     },
     {
       id: "6",
@@ -130,7 +160,13 @@ const productsData = [
         "Closure Type: Slip On"
       ],
       unitsInStock: 20,
-      unitsSold: 11
+      unitsSold: 11,
+      rating: 3.5,
+      reviews: 120,
+      carbonFootprint: 2.1,
+      ecoScore: 67,
+      isEcoFriendly: true,
+      groupBuyEligible: false
     },
     {
       id: "7",
@@ -150,7 +186,13 @@ const productsData = [
         "Print & Pattern : Solid ; Package Contant : Kurta, Palazzo With Dupatta",
       ],
       unitsInStock: 20,
-      unitsSold: 20
+      unitsSold: 20,
+      rating: 3.5,
+      reviews: 120,
+      carbonFootprint: 2.1,
+      ecoScore: 67,
+      isEcoFriendly: true,
+      groupBuyEligible: false
     },
     {
       id: "8",
@@ -172,7 +214,13 @@ const productsData = [
         "PERSON DETECTION WITH INTRUDER ALARM : Advanced AI capabilities that can smartly detect & notify whenever a person is detected. You can also ring an automatic loud siren in case of an intrusion."
       ],
       unitsInStock: 20,
-      unitsSold: 5
+      unitsSold: 5,
+      rating: 3.5,
+      reviews: 120,
+      carbonFootprint: 2.1,
+      ecoScore: 67,
+      isEcoFriendly: true,
+      groupBuyEligible: false
     },
     {
       id: "9",
@@ -194,7 +242,13 @@ const productsData = [
         "Ideal for birthday, anniversary and wedding gift"
       ],
       unitsInStock: 20,
-      unitsSold: 16
+      unitsSold: 16,
+      rating: 3.5,
+      reviews: 120,
+      carbonFootprint: 2.1,
+      ecoScore: 67,
+      isEcoFriendly: true,
+      groupBuyEligible: false
     },
     {
       id: "10",
@@ -216,7 +270,13 @@ const productsData = [
         "Slow-roasted, slow ground in small batches for superior flavour"
       ],
       unitsInStock: 20,
-      unitsSold: 3
+      unitsSold: 3,
+      rating: 3.5,
+      reviews: 120,
+      carbonFootprint: 2.1,
+      ecoScore: 67,
+      isEcoFriendly: true,
+      groupBuyEligible: false
     },
     {
       id: "11",
@@ -238,7 +298,13 @@ const productsData = [
         "Package Dimensions: 10.7 L x 39.6 H x 38.0 W (centimeters)"
       ],
       unitsInStock: 20,
-      unitsSold: 10
+      unitsSold: 10,
+      rating: 3.5,
+      reviews: 120,
+      carbonFootprint: 2.1,
+      ecoScore: 67,
+      isEcoFriendly: true,
+      groupBuyEligible: false
     },
     {
       id: "12",
@@ -259,7 +325,13 @@ const productsData = [
         "Sleeveless"
       ],
       unitsInStock: 20,
-      unitsSold: 15
+      unitsSold: 15,
+      rating: 3.5,
+      reviews: 120,
+      carbonFootprint: 2.1,
+      ecoScore: 67,
+      isEcoFriendly: true,
+      groupBuyEligible: false
     },
     {
       id: "13",
@@ -280,7 +352,13 @@ const productsData = [
         "Its 360-degree ergonomic design makes it ideal to be carried around anywhere you go. It also comes with a carry strap making it very convenient for you to carry it around."
       ],
       unitsInStock: 20,
-      unitsSold: 12
+      unitsSold: 12,
+      rating: 3.5,
+      reviews: 120,
+      carbonFootprint: 2.1,
+      ecoScore: 67,
+      isEcoFriendly: true,
+      groupBuyEligible: false
     },
     {
       id: "14",
@@ -302,7 +380,13 @@ const productsData = [
         "✔ It can be used for inserting loban, bakhoor, samarni dhoop incense sticks",
       ],
       unitsInStock: 20,
-      unitsSold: 17
+      unitsSold: 17,
+      rating: 3.5,
+      reviews: 120,
+      carbonFootprint: 2.1,
+      ecoScore: 67,
+      isEcoFriendly: true,
+      groupBuyEligible: false
     },
     {
       id: "15",
@@ -323,7 +407,13 @@ const productsData = [
         "Great for gifting purposes in Diwali, Birthday, Anniversary, Corporate party etc."
       ],
       unitsInStock: 20,
-      unitsSold: 18
+      unitsSold: 18,
+      rating: 3.5,
+      reviews: 120,
+      carbonFootprint: 2.1,
+      ecoScore: 67,
+      isEcoFriendly: true,
+      groupBuyEligible: false
     },
     {
       id: "16",
@@ -344,7 +434,13 @@ const productsData = [
         "Product color may slightly vary due to photographic lighting sources or your monitor settings"
       ],
       unitsInStock: 20,
-      unitsSold: 9
+      unitsSold: 9,
+      rating: 3.5,
+      reviews: 120,
+      carbonFootprint: 2.1,
+      ecoScore: 67,
+      isEcoFriendly: true,
+      groupBuyEligible: false
     },
     {
       id: "17",
@@ -365,7 +461,13 @@ const productsData = [
         "Machine wash cold, gentle cycle, only non-chlorine bleach when needed, tumble dry low, steam if needed, do not iron. No shrinkage, No colour fading and No unravelling after washing."
       ],
       unitsInStock: 20,
-      unitsSold: 14
+      unitsSold: 14,
+      rating: 3.5,
+      reviews: 120,
+      carbonFootprint: 2.1,
+      ecoScore: 67,
+      isEcoFriendly: true,
+      groupBuyEligible: false
     },
     {
       id: "18",
@@ -386,7 +488,13 @@ const productsData = [
         "Ideal For: Decoration, Gifting, Diwali Decoration, Christmas Party Decoration, Home Decor, Candle Light Dinner"
       ],
       unitsInStock: 20,
-      unitsSold: 8
+      unitsSold: 8,
+      rating: 3.5,
+      reviews: 120,
+      carbonFootprint: 2.1,
+      ecoScore: 67,
+      isEcoFriendly: true,
+      groupBuyEligible: false
     },
     {
       id: "19",
@@ -407,7 +515,13 @@ const productsData = [
         "Ideal For: Decoration, Gifting, Diwali Decoration, Christmas Party Decoration, Home Decor, Candle Light Dinner"
       ],
       unitsInStock: 20,
-      unitsSold: 6
+      unitsSold: 6,
+      rating: 3.5,
+      reviews: 120,
+      carbonFootprint: 2.1,
+      ecoScore: 67,
+      isEcoFriendly: true,
+      groupBuyEligible: false
     },
     {
       id: "20",
@@ -428,7 +542,13 @@ const productsData = [
         "100% Handmade :- Handmade by recognized Artisans from JH Gallery Rajasthan, product created under Make in INDIA"
       ],
       unitsInStock: 20,
-      unitsSold: 4
+      unitsSold: 4,
+      rating: 3.5,
+      reviews: 120,
+      carbonFootprint: 2.1,
+      ecoScore: 67,
+      isEcoFriendly: true,
+      groupBuyEligible: false
     },
     {
       id: "1001",
@@ -448,7 +568,13 @@ const productsData = [
         "Keeps drinks cold for 12 hours"
       ],
       unitsInStock: 20,
-      unitsSold: 1
+      unitsSold: 1,
+      rating: 3.5,
+      reviews: 120,
+      carbonFootprint: 2.1,
+      ecoScore: 67,
+      isEcoFriendly: true,
+      groupBuyEligible: false
     },
     {
       id: "1002",
@@ -468,7 +594,13 @@ const productsData = [
         "Supports up to 20kg weight"
       ],
       unitsInStock: 20,
-      unitsSold: 7
+      unitsSold: 7,
+      rating: 3.5,
+      reviews: 120,
+      carbonFootprint: 2.1,
+      ecoScore: 67,
+      isEcoFriendly: true,
+      groupBuyEligible: false
     }
   ]
   
