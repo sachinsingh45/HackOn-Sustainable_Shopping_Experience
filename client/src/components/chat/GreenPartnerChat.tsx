@@ -25,7 +25,7 @@ interface Product {
 }
 
 const GreenPartnerChat = () => {
-  const { chatOpen, toggleChat, user, cart, products, chatWithAI, chatPrefillMessage, setChatPrefillMessage } = useStore();
+  const { chatOpen, toggleChat, user, cart, products, chatWithAI, chatPrefillMessage, setChatPrefillMessage, challenges } = useStore();
   const navigate = useNavigate();
   const defaultBotMessage: Message = {
     id: '1',
@@ -245,35 +245,96 @@ const GreenPartnerChat = () => {
       }
     }
     if (message.intent === 'my_challenges' && Array.isArray(message.challenges)) {
+      if (!message.challenges.length) {
+        return <div className="text-green-700 font-semibold py-2">No ongoing challenges found.</div>;
+      }
       return (
         <div className="space-y-2">
           <div className="font-semibold text-green-700">{message.reply}</div>
           <div className="grid grid-cols-1 gap-3">
-            {message.challenges.map((ch: any) => (
-              <div key={ch.id} className={`rounded-xl border shadow-sm p-3 flex flex-col gap-2 bg-gradient-to-r from-green-50 to-green-100 ${ch.status === 'completed' ? 'opacity-70' : ''}`}>
-                <div className="flex items-center space-x-4">
-                  <img src={ch.rewardBadge?.iconUrl || '/daily-badge.png'} alt="badge" className="w-10 h-10 rounded-full border" />
-                  <div className="flex-1">
-                    <div className="font-semibold text-green-800 flex items-center gap-2">{ch.name} <span className="text-xs px-2 py-0.5 rounded bg-green-200 text-green-800 ml-2">{ch.frequency}</span></div>
-                    <div className="text-xs text-gray-700 mb-1">{ch.description}</div>
-                    <div className="text-xs text-gray-500">{ch.status === 'completed' ? 'Completed' : 'Active'}</div>
+            {message.challenges.map((ch: any) => {
+              // Find the matching challenge from the store
+              const storeChallenge = challenges.find((c: any) => c._id === ch.id || c.id === ch.id || c._id === ch._id || c.id === ch._id);
+              let progressText = '';
+              let progress = 0;
+              let target = 1;
+              if (storeChallenge && user && (storeChallenge.frequency === 'daily' || storeChallenge.frequency === 'monthly' || storeChallenge.frequency === 'weekly')) {
+                const now = new Date();
+                if (storeChallenge.frequency === 'weekly') {
+                  const day = now.getDay();
+                  const diffToMonday = (day === 0 ? -6 : 1) - day;
+                  const weekStart = new Date(now);
+                  weekStart.setDate(now.getDate() + diffToMonday);
+                  weekStart.setHours(0, 0, 0, 0);
+                  let co2Saved = 0;
+                  user?.orders?.forEach((order: any) => {
+                    const orderDate = new Date(order?.orderDate || order?.orderDate);
+                    if (orderDate >= weekStart && orderDate <= now) {
+                      const carbonFootprint = order?.carbonFootprint || order?.totalCarbonSaved || order?.carbonFootprint || 0;
+                      co2Saved += carbonFootprint;
+                    }
+                  });
+                  target = 5;
+                  progressText = `CO₂ saved this week: ${co2Saved.toFixed(2)}/5 kg`;
+                  progress = co2Saved;
+                } else {
+                  let ecoCount = 0;
+                  user?.orders?.forEach((order: any) => {
+                    const orderDate = new Date(order?.orderDate || order?.orderDate);
+                    const isEco = order?.isEcoFriendly === true || (order?.ecoScore && order.ecoScore > 0) || (order?.items && order.items.some((item: any) => item?.isEcoFriendly === true || (item?.ecoScore && item.ecoScore > 0)));
+                    if (storeChallenge.frequency === 'daily') {
+                      if (
+                        orderDate.getDate() === now.getDate() &&
+                        orderDate.getMonth() === now.getMonth() &&
+                        orderDate.getFullYear() === now.getFullYear() &&
+                        isEco
+                      ) {
+                        ecoCount++;
+                      }
+                      target = 1;
+                      progressText = `Eco-friendly products bought today: ${ecoCount}/1`;
+                      progress = ecoCount;
+                    } else if (storeChallenge.frequency === 'monthly') {
+                      if (
+                        orderDate.getMonth() === now.getMonth() &&
+                        orderDate.getFullYear() === now.getFullYear() &&
+                        isEco
+                      ) {
+                        ecoCount++;
+                      }
+                      target = 10;
+                      progressText = `Eco-friendly products bought this month: ${ecoCount}/10`;
+                      progress = ecoCount;
+                    }
+                  });
+                }
+              }
+              return (
+                <div key={ch.id || ch._id} className={`rounded-xl border shadow-sm p-3 flex flex-col gap-2 bg-gradient-to-r from-green-50 to-green-100 ${ch.status === 'completed' ? 'opacity-70' : ''}`}>
+                  <div className="flex items-center space-x-4">
+                    <img src={ch.rewardBadge?.iconUrl || '/daily-badge.png'} alt="badge" className="w-10 h-10 rounded-full border" />
+                    <div className="flex-1">
+                      <div className="font-semibold text-green-800 flex items-center gap-2">{ch.name || 'Unnamed Challenge'} <span className="text-xs px-2 py-0.5 rounded bg-green-200 text-green-800 ml-2">{ch.frequency || 'N/A'}</span></div>
+                      <div className="text-xs text-gray-700 mb-1">{ch.description || 'No description'}</div>
+                      <div className="text-xs text-gray-500">{ch.status === 'completed' ? 'Completed' : 'Active'}</div>
+                    </div>
+                  </div>
+                  {/* Progress Bar and Text */}
+                  <div className="mt-1">
+                    <div className="flex items-center justify-between text-xs mb-1">
+                      <span className="text-green-700 font-medium">{progressText || ch.progressText || `${ch.progress || 0}/${ch.target || 1}`}</span>
+                      <span className="text-gray-500">{Math.min(100, Math.round(((progress || ch.progress || 0) / (target || ch.target || 1)) * 100))}%</span>
+                    </div>
+                    <div className="w-full h-2 bg-green-100 rounded-full overflow-hidden">
+                      <div
+                        className={`h-2 rounded-full transition-all duration-300 ${ch.status === 'completed' ? 'bg-blue-400' : 'bg-green-500'}`}
+                        style={{ width: `${Math.min(100, Math.round(((progress || ch.progress || 0) / (target || ch.target || 1)) * 100))}%` }}
+                      />
+                    </div>
                   </div>
                 </div>
-                {/* Progress Bar and Text */}
-                <div className="mt-1">
-                  <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="text-green-700 font-medium">{ch.progressText}</span>
-                    <span className="text-gray-500">{Math.min(100, Math.round((ch.progress / (ch.target || 1)) * 100))}%</span>
-                  </div>
-                  <div className="w-full h-2 bg-green-100 rounded-full overflow-hidden">
-                    <div
-                      className={`h-2 rounded-full transition-all duration-300 ${ch.status === 'completed' ? 'bg-blue-400' : 'bg-green-500'}`}
-                      style={{ width: `${Math.min(100, Math.round((ch.progress / (ch.target || 1)) * 100))}%` }}
-                    />
-                  </div>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
           {/* Modern Badges Row */}
           {Array.isArray(message.badges) && message.badges.length > 0 && (

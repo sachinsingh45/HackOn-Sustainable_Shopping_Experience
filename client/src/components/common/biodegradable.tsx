@@ -38,7 +38,7 @@ export default function MaterialInfoScanner() {
         'https://machine-learning-8crr.onrender.com/analyze-material',
         { description: description.trim() },
         {
-          timeout: 30000, // 30 second timeout
+          timeout: 60000, // 60 second timeout
           headers: {
             'Content-Type': 'application/json',
           }
@@ -122,7 +122,7 @@ export default function MaterialInfoScanner() {
           </div>
 
           {/* Examples */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-3 mb-6">
             <button
               onClick={() => setDescription('plastic water bottle')}
               className="text-left p-3 border border-gray-200 rounded-lg hover:border-green-300 hover:bg-green-50 transition-colors"
@@ -258,7 +258,7 @@ export default function MaterialInfoScanner() {
           
           <div className="p-6 space-y-4">
             {/* Biodegradable */}
-            <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm border border-gray-100">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-white rounded-lg shadow-sm border border-gray-100 gap-2 sm:gap-0">
               <div className="flex items-center space-x-3">
                 <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
                   result.biodegradable ? 'bg-green-100' : 'bg-red-100'
@@ -271,7 +271,7 @@ export default function MaterialInfoScanner() {
                 </div>
                 <div>
                   <div className="font-semibold text-gray-900">Biodegradable</div>
-                  <div className="text-sm text-gray-600">Natural decomposition</div>
+                  <div className="text-xs sm:text-sm text-gray-600">Natural decomposition</div>
                 </div>
               </div>
               <span className={`px-4 py-2 rounded-full text-sm font-medium ${
@@ -285,14 +285,14 @@ export default function MaterialInfoScanner() {
 
             {/* Degrades In */}
             {result.degrades_in && (
-              <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm border border-gray-100">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-white rounded-lg shadow-sm border border-gray-100 gap-2 sm:gap-0">
                 <div className="flex items-center space-x-3">
                   <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                     <Clock className="w-6 h-6 text-blue-600" />
                   </div>
                   <div>
                     <div className="font-semibold text-gray-900">Degradation Time</div>
-                    <div className="text-sm text-gray-600">Natural breakdown period</div>
+                    <div className="text-xs sm:text-sm text-gray-600">Natural breakdown period</div>
                   </div>
                 </div>
                 <span className="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium border border-blue-200">
@@ -303,14 +303,14 @@ export default function MaterialInfoScanner() {
 
             {/* Disposal Method */}
             {result.disposal && (
-              <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm border border-gray-100">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-white rounded-lg shadow-sm border border-gray-100 gap-2 sm:gap-0">
                 <div className="flex items-center space-x-3">
                   <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
                     <Trash2 className="w-6 h-6 text-orange-600" />
                   </div>
                   <div>
                     <div className="font-semibold text-gray-900">Disposal Method</div>
-                    <div className="text-sm text-gray-600">Recommended disposal</div>
+                    <div className="text-xs sm:text-sm text-gray-600">Recommended disposal</div>
                   </div>
                 </div>
                 <span className="px-4 py-2 bg-orange-100 text-orange-800 rounded-full text-sm font-medium border border-orange-200">
@@ -322,7 +322,7 @@ export default function MaterialInfoScanner() {
             {/* Eco Tip */}
             {result.eco_tip && (
               <div className="p-4 bg-white rounded-lg shadow-sm border border-gray-100">
-                <div className="flex items-start space-x-3">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
                   <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center flex-shrink-0">
                     <Lightbulb className="w-6 h-6 text-yellow-600" />
                   </div>
@@ -339,20 +339,20 @@ export default function MaterialInfoScanner() {
             {/* Summary Card */}
             <div className="mt-6 p-4 bg-gradient-to-r from-green-100 to-blue-100 rounded-lg border border-green-200">
               <div className="text-center">
-                <h3 className="font-semibold text-gray-900 mb-2">Environmental Impact Summary</h3>
-                <div className="flex items-center justify-center space-x-4">
+                <h3 className="font-semibold text-gray-900 mb-2 text-base sm:text-lg">Environmental Impact Summary</h3>
+                <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
                   <div className="text-center">
                     <div className={`text-2xl font-bold ${result.biodegradable ? 'text-green-600' : 'text-red-600'}`}>
                       {result.biodegradable ? '🌱' : '⚠️'}
                     </div>
-                    <div className="text-xs text-gray-600">Biodegradable</div>
+                    <div className="text-xs sm:text-sm text-gray-600">Biodegradable</div>
                   </div>
                   {result.degrades_in && (
                     <div className="text-center">
                       <div className="text-lg font-semibold text-blue-600">
                         {result.degrades_in}
                       </div>
-                      <div className="text-xs text-gray-600">Breakdown Time</div>
+                      <div className="text-xs sm:text-sm text-gray-600">Breakdown Time</div>
                     </div>
                   )}
                 </div>
