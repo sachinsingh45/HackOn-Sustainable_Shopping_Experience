@@ -44,6 +44,8 @@ const GreenPartnerChat = () => {
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [typingMessage, setTypingMessage] = useState<string | null>(null); // For char-by-char animation
+  const typingTimeoutRef = useRef<any>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(() => {
@@ -58,7 +60,7 @@ const GreenPartnerChat = () => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, typingMessage]);
 
   useEffect(() => {
     if (showOnboarding) {
@@ -75,6 +77,36 @@ const GreenPartnerChat = () => {
     }
     // Only run when chatOpen or chatPrefillMessage changes
   }, [chatOpen, chatPrefillMessage, setChatPrefillMessage]);
+
+  // Character-by-character typing animation for bot
+  const typeBotMessage = (fullText: string, botMessage: Message) => {
+    setTypingMessage('');
+    let i = 0;
+    const typeNext = () => {
+      setTypingMessage((prev) => {
+        // Always append the next character, including newlines and spaces
+        if (fullText[i] === '\n') {
+          return (prev ?? '') + '\n';
+        }
+        return (prev ?? '') + fullText[i];
+      });
+      i++;
+      if (i < fullText.length) {
+        typingTimeoutRef.current = setTimeout(typeNext, 18); // Typing speed (ms per char)
+      } else {
+        setMessages((prev) => [...prev, { ...botMessage, content: fullText }]);
+        setTypingMessage(null);
+        setIsTyping(false);
+      }
+    };
+    typeNext();
+  };
+
+  useEffect(() => {
+    return () => {
+      if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+    };
+  }, []);
 
   const sendMessage = async (content: string) => {
     if (!content.trim()) return;
@@ -111,7 +143,7 @@ const GreenPartnerChat = () => {
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
         type: 'bot',
-        content: aiResponse.message,
+        content: aiResponse.message, // Show full response
         timestamp: new Date(),
         suggestions: aiResponse.suggestions,
         intent: aiResponse.intent,
@@ -121,7 +153,13 @@ const GreenPartnerChat = () => {
         challenges: aiResponse.challenges,
         badges: aiResponse.badges
       };
-      setMessages(prev => [...prev, botMessage]);
+      // If it's a general chat (not a special intent), animate typing
+      if (!aiResponse.intent) {
+        typeBotMessage(aiResponse.message, botMessage);
+      } else {
+        setMessages(prev => [...prev, botMessage]);
+        setIsTyping(false);
+      }
     } catch (error) {
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -130,7 +168,6 @@ const GreenPartnerChat = () => {
         timestamp: new Date()
       };
       setMessages(prev => [...prev, errorMessage]);
-    } finally {
       setIsTyping(false);
     }
   };
@@ -315,7 +352,15 @@ const GreenPartnerChat = () => {
                     <img src={ch.rewardBadge?.iconUrl || '/daily-badge.png'} alt="badge" className="w-10 h-10 rounded-full border" />
                     <div className="flex-1">
                       <div className="font-semibold text-green-800 flex items-center gap-2">{ch.name || 'Unnamed Challenge'} <span className="text-xs px-2 py-0.5 rounded bg-green-200 text-green-800 ml-2">{ch.frequency || 'N/A'}</span></div>
-                      <div className="text-xs text-gray-700 mb-1">{ch.description || 'No description'}</div>
+                      <div className="text-xs text-gray-700 mb-1">{
+                        storeChallenge && storeChallenge.frequency === 'daily'
+                          ? 'Buy at least 1 eco-friendly product today to complete this challenge.'
+                          : storeChallenge && storeChallenge.frequency === 'weekly'
+                          ? 'Save at least 5kg of CO₂ this week to complete this challenge.'
+                          : storeChallenge && storeChallenge.frequency === 'monthly'
+                          ? 'Buy at least 10 eco-friendly products this month to complete this challenge.'
+                          : (storeChallenge && storeChallenge.description) || ch.description || 'No description'
+                      }</div>
                       <div className="text-xs text-gray-500">{ch.status === 'completed' ? 'Completed' : 'Active'}</div>
                     </div>
                   </div>
@@ -567,7 +612,7 @@ const GreenPartnerChat = () => {
 
               {/* Messages */}
               <div className="flex-1 overflow-y-auto p-4 space-y-3">
-                {messages.map((message) => (
+                {messages.map((message, idx) => (
                   <div key={message.id}>
                     <div
                       className={`flex ${
@@ -584,7 +629,6 @@ const GreenPartnerChat = () => {
                         {message.type === 'bot' ? renderBotMessage(message) : message.content}
                       </div>
                     </div>
-                    
                     {/* Suggestions */}
                     {message.suggestions && message.type === 'bot' && (
                       <div className="mt-2 space-y-1">
@@ -601,15 +645,32 @@ const GreenPartnerChat = () => {
                     )}
                   </div>
                 ))}
-                
-                {isTyping && (
+                {/* Typing animation for char-by-char bot message */}
+                {typingMessage !== null && (
+                  <div className="flex justify-start">
+                    <div className="max-w-xs px-3 py-2 rounded-lg text-sm bg-gray-100 text-gray-900">
+                      {typingMessage}
+                    </div>
+                  </div>
+                )}
+                {/* Dots animation while typing */}
+                {isTyping && typingMessage === null && (
                   <div className="flex justify-start">
                     <div className="bg-gray-100 px-3 py-2 rounded-lg">
                       <div className="flex space-x-1">
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-100" />
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-200" />
+                        <span className="block w-2 h-2 bg-green-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <span className="block w-2 h-2 bg-green-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <span className="block w-2 h-2 bg-green-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                       </div>
+                      <style>{`
+                        @keyframes bounce {
+                          0%, 80%, 100% { transform: scale(0.8); opacity: 0.7; }
+                          40% { transform: scale(1.2); opacity: 1; }
+                        }
+                        .animate-bounce {
+                          animation: bounce 1.2s infinite;
+                        }
+                      `}</style>
                     </div>
                   </div>
                 )}

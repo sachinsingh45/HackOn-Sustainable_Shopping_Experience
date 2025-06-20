@@ -444,8 +444,14 @@ export const useStore = create<Store>((set, get) => ({
     try {
       const state = get();
       const userId = state.user?._id;
+      // Add summarization prompt for general chat
+      let prompt = message;
+      // Only add the summarization instruction if not a special intent
+      if (!/eco alternative|eco-friendly alternative|carbon footprint|challenge|badge|progress|order|cart|product|analyze/i.test(message)) {
+        prompt = `${message}\n\nPlease respond in a single, complete summary under 40 words. Do not use ellipses (...), 'etc.', or any indication of omitted content. Always provide a full, self-contained answer.`;
+      }
       // Use new backend DeepSeek/Cohere endpoint
-      const response = await aiAPI.greenPartnerChat(message, userId);
+      const response = await aiAPI.greenPartnerChat(prompt, userId);
       return response; // Return all fields for custom rendering
     } catch (error) {
       return {
