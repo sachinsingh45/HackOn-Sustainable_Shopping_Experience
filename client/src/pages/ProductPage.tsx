@@ -59,8 +59,6 @@ const ProductPage = () => {
               ...fetchedProduct,
               image: fetchedProduct.image || fetchedProduct.url || fallbackImage,
               price: fetchedProduct.price || '₹0',
-              value: fetchedProduct.value || '0',
-              accValue: fetchedProduct.accValue || 0,
               _id: fetchedProduct._id
             };
           }
@@ -173,6 +171,16 @@ const ProductPage = () => {
     { name: 'Recycled material option', price: parseFloat(product.price.replace(/[^0-9.]/g, '')) + 150, savings: '1.8 kg CO₂' }
   ];
 
+  // Calculate discount percentage if both price and mrp exist
+  let discountPercent = 0;
+  if (product.price && product.mrp) {
+    const price = parseFloat(product.price.replace(/[^0-9.]/g, ''));
+    const mrp = parseFloat(product.mrp.replace(/[^0-9.]/g, ''));
+    if (mrp > price) {
+      discountPercent = Math.round(((mrp - price) / mrp) * 100);
+    }
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       {/* Breadcrumb */}
@@ -274,9 +282,11 @@ const ProductPage = () => {
                 <span className="text-lg text-gray-500 line-through">
                   {product.mrp}
                 </span>
-                <span className="bg-red-100 text-red-800 px-2 py-1 rounded text-sm font-medium">
-                  {product.discount}
-                </span>
+                {discountPercent > 0 && (
+                  <span className="bg-red-100 text-red-800 px-2 py-1 rounded text-sm font-medium">
+                    {discountPercent}% OFF
+                  </span>
+                )}
               </div>
             )}
           </div>

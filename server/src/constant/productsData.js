@@ -1,9 +1,6 @@
 const productsData = [
     {
       price: "₹61,990.00",
-      value: "61,990",
-      accValue: "61990",
-      discount: "-46%",
       mrp: "₹1,15,668.00",
       name: "Lenovo ThinkBook 14 Intel Core i5 11th Gen 14 inch (35.56cm) FHD IPS Thin & Light Laptop (16GB RAM/512GB SSD/Windows 11 Home/MS Office 2021/FPR/Intel Iris Xe Graphics Mineral Grey/1.4 kg), 20VDA0TLIH",
       category: "electronics",
@@ -26,15 +23,12 @@ const productsData = [
       url: "https://intechcomputershop.co.ke/wp-content/uploads/2021/04/3.jpg"
     },
     {
-      url: "https://m.media-amazon.com/images/I/41kB+EVgx7L._AC_.jpg",
-      price: "₹39,499.00",
-      name: "Samsung Galaxy S20 FE 5G (Cloud Navy, 8GB RAM, 128GB Storage) with No Cost EMI & Additional Exchange Offers",
+      url: "https://cdn.shopify.com/s/files/1/0326/2971/9176/products/samsung-galaxy-s10-5g-fully-unlocked-cell-phones-black-dailysale-555701_1600x.progressive.jpg?v=1627335340",
+      price: "₹19,499.00",
+      name: "Samsung Galaxy S10 with No Cost EMI & Additional Exchange Offers",
       category: "electronics",
       subCategory: "mobile",
-      value: "39,499",
-      accValue: "39499",
-      discount: "-47%",
-      mrp: "₹74,999.00",
+      mrp: "₹44,999.00",
       points: [
         "5G Ready powered by Qualcomm Snapdragon 865 Octa-Core processor, 8GB RAM, 128GB internal memory expandable up to 1TB, Android 11.0 operating system and dual SIM",
         "Triple Rear Camera Setup - 12MP (Dual Pixel) OIS F1.8 Wide Rear Camera + 8MP OIS Tele Camera + 12MP Ultra Wide | 30X Space Zoom, Single Take & Night Mode | 32MP F2.2 Front Punch Hole Camera",
@@ -49,7 +43,7 @@ const productsData = [
       carbonFootprint: 2.9,
       ecoScore: 55,
       isEcoFriendly: false,
-      groupBuyEligible: true,
+      groupBuyEligible: false,
       },
     {
       url: "https://m.media-amazon.com/images/I/41kB+EVgx7L._AC_.jpg",
@@ -57,9 +51,6 @@ const productsData = [
       name: "Samsung Galaxy S10 FE 5G (Cloud Navy, 8GB RAM, 128GB Storage) with No Cost EMI & Additional Exchange Offers",
       category: "electronics",
       subCategory: "mobile",
-      value: "39,499",
-      accValue: "39499",
-      discount: "-47%",
       mrp: "₹74,999.00",
       points: [
         "5G Ready powered by Qualcomm Snapdragon 865 Octa-Core processor, 8GB RAM, 128GB internal memory expandable up to 1TB, Android 11.0 operating system and dual SIM",
@@ -70,9 +61,9 @@ const productsData = [
       ],
       unitsInStock: 20,
       unitsSold: 13,
-      rating: 3.7,
+      rating: 4.7,
       reviews: 210,
-      carbonFootprint: 2.9,
+      carbonFootprint: 4.9,
       ecoScore: 95,
       isEcoFriendly: true,
       groupBuyEligible: true,
@@ -83,9 +74,6 @@ const productsData = [
       name: "New Apple AirPods Pro with MagSafe Charging Case",
       category: "electronics",
       subCategory: "earbuds",
-      value: "21,900",
-      accValue: "21900",
-      discount: "-12%",
       mrp: "₹24,900.00",
       points: [
         "Active Noise Cancellation blocks outside noise, so you can immerse yourself in music",
@@ -109,9 +97,6 @@ const productsData = [
       name: "boAt Airdopes 121v2 True Wireless Earbuds with Upto 14 Hours Playback, Lightweight Earbuds, 8MM Drivers, LED Indicators and Multifunction Controls(Active Black)",
       category: "electronics",
       subCategory: "earbuds",
-      value: "1,299",
-      accValue: "1299",
-      discount: "-57%",
       mrp: "₹2,990.00",
       points: [
         "Playback- Airdopes 121v2 offers a nonstop playback of up to 3.5H with each charge and an additional 10.5H playtime with the included charging case",
@@ -137,9 +122,6 @@ const productsData = [
       name: "Classic Mosquito Net for Double Bed, Embroidery, King Size, Polyester, Strong 30GSM, PVC Coated Steel (L200cm X W200cm X H145cm) Foldable for Double Bed - King Size, Blue",
       category: "home",
       subCategory: "mosquito net",
-      value: "999",
-      accValue: "999",
-      discount: "-50%",
       mrp: "₹2,000.00",
       points: [
         "Size of Double bed is 200cm X 200cm X 145cm (i.e. 6.56ft X 6.56ft X 4.75ft) can Easily accommodate bed for King size, Super King size bed. Suitable for 2 Adults & 1 Child.",
@@ -155,7 +137,7 @@ const productsData = [
       carbonFootprint: 1.8,
       ecoScore: 72,
       isEcoFriendly: true,
-      groupBuyEligible: false,
+      groupBuyEligible: true,
       },
     {
       url: "https://cdn.shopify.com/s/files/1/0082/1169/3639/products/Charcoal_Volt_Green.jpg?v=1585904670",
@@ -163,9 +145,6 @@ const productsData = [
       name: "crocs Unisex-Adult Bayaband Clog",
       category: "fashion",
       subCategory: "clogs",
-      value: "2,097",
-      accValue: "2097",
-      discount: "-40%",
       mrp: "₹3,495.00",
       points: [
         "Sole: Ethylene Vinyl Acetate",
@@ -189,9 +168,6 @@ const productsData = [
       name: "INDO ERA Women's Viscose Embroidered Straight Kurta Palazzo With Dupatta Set",
       category: "fashion",
       subCategory: "kurta",
-      value: "1,619",
-      accValue: "1619",
-      discount: "-60%",
       mrp: "₹3,999.00",
       points: [
         "Care Instructions: Dry Clean Only",
@@ -215,9 +191,6 @@ const productsData = [
       name: "QUBO Smart Cam 360 | 1080p Full HD Wi-Fi Camera | Trust of Hero Group | 360° Deg Coverage with Pan & Tilt | Intruder Alarm | Full Color in Low Light | Two Way Talk | Alexa & OK Google | Made in India",
       category: "electronics",
       subCategory: "camera",
-      value: "2,884",
-      accValue: "2884",
-      discount: "-28%",
       mrp: "₹3,990.00",
       points: [
         "PROUDLY INDIAN: Qubo Smart Cam 360 is Designed & Made in INDIA. Engineered for the Security Needs of the Indian Market.",
@@ -233,7 +206,7 @@ const productsData = [
       carbonFootprint: 1.8,
       ecoScore: 40,
       isEcoFriendly: true,
-      groupBuyEligible: false,
+      groupBuyEligible: true,
     },
     {
       url: "https://m.media-amazon.com/images/I/61bzCB3GfEL._UL1163_.jpg",
@@ -241,9 +214,6 @@ const productsData = [
       name: "TIMEX Analog Men's Watch",
       category: "fashion",
       subCategory: "watch",
-      value: "1,299",
-      accValue: "1299",
-      discount: "-19%",
       mrp: "₹1,595.00",
       points: [
         "Case Shape: Round, Dial Glass Material: Mineral, Band material: Leather",
@@ -267,9 +237,6 @@ const productsData = [
       name: "Yogabar Dark Chocolate & Cranberry Muesli 700g - Breakfast Cereal with 83% Nuts & Seeds, Dried Fruits, & Whole Grains - Vegan & Gluten Free Snack",
       category: "beauty",
       subCategory: "muesli",
-      value: "429",
-      accValue: "429",
-      discount: "-14%",
       mrp: "₹499.00",
       points: [
         "Whole grains: Quinoa, Oats and Brown Rice",
@@ -285,7 +252,7 @@ const productsData = [
       carbonFootprint: 1.8,
       ecoScore: 72,
       isEcoFriendly: true,
-      groupBuyEligible: false
+      groupBuyEligible: true
     },
     {
       url: "https://m.media-amazon.com/images/I/41D9lUq1wmL.jpg",
@@ -293,9 +260,6 @@ const productsData = [
       name: "Integriti Men Sweatshirt",
       category: "fashion",
       subCategory: "sweatshirt",
-      value: "358",
-      accValue: "358",
-      discount: "-86%",
       mrp: "₹2,499.00",
       points: [
         "Care Instructions: Machine Wash",
@@ -318,9 +282,6 @@ const productsData = [
       price: "₹630.00",
       name: "Harpa Synthetic a-line Dress (GR5759_Navy_Small)",
       category: "fashion",
-      value: "630",
-      accValue: "630",
-      discount: "-70%",
       mrp: "₹2,099.00",
       points: [
         "Care Instructions: Hand Wash Only",
@@ -343,9 +304,6 @@ const productsData = [
       price: "₹3,999.00",
       name: "boAt Stone 1200 14W Bluetooth Speaker with Upto 9 Hours Battery, RGB LEDs, IPX7 and TWS Feature(Blue)",
       category: "electronics",
-      value: "3,999",
-      accValue: "3999",
-      discount: "-43%",
       mrp: "₹6,990.00",
       points: [
         "It delivers a powerful 14W stereo sound for a complete immersive experience.",
@@ -369,9 +327,6 @@ const productsData = [
       name: "Interiocrafts Cast Iron Degchi Style Dhoop and Tealight Candle Holder",
       category: "home",
       subCategory: "bottle",
-      value: "699",
-      accValue: "699",
-      discount: "-53%",
       mrp: "₹1,499",
       points: [
         "✔ It can be used as a dhoop dani with the lid on and candle holder with votive stand. A perfect item for your pooja mandir.",
@@ -394,9 +349,6 @@ const productsData = [
       price: "₹499.00",
       name: "Urban Born Cast Iron Metal Flower vase for Home Decor and Living Room Vintage Antique Decor (Gold, 15 x 15 x 15 cm)",
       category: "home",
-      value: "499",
-      accValue: "499",
-      discount: "-50%",
       mrp: "₹1,000.00",
       points: [
         "This flower vase is made from one Piece of Iron with unique Decorative design.",
@@ -419,9 +371,6 @@ const productsData = [
       price: "₹999.00",
       name: "Livpure Smart Solid Window Polyester 5 feet Curtains with tieback( Beige ) Set",
       category: "home",
-      value: "999",
-      accValue: "999",
-      discount: "-33%",
       mrp: "₹1,499.00",
       points: [
         "Color: Beige Size: 5 Feet Material: Polyester Package Contents: 2 Window Curtains Attached tiebacks: Yes (Velcro) Window Curtain Dimensions: 152.4 x 132 CM. | 60 x 52 INCH",
@@ -444,9 +393,6 @@ const productsData = [
       price: "₹1,399.00",
       name: "NEW LEAF 220 GSM All-Season Printed Super Soft Light Weight Cotton Comforter Set with 1 Bedsheet 2 Pillow Covers (Double, Blue, Orange) -4 Pieces",
       category: "home",
-      value: "1,399",
-      accValue: "1399",
-      discount: "-72%",
       mrp: "₹4,999.00",
       points: [
         "The king size quilt set includes - 1pc Bedsheet 1 quilt (100 inch x 90 inch), 2pcs cover ( 18 inch x 28 inch)",
@@ -469,9 +415,6 @@ const productsData = [
       price: "₹329.00",
       name: "Kaameri Bazaar Bronze Color Metal Bird cage Tea Light Holder with Butter Pot tealight Glass for Home Décor",
       category: "home",
-      value: "329",
-      accValue: "329",
-      discount: "-63%",
       mrp: "₹899.00",
       points: [
         "This Diwali Light Your home with this beautiful Bird Cage Tealight Holder",
@@ -494,9 +437,6 @@ const productsData = [
       price: "₹549.00",
       name: "The Vintage Artefacts Donut White, Ceramic Pot and vase Handcrafted, Round Shaped (vase)",
       category: "home",
-      value: "549",
-      accValue: "549",
-      discount: "-63%",
       mrp: "₹1,499.00",
       points: [
         "This Diwali Light Your home with this beautiful Bird Cage Tealight Holder",
@@ -519,9 +459,6 @@ const productsData = [
       price: "₹1,499.00",
       name: "JH Gallery Handcrafted and Emboss Painted Colorful Wood Elephant Shape Garden Table (8 Inches Height, Red)",
       category: "home",
-      value: "1,499",
-      accValue: "1499",
-      discount: "-44%",
       mrp: "₹1,499.00",
       points: [
         "JH Gallery Presents Hand crafted Or Hand Painted decorative wooden small Elephant Stool Multicolored which widely used in worldwide to decor balcony, office stool, living room, side table. It is traditional item made up of mango wood and MDF also.",
@@ -545,9 +482,6 @@ const productsData = [
       name: "EcoVase (Recycled Glass)",
       category: "home",
       subCategory: "vase",
-      value: "799",
-      accValue: "799",
-      discount: "-20%",
       mrp: "₹999.00",
       points: [
         "Made from 100% recycled glass",

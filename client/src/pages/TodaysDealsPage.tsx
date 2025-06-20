@@ -26,16 +26,14 @@ const TodaysDealsPage = () => {
   );
 
   const sortedDeals = [...filteredDeals].sort((a, b) => {
-    switch (sortBy) {
-      case 'discount':
-        // Sort by discount if available, otherwise 0
-        const discountA = a.discount ? parseInt(String(a.discount).replace(/[-%]/g, '')) : 0;
-        const discountB = b.discount ? parseInt(String(b.discount).replace(/[-%]/g, '')) : 0;
-        return discountB - discountA;
-      case 'price':
-        return parseFloat(a.price.replace(/[^0-9.]/g, '')) - parseFloat(b.price.replace(/[^0-9.]/g, ''));
-      default:
-        return 0;
+    if (sortBy === 'discount') {
+      const discountA = (a.price && a.mrp) ? Math.round((parseFloat(a.mrp.replace(/[^0-9.]/g, '')) - parseFloat(a.price.replace(/[^0-9.]/g, ''))) / parseFloat(a.mrp.replace(/[^0-9.]/g, '')) * 100) : 0;
+      const discountB = (b.price && b.mrp) ? Math.round((parseFloat(b.mrp.replace(/[^0-9.]/g, '')) - parseFloat(b.price.replace(/[^0-9.]/g, ''))) / parseFloat(b.mrp.replace(/[^0-9.]/g, '')) * 100) : 0;
+      return discountB - discountA;
+    } else if (sortBy === 'price') {
+      return parseFloat(a.price.replace(/[^0-9.]/g, '')) - parseFloat(b.price.replace(/[^0-9.]/g, ''));
+    } else {
+      return 0;
     }
   });
 

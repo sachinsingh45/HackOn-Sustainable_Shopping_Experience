@@ -9,8 +9,6 @@ interface Product {
   _id: string;
   name: string;
   price: string;
-  value: string;
-  accValue: number;
   image?: string;
   url: string;
   rating?: number;
@@ -21,7 +19,6 @@ interface Product {
   groupBuyEligible?: boolean;
   prime?: boolean;
   mrp?: string;
-  discount?: string;
   category?: string;
   outOfStock?: boolean;
   unitsInStock?: number;
@@ -52,10 +49,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     }
   };
 
-  const discount = product.discount
-    ? parseInt(String(product.discount).replace(/[-%]/g, ''))
-    : 0;
-  const price = parseFloat(product.price.replace(/[^0-9.]/g, ''));
+  // Calculate discount percentage if both price and mrp exist
+  let discountPercent = 0;
+  if (product.price && product.mrp) {
+    const price = parseFloat(product.price.replace(/[^0-9.]/g, ''));
+    const mrp = parseFloat(product.mrp.replace(/[^0-9.]/g, ''));
+    if (mrp > price) {
+      discountPercent = Math.round(((mrp - price) / mrp) * 100);
+    }
+  }
 
   return (
     <Link to={`/product/${product._id}`} className="block group">
@@ -84,9 +86,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 <Users className="w-4 h-4 mr-1" /> Group Buy
               </span>
             )}
-            {(product.discount || '').length > 0 && (
+            {/* Discount badge if applicable */}
+            {discountPercent > 0 && (
               <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full shadow-md">
-                {product.discount}
+                {discountPercent}% OFF
               </span>
             )}
             {/* Out of Stock Badge */}

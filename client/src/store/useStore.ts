@@ -5,8 +5,6 @@ interface Product {
   _id: string;
   name: string;
   price: string;
-  value: string;
-  accValue: number;
   image: string;
   url: string;
   category: string;
@@ -20,6 +18,7 @@ interface Product {
   description?: string;
   features?: string[];
   points: string[];
+  mrp?: string;
 }
 
 interface CartItem {
@@ -239,21 +238,8 @@ export const useStore = create<Store>((set, get) => ({
     try {
       set({ loading: true, error: null });
       const products = await productsAPI.getAllProducts();
-      
-      // Enhance products with eco data
-      const enhancedProducts = products.map((product: any) => ({
-        ...product,
-        // Do not override rating or reviews, use backend values
-        isEcoFriendly: Math.random() > 0.6,
-        groupBuyEligible: Math.random() > 0.7,
-        category: product.category || 'General',
-        price: product.price || '₹0',
-        value: product.value || '0',
-        accValue: product.accValue || 0,
-        _id: product._id
-      }));
-      
-      set({ products: enhancedProducts });
+      // Use only backend values, do not override or randomize any fields
+      set({ products });
     } catch (error: any) {
       set({ error: 'Failed to fetch products' });
       console.error('Error fetching products:', error);

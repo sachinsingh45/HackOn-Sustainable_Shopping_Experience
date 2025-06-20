@@ -3,11 +3,7 @@ const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
   url: String,
-  resUrl: String,
   price: String,
-  value: String,
-  accValue: Number,
-  discount: String,
   mrp: String,
   name: String,
   category: {
@@ -43,15 +39,13 @@ const productSchema = new mongoose.Schema({
   },
   groupBuyEligible: {
     type: Boolean,
-    default: false
+    default: true
   },
-  // Number of units currently in stock
   unitsInStock: {
     type: Number,
     default: 0,
     min: 0
   },
-  // Number of units sold
   unitsSold: {
     type: Number,
     default: 0,
@@ -59,7 +53,6 @@ const productSchema = new mongoose.Schema({
   }
 });
 
-// Virtual field for out of stock status
 productSchema.virtual('outOfStock').get(function() {
   return this.unitsSold >= this.unitsInStock;
 });
