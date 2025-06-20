@@ -167,7 +167,7 @@ const ProductPage = () => {
     );
   }
 
-  const images = [product.image || product.url, product.image || product.url, product.image || product.url];
+  const images = [product.url, product.url, product.url];
   const ecoAlternatives = [
     { name: 'Eco-friendly version', price: parseFloat(product.price.replace(/[^0-9.]/g, '')) + 200, savings: '2.5 kg CO₂' },
     { name: 'Recycled material option', price: parseFloat(product.price.replace(/[^0-9.]/g, '')) + 150, savings: '1.8 kg CO₂' }

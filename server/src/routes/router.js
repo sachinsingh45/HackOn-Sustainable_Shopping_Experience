@@ -207,7 +207,7 @@ router.delete("/delete/:id", authenticate, async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findById(req.userId);
-    user.cart = user.cart.filter(item => item.id != id);
+    user.cart = user.cart.filter(item => String(item.cartItem._id) !== String(id));
     await user.save();
 
     res.status(201).json({ status: true, message: "Item deleted successfully" });

@@ -173,7 +173,7 @@ export const useStore = create<Store>((set, get) => ({
       if (response.status) {
         // Fetch user data after successful login
         const userData = await authAPI.getAuthUser();
-        set({ user: userData, cart: userData.cart || [] });
+        set({ user: userData, cart: (userData.cart || []).map(item => ({ ...item, id: item.cartItem?._id })) });
         return true;
       }
       return false;
@@ -228,7 +228,7 @@ export const useStore = create<Store>((set, get) => ({
   checkAuth: async () => {
     try {
       const userData = await authAPI.getAuthUser();
-      set({ user: userData, cart: userData.cart || [] });
+      set({ user: userData, cart: (userData.cart || []).map(item => ({ ...item, id: item.cartItem?._id })) });
     } catch (error) {
       set({ user: null, cart: [] });
     }
@@ -243,12 +243,10 @@ export const useStore = create<Store>((set, get) => ({
       // Enhance products with eco data
       const enhancedProducts = products.map((product: any) => ({
         ...product,
-        rating: Math.random() * 2 + 3, // Random rating between 3-5
-        reviews: Math.floor(Math.random() * 5000) + 100,
+        // Do not override rating or reviews, use backend values
         isEcoFriendly: Math.random() > 0.6,
         groupBuyEligible: Math.random() > 0.7,
         category: product.category || 'General',
-        image: product.url || 'https://images.pexels.com/photos/1029236/pexels-photo-1029236.jpeg',
         price: product.price || '₹0',
         value: product.value || '0',
         accValue: product.accValue || 0,
@@ -299,7 +297,7 @@ export const useStore = create<Store>((set, get) => ({
       set({ loading: true, error: null });
       const response = await cartAPI.addToCart(productId);
       const userData = await authAPI.getAuthUser();
-      set({ user: userData, cart: userData.cart || [] });
+      set({ user: userData, cart: (userData.cart || []).map(item => ({ ...item, id: item.cartItem?._id })) });
     } catch (error: any) {
       set({ error: error.response?.data?.message || 'Failed to add to cart' });
     } finally {
@@ -312,7 +310,7 @@ export const useStore = create<Store>((set, get) => ({
       set({ loading: true, error: null });
       await cartAPI.removeFromCart(productId);
       const userData = await authAPI.getAuthUser();
-      set({ user: userData, cart: userData.cart || [] });
+      set({ user: userData, cart: (userData.cart || []).map(item => ({ ...item, id: item.cartItem?._id })) });
     } catch (error: any) {
       set({ error: error.response?.data?.message || 'Failed to remove from cart' });
     } finally {
@@ -325,7 +323,7 @@ export const useStore = create<Store>((set, get) => ({
       set({ loading: true, error: null });
       await cartAPI.updateCartQuantity(productId, quantity);
       const userData = await authAPI.getAuthUser();
-      set({ user: userData, cart: userData.cart || [] });
+      set({ user: userData, cart: (userData.cart || []).map(item => ({ ...item, id: item.cartItem?._id })) });
     } catch (error: any) {
       set({ error: error.response?.data?.message || 'Failed to update quantity' });
     } finally {

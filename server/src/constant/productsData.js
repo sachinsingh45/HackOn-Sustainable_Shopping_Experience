@@ -1,7 +1,5 @@
 const productsData = [
     {
-      url: "images/products/1.jpg",
-      resUrl: "../images/products/1res.jpg",
       price: "₹61,990.00",
       value: "61,990",
       accValue: "61990",
@@ -24,16 +22,15 @@ const productsData = [
       carbonFootprint: 1.8,
       ecoScore: 72,
       isEcoFriendly: true,
-      groupBuyEligible: false
+      groupBuyEligible: false,
+      url: "https://intechcomputershop.co.ke/wp-content/uploads/2021/04/3.jpg"
     },
     {
-      url: "images/products/2.jpg",
-      resUrl: "../images/products/2res.jpg",
+      url: "https://m.media-amazon.com/images/I/41kB+EVgx7L._AC_.jpg",
       price: "₹39,499.00",
       name: "Samsung Galaxy S20 FE 5G (Cloud Navy, 8GB RAM, 128GB Storage) with No Cost EMI & Additional Exchange Offers",
       category: "electronics",
       subCategory: "mobile",
-      resUrl: "../images/products/2res.jpg",
       value: "39,499",
       accValue: "39499",
       discount: "-47%",
@@ -52,16 +49,14 @@ const productsData = [
       carbonFootprint: 2.9,
       ecoScore: 55,
       isEcoFriendly: false,
-      groupBuyEligible: true
-    },
+      groupBuyEligible: true,
+      },
     {
-      url: "images/products/2.jpg",
-      resUrl: "../images/products/2res.jpg",
+      url: "https://m.media-amazon.com/images/I/41kB+EVgx7L._AC_.jpg",
       price: "₹39,499.00",
       name: "Samsung Galaxy S10 FE 5G (Cloud Navy, 8GB RAM, 128GB Storage) with No Cost EMI & Additional Exchange Offers",
       category: "electronics",
       subCategory: "mobile",
-      resUrl: "../images/products/2res.jpg",
       value: "39,499",
       accValue: "39499",
       discount: "-47%",
@@ -80,15 +75,14 @@ const productsData = [
       carbonFootprint: 2.9,
       ecoScore: 95,
       isEcoFriendly: true,
-      groupBuyEligible: true
-    },
+      groupBuyEligible: true,
+      },
     {
-      url: "images/products/3.jpg",
+      url: "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MWP22?wid=2000&hei=2000&fmt=jpeg&qlt=95&.v=1591634795000",
       price: "₹21,900.00",
       name: "New Apple AirPods Pro with MagSafe Charging Case",
       category: "electronics",
       subCategory: "earbuds",
-      resUrl: "../images/products/3res.jpg",
       value: "21,900",
       accValue: "21900",
       discount: "-12%",
@@ -107,15 +101,14 @@ const productsData = [
       carbonFootprint: 0.9,
       ecoScore: 88,
       isEcoFriendly: true,
-      groupBuyEligible: true
+      groupBuyEligible: true,
     },
     {
-      url: "images/products/4.jpg",
+      url: "https://www.boat-lifestyle.com/cdn/shop/products/airdopes-121-v2-black_600x.png",
       price: "₹1,299.00",
       name: "boAt Airdopes 121v2 True Wireless Earbuds with Upto 14 Hours Playback, Lightweight Earbuds, 8MM Drivers, LED Indicators and Multifunction Controls(Active Black)",
       category: "electronics",
       subCategory: "earbuds",
-      resUrl: "../images/products/4res.jpg",
       value: "1,299",
       accValue: "1299",
       discount: "-57%",
@@ -134,15 +127,16 @@ const productsData = [
       carbonFootprint: 3.2,
       ecoScore: 61,
       isEcoFriendly: false,
-      groupBuyEligible: false
+      groupBuyEligible: false,
+      
     },
     {
+      url: "https://n2.sdlcdn.com/imgs/h/4/t/Classic-Mosquito-Net-Double-White-SDL259042301-1-83dbf.JPG",
       id: "5",
       price: "₹999.00",
       name: "Classic Mosquito Net for Double Bed, Embroidery, King Size, Polyester, Strong 30GSM, PVC Coated Steel (L200cm X W200cm X H145cm) Foldable for Double Bed - King Size, Blue",
       category: "home",
       subCategory: "mosquito net",
-      resUrl: "../images/products/5res.jpg",
       value: "999",
       accValue: "999",
       discount: "-50%",
@@ -161,15 +155,14 @@ const productsData = [
       carbonFootprint: 1.8,
       ecoScore: 72,
       isEcoFriendly: true,
-      groupBuyEligible: false
-    },
+      groupBuyEligible: false,
+      },
     {
-      url: "images/products/6.jpg",
+      url: "https://cdn.shopify.com/s/files/1/0082/1169/3639/products/Charcoal_Volt_Green.jpg?v=1585904670",
       price: "₹2,097.00",
       name: "crocs Unisex-Adult Bayaband Clog",
       category: "fashion",
       subCategory: "clogs",
-      resUrl: "../images/products/6res.jpg",
       value: "2,097",
       accValue: "2097",
       discount: "-40%",
@@ -188,15 +181,14 @@ const productsData = [
       carbonFootprint: 1.8,
       ecoScore: 72,
       isEcoFriendly: true,
-      groupBuyEligible: false
+      groupBuyEligible: false,
     },
     {
-      url: "images/products/7.jpg",
+      url: "https://5.imimg.com/data5/SELLER/Default/2023/3/LK/LT/FO/181458004/indo-era-women-s-pure-cotton-solid-straight-kurta-palazzo-with-dupatta-set-500x500.jpg",
       price: "₹1,619.00",
       name: "INDO ERA Women's Viscose Embroidered Straight Kurta Palazzo With Dupatta Set",
       category: "fashion",
       subCategory: "kurta",
-      resUrl: "../images/products/7res.jpg",
       value: "1,619",
       accValue: "1619",
       discount: "-60%",
@@ -213,15 +205,16 @@ const productsData = [
       carbonFootprint: 1.8,
       ecoScore: 72,
       isEcoFriendly: true,
-      groupBuyEligible: false
+      groupBuyEligible: false,
+      
     },
     {
-      url: "images/products/8.jpg",
+      
+      url: "https://stylesatlife.com/wp-content/uploads/2022/12/QUBO-Smart-Cam-360-1080p-Full-HD-Wi-Fi-Security-Camera-1.png",
       price: "₹2,884.00",
       name: "QUBO Smart Cam 360 | 1080p Full HD Wi-Fi Camera | Trust of Hero Group | 360° Deg Coverage with Pan & Tilt | Intruder Alarm | Full Color in Low Light | Two Way Talk | Alexa & OK Google | Made in India",
       category: "electronics",
       subCategory: "camera",
-      resUrl: "../images/products/8res.jpg",
       value: "2,884",
       accValue: "2884",
       discount: "-28%",
@@ -240,15 +233,14 @@ const productsData = [
       carbonFootprint: 1.8,
       ecoScore: 40,
       isEcoFriendly: true,
-      groupBuyEligible: false
+      groupBuyEligible: false,
     },
     {
-      url: "images/products/9.jpg",
+      url: "https://m.media-amazon.com/images/I/61bzCB3GfEL._UL1163_.jpg",
       price: "₹1,299.00",
       name: "TIMEX Analog Men's Watch",
       category: "fashion",
       subCategory: "watch",
-      resUrl: "../images/products/9res.jpg",
       value: "1,299",
       accValue: "1299",
       discount: "-19%",
@@ -267,15 +259,14 @@ const productsData = [
       carbonFootprint: 1.8,
       ecoScore: 72,
       isEcoFriendly: true,
-      groupBuyEligible: false
+      groupBuyEligible: false,
     },
     {
-      url: "images/products/10.jpg",
+      url: "https://images-na.ssl-images-amazon.com/images/I/51nVf7oJVxL.jpg",
       price: "₹429.00",
       name: "Yogabar Dark Chocolate & Cranberry Muesli 700g - Breakfast Cereal with 83% Nuts & Seeds, Dried Fruits, & Whole Grains - Vegan & Gluten Free Snack",
       category: "beauty",
       subCategory: "muesli",
-      resUrl: "../images/products/10res.jpg",
       value: "429",
       accValue: "429",
       discount: "-14%",
@@ -297,12 +288,11 @@ const productsData = [
       groupBuyEligible: false
     },
     {
-      url: "images/products/11.jpg",
+      url: "https://m.media-amazon.com/images/I/41D9lUq1wmL.jpg",
       price: "₹358.00",
       name: "Integriti Men Sweatshirt",
       category: "fashion",
       subCategory: "sweatshirt",
-      resUrl: "../images/products/11res.jpg",
       value: "358",
       accValue: "358",
       discount: "-86%",
@@ -324,11 +314,10 @@ const productsData = [
       groupBuyEligible: false
     },
     {
-      url: "images/products/12.jpg",
+      url: "https://m.media-amazon.com/images/I/613QQUEWx0L._SL1500_.jpg",
       price: "₹630.00",
       name: "Harpa Synthetic a-line Dress (GR5759_Navy_Small)",
       category: "fashion",
-      resUrl: "../images/products/12res.jpg",
       value: "630",
       accValue: "630",
       discount: "-70%",
@@ -350,11 +339,10 @@ const productsData = [
       groupBuyEligible: false
     },
     {
-      url: "images/products/13.jpg",
+      url: "https://catalog.eyantra.com/wp-content/uploads/2023/03/boAt-Stone-1200-14W-Bluetooth-Speaker_3.jpg",
       price: "₹3,999.00",
       name: "boAt Stone 1200 14W Bluetooth Speaker with Upto 9 Hours Battery, RGB LEDs, IPX7 and TWS Feature(Blue)",
       category: "electronics",
-      resUrl: "../images/products/13res.jpg",
       value: "3,999",
       accValue: "3999",
       discount: "-43%",
@@ -376,16 +364,15 @@ const productsData = [
       groupBuyEligible: false
     },
     {
+      url: "https://5.imimg.com/data5/ECOM/Default/2022/12/DR/MX/EG/31800535/1667375902874-5-25-71iv7o6nhl-sx679-originnm80prcnt-500x500.jpg",
       price: "₹699.00",
+      name: "Interiocrafts Cast Iron Degchi Style Dhoop and Tealight Candle Holder",
+      category: "home",
+      subCategory: "bottle",
       value: "699",
       accValue: "699",
       discount: "-53%",
       mrp: "₹1,499",
-      url: "images/products/14.jpg",
-      category: "home",
-      subCategory: "bottle",
-      resUrl: "../images/products/14res.jpg",
-      name: "Interiocrafts Cast Iron Degchi Style Dhoop and Tealight Candle Holder",
       points: [
         "✔ It can be used as a dhoop dani with the lid on and candle holder with votive stand. A perfect item for your pooja mandir.",
         "✔ The chic functionality of this beautiful votive candle and dhoop holder is inimitable.",
@@ -403,11 +390,10 @@ const productsData = [
       groupBuyEligible: false
     },
     {
+      url: "https://i.pinimg.com/originals/bf/e3/f3/bfe3f37a93bffcb17b53edf6f51b6bc4.jpg",
       price: "₹499.00",
-      url: "images/products/15.jpg",
       name: "Urban Born Cast Iron Metal Flower vase for Home Decor and Living Room Vintage Antique Decor (Gold, 15 x 15 x 15 cm)",
       category: "home",
-      resUrl: "../images/products/15res.jpg",
       value: "499",
       accValue: "499",
       discount: "-50%",
@@ -429,11 +415,10 @@ const productsData = [
       groupBuyEligible: false
     },
     {
+      url: "https://images.nexusapp.co/assets/18/32/75/323365961.jpg",
       price: "₹999.00",
-      url: "images/products/16.jpg",
       name: "Livpure Smart Solid Window Polyester 5 feet Curtains with tieback( Beige ) Set",
       category: "home",
-      resUrl: "../images/products/16res.jpg",
       value: "999",
       accValue: "999",
       discount: "-33%",
@@ -455,11 +440,10 @@ const productsData = [
       groupBuyEligible: false
     },
     {
+      url: "https://i.pinimg.com/originals/a9/c1/50/a9c150a6b489e224f5031924f9d92a67.jpg",
       price: "₹1,399.00",
-      url: "images/products/17.jpg",
       name: "NEW LEAF 220 GSM All-Season Printed Super Soft Light Weight Cotton Comforter Set with 1 Bedsheet 2 Pillow Covers (Double, Blue, Orange) -4 Pieces",
       category: "home",
-      resUrl: "../images/products/17res.jpg",
       value: "1,399",
       accValue: "1399",
       discount: "-72%",
@@ -481,11 +465,10 @@ const productsData = [
       groupBuyEligible: false
     },
     {
+      url: "https://5.imimg.com/data5/SELLER/Default/2022/3/NK/PI/ON/78222702/metal-bird-cage-tea-light-holder-500x500.jpg",
       price: "₹329.00",
-      url: "images/products/18.jpg",
       name: "Kaameri Bazaar Bronze Color Metal Bird cage Tea Light Holder with Butter Pot tealight Glass for Home Décor",
       category: "home",
-      resUrl: "../images/products/18res.jpg",
       value: "329",
       accValue: "329",
       discount: "-63%",
@@ -507,11 +490,10 @@ const productsData = [
       groupBuyEligible: false
     },
     {
+      url: "https://i.etsystatic.com/29151770/r/il/06c810/3068644800/il_1588xN.3068644800_hp1f.jpg",
       price: "₹549.00",
-      url: "images/products/19.jpg",
       name: "The Vintage Artefacts Donut White, Ceramic Pot and vase Handcrafted, Round Shaped (vase)",
       category: "home",
-      resUrl: "../images/products/19res.jpg",
       value: "549",
       accValue: "549",
       discount: "-63%",
@@ -533,11 +515,10 @@ const productsData = [
       groupBuyEligible: false
     },
     {
+      url: "https://m.media-amazon.com/images/I/71DTATufc3L._AC_.jpg",
       price: "₹1,499.00",
-      url: "images/products/20.jpg",
       name: "JH Gallery Handcrafted and Emboss Painted Colorful Wood Elephant Shape Garden Table (8 Inches Height, Red)",
       category: "home",
-      resUrl: "../images/products/20res.jpg",
       value: "1,499",
       accValue: "1499",
       discount: "-44%",
@@ -559,12 +540,11 @@ const productsData = [
       groupBuyEligible: false
     },
     {
-      url: "images/products/29.jpg",
+      url: "https://i.pinimg.com/originals/f5/e3/16/f5e3162900b6a0ef86cd5b97ccca31fb.png",
       price: "₹799.00",
       name: "EcoVase (Recycled Glass)",
       category: "home",
       subCategory: "vase",
-      resUrl: "../images/products/29res.jpg",
       value: "799",
       accValue: "799",
       discount: "-20%",

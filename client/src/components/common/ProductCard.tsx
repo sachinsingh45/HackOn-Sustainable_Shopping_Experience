@@ -52,7 +52,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     }
   };
 
-  const discount = product.discount ? parseInt(product.discount.replace(/[-%]/g, '')) : 0;
+  const discount = product.discount
+    ? parseInt(String(product.discount).replace(/[-%]/g, ''))
+    : 0;
   const price = parseFloat(product.price.replace(/[^0-9.]/g, ''));
 
   return (
@@ -63,9 +65,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       >
         <div className="relative">
           <img
-            src={product.image || product.url}
+            src={product.url || 'https://images.pexels.com/photos/1029236/pexels-photo-1029236.jpeg?auto=compress&cs=tinysrgb&w=400'}
             alt={product.name || ''}
-            className="w-full h-40 sm:h-52 object-cover transition-transform duration-300 group-hover:scale-105"
+            className="w-full aspect-square h-40 sm:h-52 object-contain p-4 bg-white transition-transform duration-300 group-hover:scale-105"
             onError={(e) => {
               (e.target as HTMLImageElement).src = 'https://images.pexels.com/photos/1029236/pexels-photo-1029236.jpeg?auto=compress&cs=tinysrgb&w=400';
             }}

@@ -18,14 +18,8 @@ const TodaysDealsPage = () => {
     { id: 'sports', name: 'Sports', icon: TrendingUp, color: 'bg-orange-500' }
   ];
 
-  // Mock deals data with discounts
-  const deals = products.map(product => ({
-    ...product,
-    originalPrice: Math.round(parseFloat(product.price.replace(/[^0-9.]/g, '')) * 1.3),
-    discount: Math.floor(Math.random() * 40) + 20, // 20-60% discount
-    timeLeft: Math.floor(Math.random() * 24) + 1, // 1-24 hours left
-    soldCount: Math.floor(Math.random() * 1000) + 50
-  }));
+  // Use only real product data from backend
+  const deals = products;
 
   const filteredDeals = deals.filter(deal => 
     selectedCategory === 'all' || deal.category?.toLowerCase() === selectedCategory
@@ -34,11 +28,12 @@ const TodaysDealsPage = () => {
   const sortedDeals = [...filteredDeals].sort((a, b) => {
     switch (sortBy) {
       case 'discount':
-        return b.discount - a.discount;
+        // Sort by discount if available, otherwise 0
+        const discountA = a.discount ? parseInt(String(a.discount).replace(/[-%]/g, '')) : 0;
+        const discountB = b.discount ? parseInt(String(b.discount).replace(/[-%]/g, '')) : 0;
+        return discountB - discountA;
       case 'price':
         return parseFloat(a.price.replace(/[^0-9.]/g, '')) - parseFloat(b.price.replace(/[^0-9.]/g, ''));
-      case 'time':
-        return a.timeLeft - b.timeLeft;
       default:
         return 0;
     }
@@ -81,7 +76,6 @@ const TodaysDealsPage = () => {
               >
                 <option value="discount">Sort by Discount</option>
                 <option value="price">Sort by Price</option>
-                <option value="time">Sort by Time Left</option>
               </select>
             </div>
           </div>
@@ -149,74 +143,9 @@ const TodaysDealsPage = () => {
         </div>
 
         {/* Deals Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {sortedDeals.slice(0, 12).map((deal, index) => (
-            <motion.div
-              key={deal._id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
-            >
-              {/* Discount Badge */}
-              <div className="relative">
-                <img
-                  src={deal.image || deal.url}
-                  alt={deal.name}
-                  className="w-full h-48 object-cover"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = 'https://images.pexels.com/photos/1029236/pexels-photo-1029236.jpeg?auto=compress&cs=tinysrgb&w=400';
-                  }}
-                />
-                <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded-lg text-sm font-bold">
-                  -{deal.discount}%
-                </div>
-                <div className="absolute top-2 right-2 bg-black bg-opacity-70 text-white px-2 py-1 rounded-lg text-xs">
-                  {deal.timeLeft}h left
-                </div>
-              </div>
-
-              <div className="p-4">
-                <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
-                  {deal.name}
-                </h3>
-                
-                <div className="flex items-center space-x-2 mb-3">
-                  <div className="flex items-center">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`w-4 h-4 ${
-                          i < Math.floor(Math.random() * 3) + 3
-                            ? 'text-yellow-400 fill-current'
-                            : 'text-gray-300'
-                        }`}
-                      />
-                    ))}
-                  </div>
-                  <span className="text-sm text-gray-600">({deal.soldCount})</span>
-                </div>
-
-                <div className="flex items-center space-x-2 mb-3">
-                  <span className="text-2xl font-bold text-gray-900">
-                    ₹{deal.price}
-                  </span>
-                  <span className="text-lg text-gray-500 line-through">
-                    ₹{deal.originalPrice}
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <Truck className="w-4 h-4" />
-                    <span>Free delivery</span>
-                  </div>
-                  <button className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors text-sm font-medium">
-                    Add to Cart
-                  </button>
-                </div>
-              </div>
-            </motion.div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+          {sortedDeals.slice(0, 12).map((deal) => (
+            <ProductCard key={deal._id} product={deal} />
           ))}
         </div>
 

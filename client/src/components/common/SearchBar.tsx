@@ -73,7 +73,7 @@ const SearchBar = () => {
                 >
                   <div className="flex items-center space-x-2 sm:space-x-3">
                     <img
-                      src={product.image || product.url}
+                      src={product.url || 'https://images.pexels.com/photos/1029236/pexels-photo-1029236.jpeg?auto=compress&cs=tinysrgb&w=50'}
                       alt={product.name}
                       className="w-6 h-6 sm:w-8 sm:h-8 object-cover rounded"
                       onError={(e) => {

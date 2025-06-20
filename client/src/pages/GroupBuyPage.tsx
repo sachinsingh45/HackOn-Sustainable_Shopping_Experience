@@ -201,7 +201,7 @@ const GroupBuyPage = () => {
               {/* Product Image */}
               <div className="relative">
                 <img
-                  src={group.image || group.url}
+                  src={group.url || 'https://images.pexels.com/photos/1029236/pexels-photo-1029236.jpeg?auto=compress&cs=tinysrgb&w=400'}
                   alt={group.name}
                   className="w-full h-48 object-cover"
                   onError={(e) => {
