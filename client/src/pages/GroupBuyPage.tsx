@@ -1,28 +1,80 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
+import {Link} from 'react-router-dom';
+import Avatar from 'react-avatar';
 import { motion } from 'framer-motion';
-import { 
-  Users, 
-  TrendingDown, 
-  Clock, 
-  Target, 
-  CheckCircle, 
-  Plus, 
-  Share2, 
-  MessageCircle,
-  Calendar,
-  DollarSign,
-  Package,
-  Star,
-  ArrowRight,
-  Leaf,
-  Zap
-} from 'lucide-react';
+import { Users, TrendingDown, Clock, Target, CheckCircle, Plus, Share2, MessageCircle,Calendar,DollarSign,Package,Star,ArrowRight,Leaf,Zap } from 'lucide-react';
 import { useStore } from '../store/useStore';
+
+import { api } from "../services/api";
 
 const GroupBuyPage = () => {
   const { products, user } = useStore();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('savings');
+
+  const [groupData, setGroupData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [groupName, setGroupName] = useState<string>('');
+  const [date, setDate] = useState<string>('');
+  const [groupNameError, setGroupNameError] = useState<string>('');
+
+  const handleGroupNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setGroupName(e.target.value);
+    if (groupNameError) setGroupNameError('');
+  };
+
+  const handleDateChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setDate(e.target.value);
+  };
+
+  const handleSubmit = async() => {
+    if (!groupName.trim()) {
+      setGroupNameError('Group name is required.');
+      return;
+    }
+
+    try {
+      setIsLoading(true); // Set loading when submitting
+      const response = await api.post('/create-group', { groupName, date });
+      
+      console.log(response.data.data.PendingGroup)
+      if(response.data?.data?.PendingGroup) {
+        setGroupData(response.data.data.PendingGroup);
+      }
+
+
+      // Reset state
+      setGroupName('');
+      setDate('');
+      setGroupNameError('');
+      setIsOpen(false);
+      setIsLoading(false); // Loading complete
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false); // Loading complete even if error
+    }
+  };
+
+  const fetchGroup = async() => {
+    try {
+      setIsLoading(true); // Set loading when fetching
+      const response = await api.get('/pending-group');
+
+      console.log(response.data.data.PendingGroup)
+      if(response.data?.data?.PendingGroup) {
+        setGroupData(response.data.data.PendingGroup);
+      }
+      setIsLoading(false); // Loading complete
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false); // Loading complete even if error
+    }
+  };
+
+  useEffect(() => {
+    fetchGroup();
+  }, []);
 
   const categories = [
     { id: 'all', name: 'All Groups', icon: Users, color: 'bg-blue-500' },
@@ -189,6 +241,39 @@ const GroupBuyPage = () => {
       {/* Active Groups */}
       <div className="max-w-7xl mx-auto px-4 py-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Active Group Buys</h2>
+
+        {isLoading ? (
+          <div className="flex justify-center items-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {groupData && groupData.length > 0 ? (
+              groupData.map((data, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100"
+                >
+                  {/* Product Content */}
+                  <div className="p-4 flex flex-col h-full">
+                    {/* Avatar and Name Section */}
+                    <div className="flex items-center space-x-4 mb-4">
+                      <div className="flex-shrink-0">
+                        <Avatar 
+                          name={data?.name} 
+                          src='' 
+                          size="60" 
+                          round={true} 
+                          className="border-2 border-blue-100"
+                        />
+                      </div>
+                      <h3 className="text-lg font-bold text-gray-800 truncate">
+                        {data?.name || "Untitled Group"}
+                      </h3>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {sortedGroups.map((group, index) => (
             <motion.div
@@ -261,23 +346,46 @@ const GroupBuyPage = () => {
                     <div className="flex items-center space-x-1 text-sm text-green-600">
                       <Leaf className="w-4 h-4" />
                       <span>{group.carbonSaved}kg CO₂ saved</span>
-                    </div>
-                  )}
-                </div>
 
-                {/* Actions */}
-                <div className="flex space-x-2">
-                  <button className="flex-1 bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition-colors text-sm font-medium">
-                    Join Group
-                  </button>
-                  <button className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                    <Share2 className="w-4 h-4 text-gray-600" />
-                  </button>
-                </div>
+                    </div>
+                
+                    {/* Details Section */}
+                    <div className="space-y-2 text-sm text-gray-600 flex-grow">
+                      <div className="flex items-center">
+                        <svg className="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        <span className="font-medium">Admin:</span> {data?.admin || "Unknown"}
+                      </div>
+                      
+                      <div className="flex items-center">
+                        <svg className="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        <span className="font-medium">Members:</span> {data?.members?.length || 0}
+                      </div>
+                    </div>
+                
+                    {/* Action Button */}
+                    <Link to={`/group/${data?.name?.toLowerCase().replace(/\s+/g, '-')}/id/${data._id}`} className="mt-4 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-center rounded-lg transition-colors duration-300 text-sm font-medium">
+                      View Group
+                    </Link>
+                  </div>
+                </motion.div>
+              ))
+            ) : (
+              <div className="col-span-full text-center py-12">
+                <div className="text-gray-500 mb-4">No active group buys found</div>
+                <button 
+                  onClick={() => setIsOpen(true)}
+                  className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors"
+                >
+                  Create New Group
+                </button>
               </div>
-            </motion.div>
-          ))}
-        </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Create New Group */}
@@ -285,18 +393,75 @@ const GroupBuyPage = () => {
         <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-8 border border-green-200">
           <div className="text-center">
             <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Plus className="w-8 h-8 text-white" />
+              <Plus onClick={() => setIsOpen(true)} className="w-8 h-8 text-white" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Create Your Own Group Buy</h2>
             <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
               Can't find a group for the product you want? Start your own and invite friends to join!
             </p>
-            <button className="bg-green-500 text-white px-8 py-3 rounded-lg hover:bg-green-600 transition-colors font-semibold">
+            <button onClick={() => setIsOpen(true)} className="bg-green-500 text-white px-8 py-3 rounded-lg hover:bg-green-600 transition-colors font-semibold">
               Create New Group
             </button>
           </div>
         </div>
       </div>
+
+      {isOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-6 w-full max-w-md shadow-lg">
+            <h3 className="text-xl font-semibold mb-4">Create Group</h3>
+
+            {/* Group Name */}
+            <div className="mb-4">
+              <label className="block text-gray-700 font-medium mb-1">
+                Group Name <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                value={groupName}
+                onChange={handleGroupNameChange}
+                className={`w-full border rounded-md p-2 focus:outline-none focus:ring-2 ${
+                  groupNameError ? 'border-red-500 ring-red-300' : 'focus:ring-green-400'
+                }`}
+                placeholder="Enter group name"
+              />
+              {groupNameError && (
+                <p className="text-sm text-red-500 mt-1">{groupNameError}</p>
+              )}
+            </div>
+
+            {/* Date (Optional) */}
+            <div className="mb-4">
+              <label className="block text-gray-700 font-medium mb-1">Date (Optional)</label>
+              <input
+                type="date"
+                value={date}
+                onChange={handleDateChange}
+                className="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-400"
+              />
+            </div>
+
+            {/* Buttons */}
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                  setGroupNameError('');
+                }}
+                className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSubmit}
+                className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+              >
+                {isLoading ? 'Creating...' : 'Create'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Benefits */}
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -348,4 +513,4 @@ const GroupBuyPage = () => {
   );
 };
 
-export default GroupBuyPage; 
+export default GroupBuyPage;

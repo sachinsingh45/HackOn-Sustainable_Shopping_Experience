@@ -10,6 +10,10 @@ const axios = require("axios");
 require('dotenv').config({ path: '../../.env' });
 const COHERE_API_KEY = process.env.COHERE_API_KEY;
 
+const groupModel = require('../models/group');
+const notificationModel = require('../models/groupBuyNotification');
+const { NewGroupNotification, UpdateLocationNotification } = require('../socket/notification');
+
 // GET: All products
 router.get("/products", async (req, res) => {
   try {
@@ -360,11 +364,25 @@ router.post('/challenges/complete/:challengeId', authenticate, async (req, res) 
 // POST: Update user location
 router.post('/update-location', authenticate, async (req, res) => {
   try {
-    const { city, state, country, pin } = req.body;
-    const user = await User.findById(req.userId);
-    user.location = { city, state, country, pin };
+    const { city, state, country, pin, coor } = req.body;
+    const userId = req.userId;
+    const [latStr, lngStr] = coor.split(',');
+    const latitude = parseFloat(latStr);
+    const longitude = parseFloat(lngStr);
+
+    if (isNaN(latitude) || isNaN(longitude)) {
+      return res.status(400).json({ message: 'Invalid coordinates format' });
+    }
+
+    const user = await User.findById(userId);
+    user.location = { city, state, country, pin, coor: { type: 'Point', coordinates: [longitude, latitude] } };
     await user.save();
-    res.status(200).json({ status: true, message: 'Location updated', location: user.location });
+
+    await UpdateLocationNotification({ userId, latitude, longitude, pin });
+
+    let notification = await notificationModel.find({ receiver: userId, isRead: false });
+
+    res.status(200).json({ status: true, message: 'Location updated', location: user.location, notification: notification });
   } catch (error) {
     res.status(500).json({ status: false, message: 'Failed to update location' });
   }
@@ -642,6 +660,7 @@ router.get('/leaderboard', async (req, res) => {
     res.status(500).json({ status: false, message: 'Failed to fetch leaderboard' });
   }
 });
+
 
 // POST: Check and complete challenges for existing orders
 router.post('/challenges/check-completion', authenticate, async (req, res) => {
@@ -1109,5 +1128,174 @@ router.post('/chat', async (req, res) => {
     res.status(500).json({ reply: "Something went wrong.", intent: null, error: err.stack });
   }
 });
+
+
+
+
+router.post('/create-group', authenticate, async(req, res) => {
+  try {
+    const userId = req.userId;
+    const rootUser = req.rootUser;
+    const { groupName, date } = req.body;
+
+    let data = new groupModel({ name: groupName, date: date, members: [{ userId: userId, item: [] }] });
+    data = await data.save();
+
+    await User.findByIdAndUpdate( userId, { $addToSet: { PendingGroup: data._id } } );
+
+    const [lng, lat] = rootUser.location.coor.coordinates;
+    const pin = rootUser.location.pin;
+    await NewGroupNotification({ sender: rootUser, groupId: data._id, latitude: lat, longitude: lng, pincode: pin,  message: `${rootUser.name} created a new group near you!` });
+
+    data = await User.findById(userId).populate({
+      path: 'PendingGroup',
+      populate: [ 
+        { path: 'members.userId', model: 'users' },
+        { path: 'members.item.product', model: 'products' }
+      ]
+    });
+
+    res.status(200).json({ status: true, message: 'Group created successfully', data: data });
+  } catch (error) {
+    res.status(500).json({ status: false, message: 'Failed to create group' });
+  }
+});
+
+
+router.post('/join-group/:groudId', authenticate, async(req, res) => {
+  try {
+    const userId = req.userId;
+    const { groupId } = req.params;
+
+    await groupModel.findByIdAndUpdate( groupId, { $addToSet: { members: { userId: userId, item: [] } } }, { new: true })
+    await User.findByIdAndUpdate( userId, { $addToSet: { PendingGroup: groupId } } );
+
+    res.status(200).json({ status: true, message: 'Group joined successfully' });
+  } catch (error) {
+    res.status(500).json({ status: false, message: 'Failed to join group' });
+  }
+});
+
+
+router.post('/exit-group/:groupId', authenticate, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { groupId } = req.params;
+
+    // 1. Remove user from group.members
+    await groupModel.findByIdAndUpdate( groupId, { $pull: { members: { userId: userId } } } );
+
+    // 2. Remove groupId from user's PendingGroup list
+    await User.findByIdAndUpdate( userId, { $pull: { PendingGroup: groupId } } );
+
+    res.status(200).json({ status: true, message: 'Exited group successfully' });
+  } catch (error) {
+    res.status(500).json({ status: false, message: 'Failed to exit group', error: error.message });
+  }
+});
+
+
+router.put('/update-group/:groupId', authenticate, async (req, res) => {
+  try {
+    const { groupId } = req.params;
+    const { groupName, date } = req.body;
+
+    const updatedGroup = await groupModel.findByIdAndUpdate( groupId,
+      { $set: { name: groupName, date: date } },
+      { new: true }
+    );
+
+    res.status(200).json({ status: true, message: 'Group updated successfully', data: updatedGroup  });
+  } catch (error) {
+    res.status(500).json({ status: false, message: 'Failed to update group', error: error.message });
+  }
+});
+
+
+
+router.get('/pending-group', authenticate, async (req, res) => {
+  try {
+    const userId = req.userId;
+
+    const data = await User.findById(userId).populate({
+      path: 'PendingGroup',
+      populate: [ 
+        { path: 'members.userId', model: 'users' },
+        { path: 'members.item.product', model: 'products' }
+      ]
+    });
+
+    res.status(200).json({ status: true, data });
+  } catch (error) {
+    console.error('Error fetching pending group:', error);
+    res.status(500).json({ status: false, message: 'Failed to fetch group data' });
+  }
+});
+
+
+router.post('/add-item/group/:groupId', authenticate, async (req, res) => {
+  try {
+    const { groupId } = req.params;
+    const userId = req.userId;
+    const { productId, count } = req.body;
+
+    const result = await groupModel.findOneAndUpdate(
+      {_id: groupId, 'members.userId': userId },
+      { $push: { 'members.$.item': { product: productId, count: count } } }, { new: true } ).
+      populate({ path: 'members.item.product', model: 'products' }
+    );
+
+    res.status(200).json({ status: true, message: 'Product added to user in group successfully', data: result });
+
+  } catch (error) {
+    res.status(500).json({ status: false, message: 'Failed to add item to group', error: error.message });
+  }
+});
+
+
+
+router.put('/update-item/group/:groupId', authenticate, async (req, res) => {
+  try {
+    const { groupId } = req.params;
+    const userId = req.userId;
+    const { productId, count } = req.body;
+
+    const result = await groupModel.findOneAndUpdate(
+      { _id: groupId, 'members.userId': userId, 'members.item.product': productId },
+      { $set: { 'members.$[member].item.$[item].count': count } },
+      { arrayFilters: [ { 'member.userId': userId }, { 'item.product': productId } ], new: true }
+    ).populate({
+      path: 'members.item.product', model: 'products'
+    });
+
+    res.status(200).json({ status: true, message: 'Product count updated successfully', data: result });
+
+  } catch (error) {
+    res.status(500).json({ status: false, message: 'Failed to update item', error: error.message });
+  }
+});
+
+
+router.delete('/remove-item/group/:groupId', authenticate, async (req, res) => {
+  try {
+    const { groupId } = req.params;
+    const userId = req.userId;
+    const { productId } = req.body;
+
+    const result = await groupModel.findOneAndUpdate(
+      { _id: groupId, 'members.userId': userId },
+      { $pull: { 'members.$.item': { product: productId } } },
+      { new: true }
+    ).populate({ path: 'members.item.product',  model: 'products'  });
+
+
+    res.status(200).json({ status: true, message: 'Product removed from group successfully', data: result });
+  } catch (error) {
+    res.status(500).json({ status: false, message: 'Failed to remove item', error: error.message });
+  }
+});
+
+
+
 
 module.exports = router;

@@ -8,7 +8,6 @@ const authenticate = async function(req, res, next) {
     // console.log(token);
     const verifyToken = await jwt.verify(token, secretKey);
     // console.log(verifyToken);
-
     const rootUser = await User.findOne({ _id: verifyToken._id });
     // console.log(rootUser);
 
@@ -23,6 +22,7 @@ const authenticate = async function(req, res, next) {
     next();
 
   } catch (error) {
+
     res.status(400).json({
       status: false,
       message: "No token provided",

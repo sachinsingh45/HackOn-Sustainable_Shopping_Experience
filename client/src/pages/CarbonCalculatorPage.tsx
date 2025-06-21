@@ -394,7 +394,7 @@ const CarbonCalculatorPage = () => {
                     <h3 className="text-lg font-semibold text-gray-900">Recommendations</h3>
                   </div>
                   <div className="space-y-4">
-                    {results.recommendations.map((rec, index) => (
+                    {results?.recommendations?.map((rec, index) => (
                       <div key={index} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
                         <rec.icon className="w-5 h-5 text-green-500 mt-1" />
                         <div>

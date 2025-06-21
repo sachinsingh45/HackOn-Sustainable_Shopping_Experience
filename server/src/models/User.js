@@ -57,10 +57,23 @@ const userSchema = new mongoose.Schema({
     }
   ],
   location: {
+
     city: { type: String, default: '' },
     state: { type: String, default: '' },
     country: { type: String, default: '' },
-    pin: { type: String, default: '' }
+    pin: { type: String, default: '' },
+
+    coor: {
+      type: {
+        type: String,
+        enum: ['Point'],
+        default: 'Point'
+      },
+      coordinates: {
+        type: [Number],
+        default: [0, 0],
+      },
+    }
   },
   carbonSaved: {
     type: Number,
@@ -93,8 +106,14 @@ const userSchema = new mongoose.Schema({
       }
     ],
     default: []
-  }
+  },
+
+  PendingGroup: [{ type: mongoose.Schema.Types.ObjectId, ref: 'group' }],
+  OrderedGroup: [{ type: mongoose.Schema.Types.ObjectId, ref: 'group' }],
+  GroupOrderPlaced: [{ type: mongoose.Schema.Types.ObjectId, ref: 'group' }],
 });
+
+userSchema.index({ 'location.coor': '2dsphere' });
 
 // Convert email to lowercase before saving
 userSchema.pre('save', function(next) {
@@ -164,6 +183,7 @@ User.collection.dropIndex('name_1').catch(err => {
     console.error('Error dropping name index:', err);
   }
 });
+
 
 // Export model
 module.exports = User;
