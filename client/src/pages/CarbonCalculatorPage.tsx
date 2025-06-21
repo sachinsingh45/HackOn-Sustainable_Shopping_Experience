@@ -112,7 +112,7 @@ const CarbonCalculatorPage: React.FC = () => {
       materialFeatures[`Material_${mat}`] = materialObj[mat] || 0;
     });
     try {
-      const res = await axios.post('http://127.0.0.1:8000/predict', {
+      const res = await axios.post('http://127.0.0.1:8001/predict', {
         'Weight (kg)': form.weight ? Number(form.weight) : 1,
         'Distance (km)': form.distance ? Number(form.distance) : 100,
         'Recyclable': form.recyclable ? 1 : 0,
