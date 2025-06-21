@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, User, MapPin, Leaf, Menu, X, Search } from 'lucide-react';
+import { MdNotificationsNone } from "react-icons/md";
+import { MessageSquare,Users, Bell,  ShoppingCart, User, MapPin, Leaf, Menu, X, Search, Mail } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 import SearchBar from '../common/SearchBar';
+
+import { notificationSocket } from "../../services/socket";
 
 const Header = () => {
   const { cart, user, logout } = useStore();
@@ -11,10 +14,86 @@ const Header = () => {
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const navigate = useNavigate();
 
+  const [isJoining, setIsJoining] = useState({ });
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [activeTab, setActiveTab] = useState('chat');
+  const [chatNotifications, setChatNotifications] = useState([])
+  const [groupBuyNotifications, setGroupBuyNotifications] = useState([])
+
   const handleLogout = async () => {
     await logout();
     setShowUserMenu(false);
     navigate('/');
+  };
+
+
+
+  useEffect(() => {
+    let userId = user?._id;
+
+    if(!userId) return;
+
+    // If already connected, emit directly
+    if (notificationSocket.connected) {
+      notificationSocket.emit('join-room', userId);
+    } else {
+      notificationSocket.on('connect', () => {
+        notificationSocket.emit('join-room', userId);
+      });
+    }
+  
+    // Handle notification events
+    notificationSocket.on('previous-notification', (data) => {
+      
+      if(data?.message)
+        setChatNotifications(data.message), console.log(data?.message);
+
+      if(data?.notification)
+        setGroupBuyNotifications(data.notification);
+    });
+
+    notificationSocket.on('receive-notification', (data) => {
+
+      if (data?.notification) {
+        setGroupBuyNotifications(prev => {
+          const newNotifications = Array.isArray(data.notification)
+            ? data.notification
+            : [data.notification];
+    
+          const existingIds = new Set(prev.map(n => n._id));
+          const uniqueNew = newNotifications.filter(n => !existingIds.has(n._id));
+    
+          return [...uniqueNew, ...prev];
+        });
+      }
+    });
+    
+    
+  
+    return () => {
+      notificationSocket.off('receive-notification');
+    };
+
+  }, [user?._id]);
+  
+  const handleJoinGroup = ({ _id, groupId, userId }) => {
+    setIsJoining(true);
+
+    notificationSocket.emit('join-group', { _id: _id, groupId: groupId, userId: userId });
+  };
+
+  const unreadChatCount = chatNotifications.length;
+  const unreadGroupCount = groupBuyNotifications.length;
+  const totalUnread = unreadChatCount + unreadGroupCount;
+
+
+  const handleNotificationClick = () => {
+    setShowNotifications(!showNotifications);
+  };
+
+  const formatTime = (date) => {
+    if (!date) return '';
+    return new Date(date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit',  hour12: true, }).toUpperCase();
   };
 
   const cartItemCount = cart.reduce((sum, item) => sum + item.qty, 0);
@@ -59,6 +138,19 @@ const Header = () => {
               </span>
             )}
           </Link>
+
+          {/* Notification Icon - Mobile */}
+          <div className="relative p-2">
+            <MdNotificationsNone 
+              className="w-6 h-6 hover:cursor-pointer" 
+              onClick={handleNotificationClick}
+            />
+            {totalUnread > 0 && (
+              <span className="absolute -top-1 -right-1 bg-orange-400 text-gray-900 text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                {totalUnread}
+              </span>
+            )}
+          </div>
         </div>
 
         {/* Mobile Search Bar */}
@@ -197,9 +289,149 @@ const Header = () => {
               </div>
               <span className="text-sm font-semibold hidden xl:block">Cart</span>
             </Link>
+
+            {/* Notification Icon - Desktop */}
+            <div className="relative p-1">
+              <MdNotificationsNone 
+                className="w-6 h-6 hover:cursor-pointer" 
+                onClick={handleNotificationClick}
+              />
+              {totalUnread > 0 && (
+                <span className="absolute -top-1 -right-1 bg-orange-400 text-gray-900 text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                  {totalUnread}
+                </span>
+              )}
+            </div>
           </div>
         </div>
       </div>
+
+      
+
+
+      {/* Notifications Popup */}
+      {showNotifications && (
+        <div className="fixed right-4 top-16 z-50 w-80 bg-white text-gray-900 rounded-md shadow-lg border border-gray-200">
+          <div className="p-4 border-b border-gray-200">
+            <div className="flex justify-between items-center mb-3">
+              <h3 className="font-semibold">Notifications</h3>
+              <button 
+                onClick={() => setShowNotifications(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            {/* Tabs */}
+            <div className="flex border-b border-gray-200 -mx-4 -mb-1">
+              <button
+                onClick={() => {
+                  setActiveTab('chat');
+                }}
+                className={`flex-1 py-2 px-4 text-sm font-medium flex items-center justify-center gap-2 ${activeTab === 'chat' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+              >
+                <MessageSquare className="w-4 h-4" />
+                Messages {unreadChatCount > 0 && (
+                  <span className="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded-full">
+                    {unreadChatCount}
+                  </span>
+                )}
+              </button>
+              <button
+                onClick={() => {
+                  setActiveTab('group');
+                }}
+                className={`flex-1 py-2 px-4 text-sm font-medium flex items-center justify-center gap-2 ${activeTab === 'group' ? 'text-green-600 border-b-2 border-green-600' : 'text-gray-500 hover:text-gray-700'}`}
+              >
+                <Users className="w-4 h-4" />
+                Groups {unreadGroupCount > 0 && (
+                  <span className="bg-green-100 text-green-800 text-xs px-2 py-0.5 rounded-full">
+                    {unreadGroupCount}
+                  </span>
+                )}
+              </button>
+            </div>
+          </div>
+          
+          <div className="max-h-96 overflow-y-auto">
+            {activeTab === 'chat' ? (
+              chatNotifications.length > 0 ? (
+                chatNotifications.map((group) => (
+                  group.message.map((data) => (
+                    <div 
+                      key={data._id} 
+                      className={`p-4 border-b border-gray-100 hover:bg-gray-50 bg-blue-50`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <MessageSquare className={`w-5 h-5 mt-1 text-blue-500`} />
+                        <div className="flex-1">
+                          <h4 className="font-medium">{data?.senderId?.name}</h4>
+                          <p className="text-sm text-gray-600">{data.content}</p>
+                          <p className="text-xs text-gray-400 mt-1">
+                            {formatTime(data?.senderId?.sentAt)}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ))
+              ) : (
+                <div className="p-4 text-center text-gray-500">
+                  No new messages
+                </div>
+              )
+            ) : (
+              groupBuyNotifications.length > 0 ? (
+                groupBuyNotifications.map((data) => (
+                  <div 
+                    key={data._id} 
+                    className={`p-4 border-b border-gray-100 hover:bg-gray-50 ${!data.isRead ? 'bg-green-50' : ''}`}
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-start gap-3">
+                        <div className="relative">
+                          <Users className={`w-5 h-5 mt-1 ${data.isRead ? 'text-gray-400' : 'text-green-500'}`} />
+                          {data.groupId && (
+                            <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                              {data.groupId.members.length}
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <h4 className="font-medium">{data.groupId.name}</h4>
+                          <div>
+                            <p className="text-[10px] text-gray-600">{data.sender.name}</p>
+                            <p className="text-[10px] text-gray-600">{data.sender.email}</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <button className="text-sm text-blue-500 hover:text-blue-700" onClick={() => handleJoinGroup({ _id: data._id, groupId: data.groupId._id, userId: user._id })}>
+                        {isJoining ? 'Joining...' : 'Join'}
+                      </button>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="p-4 text-center text-gray-500">
+                  No group notifications
+                </div>
+              )
+            )}
+          </div>
+          
+          <div className="p-3 border-t border-gray-200 text-center">
+            <Link 
+              to={'/notification'}
+              className="text-sm text-blue-600 hover:underline"
+              onClick={() => setShowNotifications(false)}
+            >
+              View all
+            </Link>
+          </div>
+        </div>
+      )}
 
       {/* Mobile Menu Overlay */}
       {showMobileMenu && (

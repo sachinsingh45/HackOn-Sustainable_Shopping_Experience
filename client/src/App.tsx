@@ -23,6 +23,8 @@ import { ToastProvider } from './context/ToastContext';
 import OrderHistoryPage from './pages/OrderHistoryPage';
 import SellerDashboardPage from './pages/SellerDashboardPage';
 
+import Single_group_buy_page from './pages/single-group-buy';
+
 function App() {
   const { checkAuth, fetchProducts } = useStore();
 
@@ -53,6 +55,7 @@ function App() {
             <Route path="group-buy" element={<GroupBuyPage />} />
             <Route path="challenges" element={<EcoChallengesPage />} />
             <Route path="carbon-calculator" element={<CarbonCalculatorPage />} />
+            <Route path='/group/:name/Id/:groupId' element={<Single_group_buy_page/>} />
 
             {/* Protected Routes */}
             <Route path="cart" element={

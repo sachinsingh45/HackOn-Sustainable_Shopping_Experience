@@ -74,6 +74,7 @@ interface User {
   badges: Badge[];
 }
 
+
 interface Store {
   user: User | null;
   products: Product[];
