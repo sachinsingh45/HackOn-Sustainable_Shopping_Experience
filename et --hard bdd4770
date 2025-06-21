@@ -1,0 +1,24 @@
+[33m3717ece[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m HEAD@{0}: reset: moving to ORIG_HEAD
+[33m3717ece[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m HEAD@{1}: reset: moving to HEAD
+[33m3717ece[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m HEAD@{2}: commit (merge): Merge branch 'main' of https://github.com/sachinsingh45/HackOn-Sustainable_Shopping_Experience
+[33mbdd4770[m HEAD@{3}: commit: backend ml model integrated to determine carbon footprint and eco score
+[33m77d0902[m HEAD@{4}: commit: added the model,carbon footprint calculator,product recommendations
+[33m9b3ff0b[m HEAD@{5}: pull origin main: Fast-forward
+[33mcf60a29[m HEAD@{6}: pull origin main: Fast-forward
+[33me42f864[m HEAD@{7}: commit: cartpage->order successful and reflected in db and order page
+[33me21564e[m HEAD@{8}: commit: order submission is successful now
+[33m46da4bb[m HEAD@{9}: pull origin main: Fast-forward
+[33m9f0dfa6[m HEAD@{10}: pull origin main: Fast-forward
+[33m539fa06[m HEAD@{11}: reset: moving to HEAD@{1}
+[33m9f0dfa6[m HEAD@{12}: pull origin main: Fast-forward
+[33m539fa06[m HEAD@{13}: pull origin main: Fast-forward
+[33md54fa16[m HEAD@{14}: pull origin main: Fast-forward
+[33m36fc05d[m HEAD@{15}: pull origin main: Fast-forward
+[33m5ff99d9[m HEAD@{16}: checkout: moving from features/amazon-clone to main
+[33m8fe30f8[m[33m ([m[1;31morigin/features/amazon-clone[m[33m, [m[1;32mfeatures/amazon-clone[m[33m)[m HEAD@{17}: commit: update the folder without adding .env
+[33m5ff99d9[m HEAD@{18}: checkout: moving from main to features/amazon-clone
+[33m5ff99d9[m HEAD@{19}: checkout: moving from feature/amazon-clone to main
+[33m3c8b57a[m[33m ([m[1;31morigin/feature/amazon-clone[m[33m)[m HEAD@{20}: reset: moving to HEAD~1
+[33mba7dd04[m HEAD@{21}: commit: frontend+backend updated
+[33m3c8b57a[m[33m ([m[1;31morigin/feature/amazon-clone[m[33m)[m HEAD@{22}: checkout: moving from main to feature/amazon-clone
+[33m5ff99d9[m HEAD@{23}: clone: from https://github.com/sachinsingh45/HackOn-Sustainable_Shopping_Experience
