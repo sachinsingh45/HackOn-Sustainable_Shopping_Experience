@@ -3,8 +3,7 @@ import * as geohash from 'ngeohash';
 import { User, Award, Leaf, TrendingUp, Calendar, Package, Settings, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useStore } from '../store/useStore';
-import axios from 'axios';
-import { api } from "../services/api";
+
 import { useToast } from '../context/ToastContext';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { api } from '../services/api';
@@ -627,21 +626,21 @@ const ProfilePage = () => {
                   //   }
                   // }}
 
-                  onClick={async () => {
-                    if (locationDetails.city && locationDetails.state && locationDetails.country && locationDetails.pin) {
-                      setLocationDetailsLoading(true);
-                      try {
-                        await api.post('/update-location', locationDetails);
-                        setUser({ ...(user as any), location: locationDetails });
-                        setLocationDetails({ city: '', state: '', country: '', pin: '' });
-                        showToast('Location updated successfully!', 'success');
-                      } catch {
-                        showToast('Failed to update location', 'error');
-                      } finally {
-                        setLocationDetailsLoading(false);
-                      }
-                    }
-                  }}
+                  // onClick={async () => {
+                  //   if (locationDetails.city && locationDetails.state && locationDetails.country && locationDetails.pin) {
+                  //     setLocationDetailsLoading(true);
+                  //     try {
+                  //       await api.post('/update-location', locationDetails);
+                  //       setUser({ ...(user as any), location: locationDetails });
+                  //       setLocationDetails({ city: '', state: '', country: '', pin: '' });
+                  //       showToast('Location updated successfully!', 'success');
+                  //     } catch {
+                  //       showToast('Failed to update location', 'error');
+                  //     } finally {
+                  //       setLocationDetailsLoading(false);
+                  //     }
+                  //   }
+                  // }}
 
                 >
                   <MapPin className="w-4 h-4" /> {locationDetailsLoading ? 'Updating...' : 'Update Location'}

@@ -248,130 +248,53 @@ const GroupBuyPage = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {groupData && groupData.length > 0 ? (
-              groupData.map((data, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
-                  className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100"
-                >
-                  {/* Product Content */}
-                  <div className="p-4 flex flex-col h-full">
-                    {/* Avatar and Name Section */}
-                    <div className="flex items-center space-x-4 mb-4">
-                      <div className="flex-shrink-0">
-                        <Avatar 
-                          name={data?.name} 
-                          src='' 
-                          size="60" 
-                          round={true} 
-                          className="border-2 border-blue-100"
-                        />
-                      </div>
+          {groupData && groupData.length > 0 ? (
+            groupData.map((data, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+                className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100"
+              >
+                <div className="p-5 flex flex-col h-full">
+                  {/* Avatar + Name */}
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="flex-shrink-0">
+                      <Avatar 
+                        name={data?.name} 
+                        src="" 
+                        size="60" 
+                        round={true} 
+                        className="border-2 border-blue-100"
+                      />
+                    </div>
+                    <div className="flex flex-col">
                       <h3 className="text-lg font-bold text-gray-800 truncate">
                         {data?.name || "Untitled Group"}
                       </h3>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {sortedGroups.map((group, index) => (
-            <motion.div
-              key={group.groupId}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
-            >
-              {/* Product Image */}
-              <div className="relative">
-                <img
-                  src={group.url || 'https://images.pexels.com/photos/1029236/pexels-photo-1029236.jpeg?auto=compress&cs=tinysrgb&w=400'}
-                  alt={group.name}
-                  className="w-full h-48 object-cover"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = 'https://images.pexels.com/photos/1029236/pexels-photo-1029236.jpeg?auto=compress&cs=tinysrgb&w=400';
-                  }}
-                />
-                {group.isEcoFriendly && (
-                  <div className="absolute top-2 left-2 bg-green-500 text-white px-2 py-1 rounded-lg text-xs font-bold flex items-center space-x-1">
-                    <Leaf className="w-3 h-3" />
-                    <span>Eco</span>
-                  </div>
-                )}
-                <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-lg text-xs font-bold">
-                  -{Math.round(((group.originalPrice - group.groupPrice) / group.originalPrice) * 100)}%
-                </div>
-              </div>
-
-              <div className="p-4">
-                <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
-                  {group.name}
-                </h3>
-
-                {/* Progress Bar */}
-                <div className="mb-3">
-                  <div className="flex items-center justify-between text-sm text-gray-600 mb-1">
-                    <span>{group.currentMembers}/{group.membersNeeded} members</span>
-                    <span>{Math.round((group.currentMembers / group.membersNeeded) * 100)}%</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div 
-                      className="bg-green-500 h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${(group.currentMembers / group.membersNeeded) * 100}%` }}
-                    ></div>
-                  </div>
-                </div>
-
-                {/* Pricing */}
-                <div className="flex items-center space-x-2 mb-3">
-                  <span className="text-2xl font-bold text-gray-900">
-                    ₹{group.groupPrice}
-                  </span>
-                  <span className="text-lg text-gray-500 line-through">
-                    ₹{group.originalPrice}
-                  </span>
-                  <span className="text-sm text-green-600 font-medium">
-                    Save ₹{group.savings}
-                  </span>
-                </div>
-
-                {/* Time Left */}
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <Clock className="w-4 h-4" />
-                    <span>{group.timeLeft}h left</span>
-                  </div>
-                  {group.isEcoFriendly && (
-                    <div className="flex items-center space-x-1 text-sm text-green-600">
-                      <Leaf className="w-4 h-4" />
-                      <span>{group.carbonSaved}kg CO₂ saved</span>
-
+                      <p className="text-sm text-gray-500">Admin: {data?.admin || "Unknown"}</p>
                     </div>
-                
-                    {/* Details Section */}
-                    <div className="space-y-2 text-sm text-gray-600 flex-grow">
-                      <div className="flex items-center">
-                        <svg className="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                        <span className="font-medium">Admin:</span> {data?.admin || "Unknown"}
-                      </div>
-                      
-                      <div className="flex items-center">
-                        <svg className="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                        <span className="font-medium">Members:</span> {data?.members?.length || 0}
-                      </div>
-                    </div>
-                
-                    {/* Action Button */}
-                    <Link to={`/group/${data?.name?.toLowerCase().replace(/\s+/g, '-')}/id/${data._id}`} className="mt-4 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-center rounded-lg transition-colors duration-300 text-sm font-medium">
+                  </div>
+
+                  {/* Member Info */}
+                  <div className="mb-4">
+                    <p className="text-sm text-gray-600">
+                      👥 Members: <span className="font-semibold">{data?.members?.length || 0}</span>
+                    </p>
+                  </div>
+
+                  {/* View Group Button */}
+                  <div className="mt-auto">
+                    <Link
+                      to={`/group/${data?.name?.toLowerCase().replace(/\s+/g, '-')}/id/${data._id}`}
+                      className="block w-full text-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition duration-300 text-sm font-medium"
+                    >
                       View Group
                     </Link>
                   </div>
-                </motion.div>
+                </div>
+              </motion.div>
               ))
             ) : (
               <div className="col-span-full text-center py-12">
