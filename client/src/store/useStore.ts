@@ -322,28 +322,41 @@ export const useStore = create<Store>((set, get) => ({
       // Use provided order data or calculate from cart
       let finalOrderData;
       if (orderData) {
-        // Use packaging data from cart page
+        // Use packaging data from cart page - map to proper format
+        const orderItems = orderData.items.map((item: any) => {
+          const cartItem = cart.find(c => c.cartItem._id === item.productId);
+          return {
+            name: cartItem?.cartItem.name || 'Unknown Product',
+            quantity: item.quantity,
+            price: parseFloat(cartItem?.cartItem.price.replace(/[^0-9.]/g, '') || '0'),
+            carbonFootprint: cartItem?.cartItem.carbonFootprint || 0,
+            ecoScore: cartItem?.cartItem.ecoScore || 0,
+            isEcoFriendly: cartItem?.cartItem.isEcoFriendly || false,
+            packaging: item.packaging || 'standard',
+            packagingCarbon: item.packagingCarbon || 0
+          };
+        });
+
         finalOrderData = {
-          ...orderData,
-          totalAmount: orderData.items.reduce((sum: number, item: any) => {
-            const price = parseFloat(cart.find(c => c.cartItem._id === item.productId)?.cartItem.price.replace(/[^0-9.]/g, '') || '0');
-            return sum + (price * item.quantity);
-          }, 0),
-          totalEcoScore: orderData.items.reduce((sum: number, item: any) => {
-            const ecoScore = cart.find(c => c.cartItem._id === item.productId)?.cartItem.ecoScore || 0;
-            return sum + (ecoScore * item.quantity);
-          }, 0),
-          totalCarbonSaved: orderData.totalCarbonFootprint || 0
+          items: orderItems,
+          totalAmount: orderItems.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0),
+          totalEcoScore: orderItems.reduce((sum: number, item: any) => sum + (item.ecoScore * item.quantity), 0),
+          totalCarbonSaved: orderData.totalCarbonFootprint || 0,
+          totalCarbonFootprint: orderData.totalCarbonFootprint || 0,
+          moneySaved: 0,
+          packagingSelections: orderData.packagingSelections || {}
         };
       } else {
         // Calculate order details from cart (fallback)
         const orderItems = cart.map((item: CartItem) => ({
-          productId: item.cartItem._id,
           name: item.cartItem.name,
           quantity: item.qty,
           price: parseFloat(item.cartItem.price.replace(/[^0-9.]/g, '')),
+          carbonFootprint: item.cartItem.carbonFootprint || 0,
           ecoScore: item.cartItem.ecoScore || 0,
-          carbonFootprint: item.cartItem.carbonFootprint || 0
+          isEcoFriendly: item.cartItem.isEcoFriendly || false,
+          packaging: 'standard',
+          packagingCarbon: 0
         }));
 
         const totalAmount = orderItems.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0);
@@ -355,23 +368,45 @@ export const useStore = create<Store>((set, get) => ({
           totalAmount,
           totalEcoScore,
           totalCarbonSaved,
-          moneySaved: 0
+          totalCarbonFootprint: totalCarbonSaved,
+          moneySaved: 0,
+          packagingSelections: {}
         };
       }
 
+      console.log('Sending order data:', finalOrderData);
+
       await ordersAPI.createOrder(finalOrderData);
 
-      // Update product sales count for each product
-      await Promise.all(finalOrderData.items.map((item: any) =>
-        axios.patch(`http://localhost:8000/api/products/${item.productId}/sales`, { quantity: item.quantity }, { withCredentials: true })
-      ));
+      // Update product sales count for each product (handle errors gracefully)
+      try {
+        await Promise.all(finalOrderData.items.map(async (item: any) => {
+          const cartItem = cart.find(c => c.cartItem.name === item.name);
+          if (cartItem) {
+            try {
+              await axios.patch(`http://localhost:8000/api/products/${cartItem.cartItem._id}/sales`, { quantity: item.quantity }, { withCredentials: true });
+            } catch (salesError) {
+              console.warn('Failed to update sales count for product:', cartItem.cartItem._id, salesError);
+              // Don't throw error - sales update failure shouldn't break checkout
+            }
+          }
+        }));
+      } catch (salesError) {
+        console.warn('Sales update failed, but checkout completed successfully:', salesError);
+        // Don't throw error - sales update failure shouldn't break checkout
+      }
       
       // Refresh user data to get updated stats
       const userData = await authAPI.getAuthUser();
-      set({ user: userData, cart: [] });
+      set({ 
+        user: userData, 
+        cart: (userData.cart || []).map(item => ({ ...item, id: item.cartItem?._id })) 
+      });
       
     } catch (error: any) {
+      console.error('Checkout error:', error);
       set({ error: error.response?.data?.message || error.message || 'Checkout failed' });
+      throw error; // Re-throw to let the cart page handle it
     } finally {
       set({ loading: false });
     }

@@ -53,7 +53,6 @@ const OrderHistoryPage: React.FC = () => {
     const fetchOrders = async () => {
       try {
         const response = await ordersAPI.getUserOrders();
-        console.log('Orders response:', response); // Debug log
         if (response.status && Array.isArray(response.orders)) {
           setOrders(response.orders);
         } else {
@@ -73,19 +72,34 @@ const OrderHistoryPage: React.FC = () => {
   // Helper function to get order data
   const getOrderData = (order: Order) => {
     const data = order.orderInfo || order;
+    
+    // Defensive: use first item if summary is missing
+    const firstItem = (data.items && data.items.length > 0) ? data.items[0] : null;
+    const itemCount = data.items ? data.items.length : 0;
+    
+    // Calculate total amount from items if totalAmount is missing
+    const calculatedTotal = data.totalAmount || (data.items ? 
+      data.items.reduce((sum, item) => sum + (item.price * item.quantity), 0) : 0);
+    
+    // Calculate total carbon saved from items if missing
+    const calculatedCarbonSaved = data.totalCarbonSaved || (data.items ? 
+      data.items.reduce((sum, item) => sum + (item.carbonFootprint * item.quantity), 0) : 0);
+    
     return {
       items: data.items || [],
-      totalAmount: data.totalAmount || 0,
+      totalAmount: calculatedTotal,
       totalEcoScore: data.totalEcoScore || 0,
-      totalCarbonSaved: data.totalCarbonSaved || 0,
+      totalCarbonSaved: calculatedCarbonSaved,
       moneySaved: data.moneySaved || 0,
-      orderDate: data.orderDate || data.date || new Date().toISOString(),
+      orderDate: data.orderDate || new Date().toISOString(),
       status: data.status || 'Completed',
       summary: data.summary || {
-        name: 'Order',
-        price: data.totalAmount || 0,
-        carbonFootprint: data.totalCarbonSaved || 0,
-        date: data.orderDate || data.date || new Date().toISOString(),
+        name: firstItem ? 
+          (itemCount > 1 ? `${firstItem.name} +${itemCount - 1} more items` : firstItem.name) : 
+          'Order',
+        price: calculatedTotal,
+        carbonFootprint: calculatedCarbonSaved,
+        date: data.orderDate || new Date().toISOString(),
         status: data.status || 'Completed'
       }
     };
@@ -182,7 +196,7 @@ const OrderHistoryPage: React.FC = () => {
                     <h3 className="text-sm font-medium text-gray-700 mb-2">Order Items:</h3>
                     <div className="space-y-2">
                       {data.items.map((item, itemIdx) => (
-                        <div key={item._id || itemIdx} className="flex justify-between text-sm">
+                        <div key={itemIdx} className="flex justify-between text-sm">
                           <span className="text-gray-600">
                             {item.name} x {item.quantity}
                           </span>

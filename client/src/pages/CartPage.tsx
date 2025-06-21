@@ -49,7 +49,7 @@ const CartPage = () => {
     let hasChanges = false;
     
     cart.forEach(item => {
-      const itemId = item.id || item.cartItem._id;
+      const itemId = item.cartItem._id;
       if (!selectedPackaging[itemId]) {
         newSelections[itemId] = 'standard';
         hasChanges = true;
@@ -129,7 +129,7 @@ const CartPage = () => {
   ];
 
   const getPackagingCarbonFootprint = (item: any) => {
-    const selectedPackagingType = selectedPackaging[item.id || item.cartItem._id] || 'standard';
+    const selectedPackagingType = selectedPackaging[item.cartItem._id] || 'standard';
     const packagingOption = packagingOptions.find(opt => opt.id === selectedPackagingType);
     const productWeight = item.cartItem.weight || 1; // Default to 1kg if weight not available
     return packagingOption ? packagingOption.co2PerKg * productWeight : 0.5 * productWeight;
@@ -157,7 +157,7 @@ const CartPage = () => {
         items: cart.map(item => ({
           productId: item.cartItem._id,
           quantity: item.qty,
-          packaging: selectedPackaging[item.id || item.cartItem._id] || 'standard',
+          packaging: selectedPackaging[item.cartItem._id] || 'standard',
           packagingCarbon: getPackagingCarbonFootprint(item)
         })),
         totalCarbonFootprint,
@@ -165,9 +165,11 @@ const CartPage = () => {
       };
       
       await checkout(orderData);
+      console.log('Cart page - Checkout completed successfully');
       showToast('Order placed successfully!', 'success');
       navigate('/orders'); // Redirect to orders page
     } catch (error: any) {
+      console.error('Cart page - Checkout error:', error);
       showToast(error.message || 'Failed to place order', 'error');
     } finally {
       setLoading(false);
@@ -261,7 +263,7 @@ const CartPage = () => {
           <AnimatePresence>
             {cart.map((item) => (
               <motion.div
-                key={item.id}
+                key={item.cartItem._id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, x: -100 }}
@@ -323,7 +325,7 @@ const CartPage = () => {
                     <div className="flex items-center space-x-2">
                       <button
                         aria-label="Decrease quantity"
-                        onClick={() => handleUpdateQuantity(item.id, item.qty - 1)}
+                        onClick={() => handleUpdateQuantity(item.cartItem._id, item.qty - 1)}
                         className="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-400"
                       >
                         <Minus className="w-4 h-4" />
@@ -331,7 +333,7 @@ const CartPage = () => {
                       <span className="w-8 text-center text-base">{item.qty}</span>
                       <button
                         aria-label="Increase quantity"
-                        onClick={() => handleUpdateQuantity(item.id, item.qty + 1)}
+                        onClick={() => handleUpdateQuantity(item.cartItem._id, item.qty + 1)}
                         className="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-400"
                       >
                         <Plus className="w-4 h-4" />
@@ -339,7 +341,7 @@ const CartPage = () => {
                     </div>
                     <button
                       aria-label="Remove item"
-                      onClick={() => handleRemoveItem(item.id)}
+                      onClick={() => handleRemoveItem(item.cartItem._id)}
                       className="text-red-500 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
                     >
                       <Trash2 className="w-5 h-5" />
@@ -358,7 +360,7 @@ const CartPage = () => {
                         <label
                           key={option.id}
                           className={`flex items-center p-2 border rounded cursor-pointer text-xs sm:text-sm transition-all duration-150 focus-within:ring-2 focus-within:ring-green-400 ${
-                            selectedPackaging[item.id || item.cartItem._id] === option.id
+                            selectedPackaging[item.cartItem._id] === option.id
                               ? 'border-green-500 bg-green-50'
                               : option.color
                           }`}
@@ -366,12 +368,12 @@ const CartPage = () => {
                         >
                           <input
                             type="radio"
-                            name={`packaging-${item.id || item.cartItem._id}`}
+                            name={`packaging-${item.cartItem._id}`}
                             value={option.id}
-                            checked={selectedPackaging[item.id || item.cartItem._id] === option.id}
+                            checked={selectedPackaging[item.cartItem._id] === option.id}
                             onChange={(e) => setSelectedPackaging({
                               ...selectedPackaging,
-                              [item.id || item.cartItem._id]: e.target.value
+                              [item.cartItem._id]: e.target.value
                             })}
                             className="sr-only"
                           />

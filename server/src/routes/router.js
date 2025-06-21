@@ -250,8 +250,31 @@ router.get('/orders', authenticate, async (req, res) => {
     }
 
     // Flatten orders if they are stored as { orderInfo: { ... } }
+    // Also migrate old orders to include summary if missing
     const orders = user.orders
-      .map(order => order.orderInfo ? { ...order.orderInfo, _id: order._id } : order)
+      .map(order => {
+        const orderData = order.orderInfo ? { ...order.orderInfo, _id: order._id } : order;
+        
+        // Migrate old orders: add summary if missing
+        if (!orderData.summary && orderData.items && orderData.items.length > 0) {
+          const firstItem = orderData.items[0];
+          const itemCount = orderData.items.length;
+          const calculatedTotal = orderData.totalAmount || 
+            orderData.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+          const calculatedCarbonSaved = orderData.totalCarbonSaved || 
+            orderData.items.reduce((sum, item) => sum + (item.carbonFootprint * item.quantity), 0);
+          
+          orderData.summary = {
+            name: itemCount > 1 ? `${firstItem.name} +${itemCount - 1} more items` : firstItem.name,
+            price: calculatedTotal,
+            carbonFootprint: calculatedCarbonSaved,
+            date: orderData.orderDate || orderData.date || new Date(),
+            status: orderData.status || 'completed'
+          };
+        }
+        
+        return orderData;
+      })
       .reverse();
 
     res.status(200).json({ 
@@ -450,11 +473,23 @@ router.post('/orders', authenticate, async (req, res) => {
       return res.status(404).json({ status: false, message: "User not found" });
     }
 
-    if (user.cart.length === 0) {
-      return res.status(400).json({ status: false, message: "Cart is empty" });
+    const { items, totalAmount, totalEcoScore, totalCarbonSaved, moneySaved, totalCarbonFootprint, packagingSelections } = req.body;
+
+    // Check if order data is provided, otherwise check cart
+    if (!items || items.length === 0) {
+      if (user.cart.length === 0) {
+        return res.status(400).json({ status: false, message: "Cart is empty" });
+      }
     }
 
-    const { items, totalAmount, totalEcoScore, totalCarbonSaved, moneySaved, totalCarbonFootprint, packagingSelections } = req.body;
+    // Validate required fields
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ status: false, message: "Invalid order data: items required" });
+    }
+
+    if (typeof totalAmount !== 'number' || totalAmount <= 0) {
+      return res.status(400).json({ status: false, message: "Invalid order data: total amount required" });
+    }
 
     // Create order object with detailed information and eco-friendly flags
     const orderInfo = {
@@ -499,13 +534,10 @@ router.post('/orders', authenticate, async (req, res) => {
     // Add order to user's orders
     await user.addOrder(orderInfo);
 
-    // Clear cart
-    user.cart = [];
-
     // Check for automatic challenge completion
     await checkAndCompleteChallenges(user, orderInfo);
 
-    // Save updated user
+    // Save updated user (cart is already cleared in addOrder method)
     await user.save();
 
     res.status(201).json({
@@ -515,7 +547,7 @@ router.post('/orders', authenticate, async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Create order error:", error);
+    console.error("Backend - Create order error:", error);
     res.status(500).json({
       status: false,
       message: "Failed to create order",
@@ -1334,16 +1366,47 @@ router.patch('/products/:id/sales', authenticate, async (req, res) => {
   try {
     const { id } = req.params;
     const { quantity } = req.body;
+    
+    console.log('Sales update request:', { id, quantity, body: req.body });
+    
+    // Validate quantity
+    const updateQuantity = parseInt(quantity) || 1;
+    if (updateQuantity <= 0) {
+      return res.status(400).json({ status: false, message: 'Invalid quantity' });
+    }
+    
     const product = await Product.findById(id);
     if (!product) {
+      console.log('Product not found for sales update:', id);
       return res.status(404).json({ status: false, message: 'Product not found' });
     }
-    product.salesCount += quantity || 1;
-    product.unitsSold += quantity || 1;
+    
+    console.log('Product found:', { 
+      id: product._id, 
+      name: product.name, 
+      currentSalesCount: product.salesCount, 
+      currentUnitsSold: product.unitsSold 
+    });
+    
+    // Update sales count and units sold safely
+    product.salesCount = (product.salesCount || 0) + updateQuantity;
+    product.unitsSold = (product.unitsSold || 0) + updateQuantity;
+    
+    console.log('Updated values:', { 
+      newSalesCount: product.salesCount, 
+      newUnitsSold: product.unitsSold 
+    });
+    
     await product.save();
+    console.log('Product saved successfully');
     res.status(200).json({ status: true, product });
   } catch (error) {
     console.error('Update product sales error:', error);
+    console.error('Error details:', {
+      name: error.name,
+      message: error.message,
+      stack: error.stack
+    });
     res.status(500).json({ status: false, message: 'Failed to update product sales' });
   }
 });

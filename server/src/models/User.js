@@ -40,20 +40,37 @@ const userSchema = new mongoose.Schema({
   ],
   orders: [
     {
-      items: [{
-        name: String,
-        quantity: Number,
-        price: Number,
-        carbonFootprint: Number,
+      orderInfo: {
+        items: [{
+          name: String,
+          quantity: Number,
+          price: Number,
+          carbonFootprint: Number,
+          ecoScore: Number,
+          isEcoFriendly: Boolean,
+          packaging: String,
+          packagingCarbon: Number
+        }],
+        totalAmount: Number,
+        totalEcoScore: Number,
+        totalCarbonSaved: Number,
+        totalCarbonFootprint: Number,
+        moneySaved: Number,
+        orderDate: Date,
+        date: Date,
+        status: String,
+        summary: {
+          name: String,
+          price: Number,
+          carbonFootprint: Number,
+          date: Date,
+          status: String
+        },
+        packagingSelections: {},
+        isEcoFriendly: Boolean,
         ecoScore: Number,
-        isEcoFriendly: Boolean
-      }],
-      totalAmount: Number,
-      totalEcoScore: Number,
-      totalCarbonSaved: Number,
-      moneySaved: Number,
-      orderDate: Date,
-      status: String
+        carbonFootprint: Number
+      }
     }
   ],
   location: {
@@ -145,13 +162,16 @@ userSchema.methods.addToCart = async function(productId, product) {
 }
 
 // Orders
-userSchema.methods.addOrder = async function(order) {
+userSchema.methods.addOrder = async function(orderInfo) {
   try {
-    this.orders = this.orders.concat(order);
+    console.log('User model - Adding order:', orderInfo);
+    this.orders = this.orders.concat({ orderInfo });
     this.cart = [];
     await this.save();
+    console.log('User model - Order added successfully, cart cleared');
   } catch (error) {
-    console.log(error);
+    console.error('User model - Add order error:', error);
+    throw error;
   }
 }
 

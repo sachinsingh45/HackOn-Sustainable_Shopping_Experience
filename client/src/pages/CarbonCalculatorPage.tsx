@@ -161,17 +161,17 @@ const CarbonCalculatorPage: React.FC = () => {
           <label className="flex items-center col-span-2">
             <input name="recyclable" type="checkbox" checked={!!form.recyclable} onChange={handleChange} className="mr-2" />
             Recyclable?
-          </label>
+                  </label>
           <label className="flex items-center col-span-2">
             <input name="repairable" type="checkbox" checked={!!form.repairable} onChange={handleChange} className="mr-2" />
             Repairable?
-          </label>
-        </div>
-        <div>
+                  </label>
+                </div>
+                <div>
           <label className="block text-sm font-medium mb-1">Material Composition (e.g. 'Aluminum:50, Plastic:50')</label>
           <textarea name="materialComposition" value={form.materialComposition} onChange={handleChange} className="border p-2 rounded w-full" required rows={2} />
           <span className="text-xs text-gray-500">Enter as comma-separated values. Example: Aluminum:50, Plastic:50</span>
-        </div>
+                </div>
         <button type="submit" className="bg-green-600 text-white px-6 py-2 rounded font-semibold" disabled={loading}>{loading ? 'Calculating...' : 'Calculate'}</button>
         {error && <div className="text-red-600 font-medium mt-2">{error}</div>}
       </form>
