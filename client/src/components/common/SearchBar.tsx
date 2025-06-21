@@ -37,7 +37,7 @@ const SearchBar = () => {
   const handleSuggestionClick = (product: any) => {
     setSearchQuery('');
     setShowSuggestions(false);
-    navigate(`/product/${product.id}`);
+    navigate(`/product/${product._id}`);
   };
 
   return (
@@ -67,13 +67,13 @@ const SearchBar = () => {
             <div className="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-b-md shadow-lg z-50 max-h-80 overflow-y-auto">
               {filteredProducts.map((product) => (
                 <button
-                  key={product.id}
+                  key={product._id}
                   onClick={() => handleSuggestionClick(product)}
                   className="w-full text-left px-3 sm:px-4 py-2 hover:bg-gray-100 border-b border-gray-100 last:border-b-0"
                 >
                   <div className="flex items-center space-x-2 sm:space-x-3">
                     <img
-                      src={product.image || product.url}
+                      src={product.url || 'https://images.pexels.com/photos/1029236/pexels-photo-1029236.jpeg?auto=compress&cs=tinysrgb&w=50'}
                       alt={product.name}
                       className="w-6 h-6 sm:w-8 sm:h-8 object-cover rounded"
                       onError={(e) => {

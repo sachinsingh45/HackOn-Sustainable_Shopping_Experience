@@ -180,7 +180,7 @@ const CartPage = () => {
                     }}
                   />
                   <div className="flex-1 w-full">
-                    <Link to={`/product/${item.cartItem.id}`} 
+                    <Link to={`/product/${item.cartItem._id}`} 
                       className="text-base sm:text-lg font-medium text-gray-900 hover:text-green-600 block truncate sm:whitespace-normal sm:line-clamp-2 line-clamp-1 max-w-full break-words"
                       style={{ wordBreak: 'break-word', overflowWrap: 'anywhere' }}
                     >
@@ -203,6 +203,23 @@ const CartPage = () => {
                       <span className="text-base sm:text-lg font-semibold text-gray-900">
                         ₹{parseFloat(item.cartItem.price.replace(/[^0-9.]/g, '')).toLocaleString()}
                       </span>
+                      {item.cartItem.mrp && (
+                        <span className="text-xs text-gray-400 line-through ml-2">{item.cartItem.mrp}</span>
+                      )}
+                      {/* Discount badge if applicable */}
+                      {item.cartItem.price && item.cartItem.mrp && (() => {
+                        const price = parseFloat(item.cartItem.price.replace(/[^0-9.]/g, ''));
+                        const mrp = parseFloat(item.cartItem.mrp.replace(/[^0-9.]/g, ''));
+                        if (mrp > price) {
+                          const discountPercent = Math.round(((mrp - price) / mrp) * 100);
+                          return (
+                            <span className="bg-red-100 text-red-800 px-2 py-1 rounded text-xs font-medium ml-2">
+                              {discountPercent}% OFF
+                            </span>
+                          );
+                        }
+                        return null;
+                      })()}
                     </div>
                   </div>
                   <div className="flex flex-row sm:flex-col items-center sm:items-end space-x-2 sm:space-x-0 sm:space-y-2 mt-2 sm:mt-0">
@@ -277,7 +294,7 @@ const CartPage = () => {
                     Eco-Friendly Alternatives
                   </h4>
                   <div className="space-y-1">
-                    {getEcoAlternatives(item.id).map((alt, index) => (
+                    {getEcoAlternatives(item.cartItem._id).map((alt, index) => (
                       <div key={index} className="flex justify-between items-center text-xs sm:text-sm">
                         <span className="text-green-700">{alt.name}</span>
                         <span className="text-green-600 font-medium">Save {alt.savings}</span>

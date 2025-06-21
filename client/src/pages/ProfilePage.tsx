@@ -7,6 +7,7 @@ import axios from 'axios';
 import { api } from "../services/api";
 import { useToast } from '../context/ToastContext';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
+import { api } from '../services/api';
 
 // Badge icons and date formatting (copied from EcoChallengesPage for consistency)
 const BADGE_ICONS = {
@@ -105,8 +106,8 @@ const ProfilePage = () => {
 
 
   const handleManualLocation = async () => {
-    await axios.post('/api/update-location', { location: manualLocation });
-    setUser({ ...(user as any), location: manualLocation });
+    await api.post('/update-location', locationDetails);
+    setUser({ ...(user as any), location: locationDetails });
     setLocationPrompt(false);
   };
 
@@ -608,6 +609,7 @@ const ProfilePage = () => {
                 <button
                   className={`flex items-center gap-1 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md font-medium transition-colors mt-2 w-full sm:w-auto justify-center ${locationDetailsLoading ? 'opacity-60 cursor-not-allowed' : ''}`}
                   disabled={locationDetailsLoading}
+
                   onClick={handleUpdateLocation}
                   // onClick={async () => {
                   //   if (locationDetails.city && locationDetails.state && locationDetails.country && locationDetails.pin && locationDetails.coor) {
@@ -624,6 +626,23 @@ const ProfilePage = () => {
                   //     }
                   //   }
                   // }}
+
+                  onClick={async () => {
+                    if (locationDetails.city && locationDetails.state && locationDetails.country && locationDetails.pin) {
+                      setLocationDetailsLoading(true);
+                      try {
+                        await api.post('/update-location', locationDetails);
+                        setUser({ ...(user as any), location: locationDetails });
+                        setLocationDetails({ city: '', state: '', country: '', pin: '' });
+                        showToast('Location updated successfully!', 'success');
+                      } catch {
+                        showToast('Failed to update location', 'error');
+                      } finally {
+                        setLocationDetailsLoading(false);
+                      }
+                    }
+                  }}
+
                 >
                   <MapPin className="w-4 h-4" /> {locationDetailsLoading ? 'Updating...' : 'Update Location'}
                 </button>

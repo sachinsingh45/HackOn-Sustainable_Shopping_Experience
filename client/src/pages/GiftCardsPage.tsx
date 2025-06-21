@@ -253,7 +253,7 @@ const GiftCardsPage = () => {
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Popular Gift Cards</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {popularCards.map((card) => (
-              <div key={card.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+              <div key={card._id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
                 <div className="relative">
                   <img
                     src={card.image}
@@ -315,7 +315,7 @@ const GiftCardsPage = () => {
           <h2 className="text-2xl font-bold text-gray-900 mb-6">All Gift Cards</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredCards.map((card) => (
-              <div key={card.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+              <div key={card._id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
                 <div className="relative">
                   <img
                     src={card.image}

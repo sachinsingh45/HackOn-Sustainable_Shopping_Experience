@@ -5,7 +5,7 @@ import { useStore } from '../store/useStore';
 import ProductCard from '../components/common/ProductCard';
 
 const GreenStorePage = () => {
-  const { products, addToCart } = useStore();
+  const { products } = useStore();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('eco-score');
   const [priceRange, setPriceRange] = useState([0, 10000]);
@@ -24,34 +24,35 @@ const GreenStorePage = () => {
   // Compute filteredProducts based on selectedCategory
   const filteredProducts = products
     .filter(product => {
-      if (selectedCategory === 'all') return product.isEcoFriendly;
+      const isEco = product.isEcoFriendly ?? true;
+      if (selectedCategory === 'all') return isEco;
       if (selectedCategory === 'general') {
         return normalizeCatId(product.category || 'General') === 'general';
       }
       // For other categories, show only eco-friendly products in that category
       return (
-        product.isEcoFriendly &&
+        isEco &&
         normalizeCatId(product.category || 'General') === selectedCategory
       );
     })
     .filter(product => {
-      const price = parseFloat(product.price.replace(/[^0-9.]/g, ''));
+      const price = parseFloat((product.price || '0').replace(/[^0-9.]/g, ''));
       return price >= priceRange[0] && price <= priceRange[1];
     })
     .sort((a, b) => {
-      const priceA = parseFloat(a.price.replace(/[^0-9.]/g, ''));
-      const priceB = parseFloat(b.price.replace(/[^0-9.]/g, ''));
+      const priceA = parseFloat((a.price || '0').replace(/[^0-9.]/g, ''));
+      const priceB = parseFloat((b.price || '0').replace(/[^0-9.]/g, ''));
       switch (sortBy) {
         case 'eco-score':
-          return (b.ecoScore || 0) - (a.ecoScore || 0);
+          return (b.ecoScore ?? 0) - (a.ecoScore ?? 0);
         case 'carbon-footprint':
-          return (a.carbonFootprint || 0) - (b.carbonFootprint || 0);
+          return (a.carbonFootprint ?? 0) - (b.carbonFootprint ?? 0);
         case 'price-low':
           return priceA - priceB;
         case 'price-high':
           return priceB - priceA;
         case 'rating':
-          return (b.rating || 0) - (a.rating || 0);
+          return (b.rating ?? 0) - (a.rating ?? 0);
         default:
           return 0;
       }
@@ -236,12 +237,12 @@ const GreenStorePage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {filteredProducts.map((product) => (
                 <motion.div
-                  key={product.id}
+                  key={product._id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <ProductCard product={{ ...product, carbonFootprint: product.carbonFootprint ? Number(product.carbonFootprint).toFixed(2) : undefined }} />
+                  <ProductCard product={{ ...product, carbonFootprint: typeof product.carbonFootprint === 'number' ? product.carbonFootprint : undefined }} />
                 </motion.div>
               ))}
             </div>

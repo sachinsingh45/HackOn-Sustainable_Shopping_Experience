@@ -31,12 +31,9 @@ router.get("/product/:id", async (req, res) => {
     const { id } = req.params;
     let individualData;
 
+    // Only use MongoDB _id for lookup
     if (id.match(/^[0-9a-fA-F]{24}$/)) {
       individualData = await Product.findById(id);
-    }
-
-    if (!individualData) {
-      individualData = await Product.findOne({ id: parseInt(id) });
     }
 
     if (!individualData) {
@@ -71,9 +68,6 @@ router.post('/register', [
     .matches(/[0-9]/).withMessage("Password must contain a number")
     .matches(/[!@#$%^&*(),.?":{}|<>]/).withMessage("Password must contain a special character"),
 
-  check('confirmPassword')
-    .not().isEmpty().withMessage("Confirm Password can't be empty"),
-
   check('email')
     .not().isEmpty().withMessage("Email can't be empty")
     .isEmail().withMessage("Email format is invalid")
@@ -88,13 +82,8 @@ router.post('/register', [
     });
   }
 
-  const { name, number, email, password, confirmPassword } = req.body;
+  const { name, number, email, password } = req.body;
   const customErrors = [];
-
-  if (password !== confirmPassword) {
-    customErrors.push({ msg: "Passwords don't match" });
-    return res.status(400).json({ status: false, message: customErrors });
-  }
 
   try {
     const salt = await bcrypt.genSalt(10);
@@ -197,33 +186,23 @@ router.post('/addtocart/:id', authenticate, async (req, res) => {
     const { id } = req.params;
     let product = id.match(/^[0-9a-fA-F]{24}$/)
       ? await Product.findById(id)
-      : await Product.findOne({ id: parseInt(id) });
+      : null;
 
     if (!product) {
       return res.status(404).json({ status: false, message: "Product not found" });
     }
 
+    // Use _id for cart item
     const user = await User.findById(req.userId);
-    if (!user) {
-      return res.status(400).json({ status: false, message: "Invalid User" });
-    }
-
-    const cartItem = user.cart.find(item => item.id == product.id);
+    const cartItem = user.cart.find(item => item.id == product._id.toString());
     if (cartItem) {
-      await User.updateOne(
-        { _id: req.userId, 'cart.id': product.id },
-        { $inc: { 'cart.$.qty': 1 } }
-      );
-    } else {
-      await user.addToCart(product.id, product);
+      return res.status(400).json({ status: false, message: "Product already in cart" });
     }
-
-    const updatedUser = await User.findById(req.userId);
-    res.status(201).json({ status: true, message: updatedUser });
-
+    await user.addToCart(product._id.toString(), product);
+    res.status(200).json({ status: true, message: "Product added to cart" });
   } catch (error) {
     console.error("Add to cart error:", error);
-    res.status(500).json({ status: false, message: "Error adding item to cart", error: error.message });
+    res.status(500).json({ status: false, message: "Failed to add to cart" });
   }
 });
 
@@ -232,7 +211,7 @@ router.delete("/delete/:id", authenticate, async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findById(req.userId);
-    user.cart = user.cart.filter(item => item.id != id);
+    user.cart = user.cart.filter(item => String(item.cartItem._id) !== String(id));
     await user.save();
 
     res.status(201).json({ status: true, message: "Item deleted successfully" });
@@ -383,7 +362,7 @@ router.post('/challenges/complete/:challengeId', authenticate, async (req, res) 
 });
 
 // POST: Update user location
-router.post('/api/update-location', authenticate, async (req, res) => {
+router.post('/update-location', authenticate, async (req, res) => {
   try {
     const { city, state, country, pin, coor } = req.body;
     const userId = req.userId;
@@ -990,7 +969,7 @@ router.post('/chat', async (req, res) => {
         break;
       }
       case "carbon_footprint": {
-        // Sum only item.carbonFootprint for all items in all orders for the current month
+        // Sum item.carbonFootprint for all items in all orders for the current month (support both old and new order structures)
         const user = await User.findById(userId);
         if (!user) {
           reply = "User not found.";
@@ -1001,27 +980,44 @@ router.post('/chat', async (req, res) => {
         const year = now.getFullYear();
         let total = 0;
         const breakdown = [];
+        let foundOrder = false;
         user.orders.forEach(order => {
-          const d = order.orderInfo?.date || order.orderInfo?.orderDate || order.orderDate || order.date;
+          // Support both new (orderDate) and old (orderInfo.orderDate/date) structures
+          const d = order.orderDate || order.date || order.orderInfo?.date || order.orderInfo?.orderDate;
           if (d && new Date(d).getMonth() === month && new Date(d).getFullYear() === year) {
             let orderTotal = 0;
-            if (order.orderInfo?.items && order.orderInfo.items.length) {
+            let items = [];
+            if (order.items && order.items.length) {
+              // New structure
+              items = order.items;
+              order.items.forEach(item => {
+                orderTotal += item.carbonFootprint || 0;
+              });
+            } else if (order.orderInfo?.items && order.orderInfo.items.length) {
+              // Old structure
+              items = order.orderInfo.items;
               order.orderInfo.items.forEach(item => {
                 orderTotal += item.carbonFootprint || 0;
               });
             }
+            if (orderTotal > 0) foundOrder = true;
             breakdown.push({
               date: d,
-              items: order.orderInfo.items ? order.orderInfo.items.map(item => ({
+              items: items.map(item => ({
                 name: item.name,
                 carbonFootprint: item.carbonFootprint || 0
-              })) : [],
+              })),
               orderTotal
             });
             total += orderTotal;
           }
         });
+        if (!foundOrder) {
+          reply = "No carbon footprint data found for this month. Place an order to start tracking your impact!";
+          return res.json({ reply, intent, breakdown: [], total: 0 });
+        }
         reply = `Your estimated CO₂ saved this month is ${total.toFixed(2)} kg.`;
+        console.log(`[carbon_footprint] userId=${userId}, total=${total}, breakdown=`, breakdown);
         return res.json({ reply, intent, breakdown, total });
       }
       case "my_challenges": {

@@ -163,3 +163,5 @@ export const leaderboardAPI = {
     return response.data;
   }
 };
+
+export { api };

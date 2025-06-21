@@ -285,7 +285,7 @@ const RegistryPage = () => {
               
               <div className="space-y-6">
                 {popularItems.map((item) => (
-                  <div key={item.id} className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-200">
+                  <div key={item._id} className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-200">
                     <div className="flex space-x-4">
                       <div className="relative">
                         <img
@@ -342,7 +342,7 @@ const RegistryPage = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {sampleRegistries.map((registry) => (
-                <div key={registry.id} className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-200">
+                <div key={registry._id} className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-200">
                   <div className="relative">
                     <img
                       src={registry.image}

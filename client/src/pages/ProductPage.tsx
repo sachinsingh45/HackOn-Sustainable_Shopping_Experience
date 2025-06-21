@@ -49,7 +49,7 @@ const ProductPage = () => {
       
       try {
         // First try to find the product in the local store
-        let foundProduct = products.find(p => p.id === id || p._id === id);
+        let foundProduct = products.find(p => p._id === id);
         
         // If not found in local store, try to fetch from server
         if (!foundProduct) {
@@ -57,19 +57,9 @@ const ProductPage = () => {
           if (fetchedProduct) {
             foundProduct = {
               ...fetchedProduct,
-              rating: fetchedProduct.rating || Math.random() * 2 + 3,
-              reviews: fetchedProduct.reviews || Math.floor(Math.random() * 5000) + 100,
-              carbonFootprint: fetchedProduct.carbonFootprint || Math.random() * 5 + 0.5,
-              ecoScore: fetchedProduct.ecoScore || Math.floor(Math.random() * 40) + 60,
-              isEcoFriendly: fetchedProduct.isEcoFriendly || Math.random() > 0.6,
-              groupBuyEligible: fetchedProduct.groupBuyEligible || Math.random() > 0.7,
-              category: fetchedProduct.category || 'General',
               image: fetchedProduct.image || fetchedProduct.url || fallbackImage,
               price: fetchedProduct.price || '₹0',
-              value: fetchedProduct.value || '0',
-              accValue: fetchedProduct.accValue || 0,
-              id: fetchedProduct.id || fetchedProduct._id,
-              _id: fetchedProduct._id || fetchedProduct.id
+              _id: fetchedProduct._id
             };
           }
         }
@@ -123,7 +113,7 @@ const ProductPage = () => {
     }
 
     try {
-      await addToCart(product.id);
+      await addToCart(product._id);
       showToast(`${product.name} added to cart successfully!`, 'success');
     } catch (error) {
       console.error('Failed to add to cart:', error);
@@ -139,7 +129,7 @@ const ProductPage = () => {
     }
 
     try {
-      const response = await orderProduct(product.id);
+      const response = await orderProduct(product._id);
       if (response.status) {
         showToast('Order placed successfully!', 'success');
       } else {
@@ -175,11 +165,21 @@ const ProductPage = () => {
     );
   }
 
-  const images = [product.image || product.url, product.image || product.url, product.image || product.url];
+  const images = [product.url, product.url, product.url];
   const ecoAlternatives = [
     { name: 'Eco-friendly version', price: parseFloat(product.price.replace(/[^0-9.]/g, '')) + 200, savings: '2.5 kg CO₂' },
     { name: 'Recycled material option', price: parseFloat(product.price.replace(/[^0-9.]/g, '')) + 150, savings: '1.8 kg CO₂' }
   ];
+
+  // Calculate discount percentage if both price and mrp exist
+  let discountPercent = 0;
+  if (product.price && product.mrp) {
+    const price = parseFloat(product.price.replace(/[^0-9.]/g, ''));
+    const mrp = parseFloat(product.mrp.replace(/[^0-9.]/g, ''));
+    if (mrp > price) {
+      discountPercent = Math.round(((mrp - price) / mrp) * 100);
+    }
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -282,15 +282,23 @@ const ProductPage = () => {
                 <span className="text-lg text-gray-500 line-through">
                   {product.mrp}
                 </span>
-                <span className="bg-red-100 text-red-800 px-2 py-1 rounded text-sm font-medium">
-                  {product.discount}
-                </span>
+                {discountPercent > 0 && (
+                  <span className="bg-red-100 text-red-800 px-2 py-1 rounded text-sm font-medium">
+                    {discountPercent}% OFF
+                  </span>
+                )}
               </div>
             )}
           </div>
 
           {/* Quantity and Add to Cart */}
           <div className="space-y-4">
+            {/* Out of Stock Message */}
+            {(product.outOfStock || product.unitsInStock === 0) ? (
+              <div className="text-red-600 font-semibold mb-2">Out of Stock</div>
+            ) : (
+              <div className="text-green-700 text-sm mb-2">{product.unitsInStock - product.unitsSold} of {product.unitsInStock} units available</div>
+            )}
             <div className="flex items-center space-x-4">
               <span className="font-medium">Quantity:</span>
               <div className="flex items-center border rounded-lg">
@@ -299,6 +307,7 @@ const ProductPage = () => {
                   whileTap={{ scale: 0.9 }}
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   className="p-2 hover:bg-gray-100"
+                  disabled={product.outOfStock || product.unitsInStock === 0}
                 >
                   <Minus className="w-4 h-4" />
                 </motion.button>
@@ -308,6 +317,7 @@ const ProductPage = () => {
                   whileTap={{ scale: 0.9 }}
                   onClick={() => setQuantity(quantity + 1)}
                   className="p-2 hover:bg-gray-100"
+                  disabled={product.outOfStock || product.unitsInStock === 0 || quantity >= product.unitsInStock}
                 >
                   <Plus className="w-4 h-4" />
                 </motion.button>
@@ -319,7 +329,8 @@ const ProductPage = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={handleAddToCart}
-                className="flex-1 bg-yellow-400 hover:bg-yellow-500 text-gray-900 py-3 px-6 rounded-lg font-semibold transition-colors flex items-center justify-center"
+                className={`flex-1 bg-yellow-400 hover:bg-yellow-500 text-gray-900 py-3 px-6 rounded-lg font-semibold transition-colors flex items-center justify-center ${product.outOfStock || product.unitsInStock === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                disabled={product.outOfStock || product.unitsInStock === 0}
               >
                 <ShoppingCart className="w-5 h-5 mr-2" />
                 Add to Cart
@@ -328,7 +339,8 @@ const ProductPage = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={handleBuyNow}
-                className="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-3 px-6 rounded-lg font-semibold transition-colors flex items-center justify-center"
+                className={`flex-1 bg-orange-500 hover:bg-orange-600 text-white py-3 px-6 rounded-lg font-semibold transition-colors flex items-center justify-center ${product.outOfStock || product.unitsInStock === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                disabled={product.outOfStock || product.unitsInStock === 0}
               >
                 <Zap className="w-5 h-5 mr-2" />
                 Buy Now

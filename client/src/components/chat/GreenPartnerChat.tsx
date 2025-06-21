@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Mic, Camera, Leaf, Sparkles, Trash2, RotateCcw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../../store/useStore';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 interface Message {
   id: string;
@@ -18,8 +18,14 @@ interface Message {
   badges?: any[];
 }
 
+interface Product {
+  _id: string;
+  name: string;
+  // ... other properties ...
+}
+
 const GreenPartnerChat = () => {
-  const { chatOpen, toggleChat, user, cart, chatWithAI, chatPrefillMessage, setChatPrefillMessage } = useStore();
+  const { chatOpen, toggleChat, user, cart, products, chatWithAI, chatPrefillMessage, setChatPrefillMessage, challenges } = useStore();
   const navigate = useNavigate();
   const defaultBotMessage: Message = {
     id: '1',
@@ -38,12 +44,15 @@ const GreenPartnerChat = () => {
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [typingMessage, setTypingMessage] = useState<string | null>(null); // For char-by-char animation
+  const typingTimeoutRef = useRef<any>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(() => {
     // Show onboarding only for first-time users (localStorage flag)
     return localStorage.getItem('greenPartnerOnboarded') !== 'true';
   });
+  const fallbackProductImage = 'https://images.pexels.com/photos/1029236/pexels-photo-1029236.jpeg?auto=compress&cs=tinysrgb&w=400';
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -51,7 +60,7 @@ const GreenPartnerChat = () => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, typingMessage]);
 
   useEffect(() => {
     if (showOnboarding) {
@@ -69,6 +78,36 @@ const GreenPartnerChat = () => {
     // Only run when chatOpen or chatPrefillMessage changes
   }, [chatOpen, chatPrefillMessage, setChatPrefillMessage]);
 
+  // Character-by-character typing animation for bot
+  const typeBotMessage = (fullText: string, botMessage: Message) => {
+    setTypingMessage('');
+    let i = 0;
+    const typeNext = () => {
+      setTypingMessage((prev) => {
+        // Always append the next character, including newlines and spaces
+        if (fullText[i] === '\n') {
+          return (prev ?? '') + '\n';
+        }
+        return (prev ?? '') + fullText[i];
+      });
+      i++;
+      if (i < fullText.length) {
+        typingTimeoutRef.current = setTimeout(typeNext, 18); // Typing speed (ms per char)
+      } else {
+        setMessages((prev) => [...prev, { ...botMessage, content: fullText }]);
+        setTypingMessage(null);
+        setIsTyping(false);
+      }
+    };
+    typeNext();
+  };
+
+  useEffect(() => {
+    return () => {
+      if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+    };
+  }, []);
+
   const sendMessage = async (content: string) => {
     if (!content.trim()) return;
 
@@ -84,13 +123,27 @@ const GreenPartnerChat = () => {
     setIsTyping(true);
 
     try {
-      // Get AI response
+      // If user asks for eco alternatives for cart, handle locally
+      if (/eco alternative|eco alternatives|eco-friendly alternative|eco alternatives for my cart/i.test(content)) {
+        setMessages(prev => [
+          ...prev,
+          {
+            id: (Date.now() + 1).toString(),
+            type: 'bot',
+            content: '',
+            timestamp: new Date(),
+            intent: 'eco_alternatives_cart'
+          }
+        ]);
+        setIsTyping(false);
+        return;
+      }
+      // Otherwise, get AI response
       const aiResponse = await chatWithAI(content);
-      
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
         type: 'bot',
-        content: aiResponse.message,
+        content: aiResponse.message, // Show full response
         timestamp: new Date(),
         suggestions: aiResponse.suggestions,
         intent: aiResponse.intent,
@@ -100,8 +153,13 @@ const GreenPartnerChat = () => {
         challenges: aiResponse.challenges,
         badges: aiResponse.badges
       };
-
-      setMessages(prev => [...prev, botMessage]);
+      // If it's a general chat (not a special intent), animate typing
+      if (!aiResponse.intent) {
+        typeBotMessage(aiResponse.message, botMessage);
+      } else {
+        setMessages(prev => [...prev, botMessage]);
+        setIsTyping(false);
+      }
     } catch (error) {
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -110,7 +168,6 @@ const GreenPartnerChat = () => {
         timestamp: new Date()
       };
       setMessages(prev => [...prev, errorMessage]);
-    } finally {
       setIsTyping(false);
     }
   };
@@ -128,19 +185,48 @@ const GreenPartnerChat = () => {
     setInputMessage('');
   };
 
+  // Helper to find eco alternatives for cart items
+  function getEcoAlternativesForCart() {
+    if (!cart || !products) return [];
+    const alternatives = [];
+    cart.forEach((cartItem) => {
+      const item = cartItem.cartItem;
+      // Use subCategory if present, otherwise fallback to category
+      const itemSubCat = item.subCategory || item.category;
+      const itemEcoScore = typeof item.ecoScore === 'number' ? item.ecoScore : 0;
+      const similar = products.filter(
+        (p) =>
+          p._id !== item._id &&
+          (p.subCategory || p.category) === itemSubCat &&
+          typeof p.ecoScore === 'number' &&
+          p.ecoScore > itemEcoScore
+      );
+      if (similar.length > 0) {
+        // Sort by highest ecoScore first
+        similar.sort((a, b) => (b.ecoScore || 0) - (a.ecoScore || 0));
+        alternatives.push({
+          original: item,
+          alternatives: similar.slice(0, 3) // top 3 alternatives
+        });
+      }
+    });
+    return alternatives;
+  }
+
   // Helper to render bot message with rich UI for special intents
   function renderBotMessage(message: any) {
-    if (message.intent === 'carbon_footprint' && (message.breakdown || message.total !== undefined)) {
-      // Modern, minimal UI for carbon footprint breakdown
-      return (
-        <div className="space-y-6">
-          {/* Summary Card */}
-          <div className="flex flex-col items-center justify-center bg-gradient-to-r from-green-200 to-blue-100 rounded-2xl p-6 shadow-md mb-2">
-            <div className="text-lg font-semibold text-green-700 mb-1">Monthly CO₂ Saved</div>
-            <div className="text-5xl font-extrabold text-green-800 mb-1">{message.total?.toFixed(2)} <span className="text-2xl font-bold text-green-500">kg</span></div>
-          </div>
-          {/* Breakdown Table */}
-          {Array.isArray(message.breakdown) && message.breakdown.length > 0 && (
+    if (message.intent === 'carbon_footprint') {
+      // Always show the reply, even if no breakdown or total
+      if (message.breakdown && message.breakdown.length > 0 && typeof message.total === 'number') {
+        // Modern, minimal UI for carbon footprint breakdown
+        return (
+          <div className="space-y-6">
+            {/* Summary Card */}
+            <div className="flex flex-col items-center justify-center bg-gradient-to-r from-green-200 to-blue-100 rounded-2xl p-6 shadow-md mb-2">
+              <div className="text-lg font-semibold text-green-700 mb-1">Monthly CO₂ Saved</div>
+              <div className="text-5xl font-extrabold text-green-800 mb-1">{message.total?.toFixed(2)} <span className="text-2xl font-bold text-green-500">kg</span></div>
+            </div>
+            {/* Breakdown Table */}
             <div className="overflow-x-auto">
               <table className="min-w-full text-xs border rounded-lg bg-white shadow">
                 <thead>
@@ -177,49 +263,123 @@ const GreenPartnerChat = () => {
                 </tbody>
               </table>
             </div>
-          )}
-          <button
-            className="mt-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition shadow"
-            onClick={() => {
-              toggleChat();
-              setTimeout(() => navigate('/profile'), 100);
-            }}
-          >
-            View Full Eco Profile
-          </button>
-        </div>
-      );
+            <button
+              className="mt-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition shadow"
+              onClick={() => {
+                toggleChat();
+                setTimeout(() => navigate('/profile'), 100);
+              }}
+            >
+              View Full Eco Profile
+            </button>
+          </div>
+        );
+      } else {
+        // Show fallback message from backend
+        return (
+          <div className="text-green-700 font-semibold py-2">{message.reply || message.content}</div>
+        );
+      }
     }
     if (message.intent === 'my_challenges' && Array.isArray(message.challenges)) {
+      if (!message.challenges.length) {
+        return <div className="text-green-700 font-semibold py-2">No ongoing challenges found.</div>;
+      }
       return (
         <div className="space-y-2">
           <div className="font-semibold text-green-700">{message.reply}</div>
           <div className="grid grid-cols-1 gap-3">
-            {message.challenges.map((ch: any) => (
-              <div key={ch.id} className={`rounded-xl border shadow-sm p-3 flex flex-col gap-2 bg-gradient-to-r from-green-50 to-green-100 ${ch.status === 'completed' ? 'opacity-70' : ''}`}>
-                <div className="flex items-center space-x-4">
-                  <img src={ch.rewardBadge?.iconUrl || '/daily-badge.png'} alt="badge" className="w-10 h-10 rounded-full border" />
-                  <div className="flex-1">
-                    <div className="font-semibold text-green-800 flex items-center gap-2">{ch.name} <span className="text-xs px-2 py-0.5 rounded bg-green-200 text-green-800 ml-2">{ch.frequency}</span></div>
-                    <div className="text-xs text-gray-700 mb-1">{ch.description}</div>
-                    <div className="text-xs text-gray-500">{ch.status === 'completed' ? 'Completed' : 'Active'}</div>
+            {message.challenges.map((ch: any) => {
+              // Find the matching challenge from the store
+              const storeChallenge = challenges.find((c: any) => c._id === ch.id || c.id === ch.id || c._id === ch._id || c.id === ch._id);
+              let progressText = '';
+              let progress = 0;
+              let target = 1;
+              if (storeChallenge && user && (storeChallenge.frequency === 'daily' || storeChallenge.frequency === 'monthly' || storeChallenge.frequency === 'weekly')) {
+                const now = new Date();
+                if (storeChallenge.frequency === 'weekly') {
+                  const day = now.getDay();
+                  const diffToMonday = (day === 0 ? -6 : 1) - day;
+                  const weekStart = new Date(now);
+                  weekStart.setDate(now.getDate() + diffToMonday);
+                  weekStart.setHours(0, 0, 0, 0);
+                  let co2Saved = 0;
+                  user?.orders?.forEach((order: any) => {
+                    const orderDate = new Date(order?.orderDate || order?.orderDate);
+                    if (orderDate >= weekStart && orderDate <= now) {
+                      const carbonFootprint = order?.carbonFootprint || order?.totalCarbonSaved || order?.carbonFootprint || 0;
+                      co2Saved += carbonFootprint;
+                    }
+                  });
+                  target = 5;
+                  progressText = `CO₂ saved this week: ${co2Saved.toFixed(2)}/5 kg`;
+                  progress = co2Saved;
+                } else {
+                  let ecoCount = 0;
+                  user?.orders?.forEach((order: any) => {
+                    const orderDate = new Date(order?.orderDate || order?.orderDate);
+                    const isEco = order?.isEcoFriendly === true || (order?.ecoScore && order.ecoScore > 0) || (order?.items && order.items.some((item: any) => item?.isEcoFriendly === true || (item?.ecoScore && item.ecoScore > 0)));
+                    if (storeChallenge.frequency === 'daily') {
+                      if (
+                        orderDate.getDate() === now.getDate() &&
+                        orderDate.getMonth() === now.getMonth() &&
+                        orderDate.getFullYear() === now.getFullYear() &&
+                        isEco
+                      ) {
+                        ecoCount++;
+                      }
+                      target = 1;
+                      progressText = `Eco-friendly products bought today: ${ecoCount}/1`;
+                      progress = ecoCount;
+                    } else if (storeChallenge.frequency === 'monthly') {
+                      if (
+                        orderDate.getMonth() === now.getMonth() &&
+                        orderDate.getFullYear() === now.getFullYear() &&
+                        isEco
+                      ) {
+                        ecoCount++;
+                      }
+                      target = 10;
+                      progressText = `Eco-friendly products bought this month: ${ecoCount}/10`;
+                      progress = ecoCount;
+                    }
+                  });
+                }
+              }
+              return (
+                <div key={ch.id || ch._id} className={`rounded-xl border shadow-sm p-3 flex flex-col gap-2 bg-gradient-to-r from-green-50 to-green-100 ${ch.status === 'completed' ? 'opacity-70' : ''}`}>
+                  <div className="flex items-center space-x-4">
+                    <img src={ch.rewardBadge?.iconUrl || '/daily-badge.png'} alt="badge" className="w-10 h-10 rounded-full border" />
+                    <div className="flex-1">
+                      <div className="font-semibold text-green-800 flex items-center gap-2">{ch.name || 'Unnamed Challenge'} <span className="text-xs px-2 py-0.5 rounded bg-green-200 text-green-800 ml-2">{ch.frequency || 'N/A'}</span></div>
+                      <div className="text-xs text-gray-700 mb-1">{
+                        storeChallenge && storeChallenge.frequency === 'daily'
+                          ? 'Buy at least 1 eco-friendly product today to complete this challenge.'
+                          : storeChallenge && storeChallenge.frequency === 'weekly'
+                          ? 'Save at least 5kg of CO₂ this week to complete this challenge.'
+                          : storeChallenge && storeChallenge.frequency === 'monthly'
+                          ? 'Buy at least 10 eco-friendly products this month to complete this challenge.'
+                          : (storeChallenge && storeChallenge.description) || ch.description || 'No description'
+                      }</div>
+                      <div className="text-xs text-gray-500">{ch.status === 'completed' ? 'Completed' : 'Active'}</div>
+                    </div>
+                  </div>
+                  {/* Progress Bar and Text */}
+                  <div className="mt-1">
+                    <div className="flex items-center justify-between text-xs mb-1">
+                      <span className="text-green-700 font-medium">{progressText || ch.progressText || `${ch.progress || 0}/${ch.target || 1}`}</span>
+                      <span className="text-gray-500">{Math.min(100, Math.round(((progress || ch.progress || 0) / (target || ch.target || 1)) * 100))}%</span>
+                    </div>
+                    <div className="w-full h-2 bg-green-100 rounded-full overflow-hidden">
+                      <div
+                        className={`h-2 rounded-full transition-all duration-300 ${ch.status === 'completed' ? 'bg-blue-400' : 'bg-green-500'}`}
+                        style={{ width: `${Math.min(100, Math.round(((progress || ch.progress || 0) / (target || ch.target || 1)) * 100))}%` }}
+                      />
+                    </div>
                   </div>
                 </div>
-                {/* Progress Bar and Text */}
-                <div className="mt-1">
-                  <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="text-green-700 font-medium">{ch.progressText}</span>
-                    <span className="text-gray-500">{Math.min(100, Math.round((ch.progress / (ch.target || 1)) * 100))}%</span>
-                  </div>
-                  <div className="w-full h-2 bg-green-100 rounded-full overflow-hidden">
-                    <div
-                      className={`h-2 rounded-full transition-all duration-300 ${ch.status === 'completed' ? 'bg-blue-400' : 'bg-green-500'}`}
-                      style={{ width: `${Math.min(100, Math.round((ch.progress / (ch.target || 1)) * 100))}%` }}
-                    />
-                  </div>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
           {/* Modern Badges Row */}
           {Array.isArray(message.badges) && message.badges.length > 0 && (
@@ -256,6 +416,74 @@ const GreenPartnerChat = () => {
           >
             Go to Eco Challenges
           </button>
+        </div>
+      );
+    }
+    // Show eco alternatives for cart intent
+    if (message.intent === 'eco_alternatives_cart') {
+      if (!cart || cart.length === 0) {
+        return <div className="text-green-700">Your cart is empty. Add items to your cart to get eco-friendly recommendations.</div>;
+      }
+      const ecoAlts = getEcoAlternativesForCart();
+      if (ecoAlts.length === 0) {
+        return <div className="text-green-700">No better eco alternatives found for your cart items.</div>;
+      }
+      return (
+        <div className="space-y-5">
+          {ecoAlts.map((entry, idx) => (
+            <div key={idx} className="bg-gradient-to-br from-green-50 to-blue-50 border border-green-200 rounded-xl p-2 shadow flex flex-col gap-2">
+              <div className="mb-1 flex flex-col gap-0.5">
+                <span className="text-gray-700 text-[11px]">Alternatives for</span>
+                <span
+                  className="text-green-900 font-bold text-sm underline leading-tight max-w-[180px] line-clamp-2"
+                  style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
+                >
+                  {entry.original.name}
+                </span>
+              </div>
+              <div className="flex flex-col gap-2">
+                {entry.alternatives.map((alt) => (
+                  <div key={alt._id} className="flex items-center gap-2 bg-white rounded-lg p-1 border border-green-100 hover:shadow-md transition group relative overflow-hidden">
+                    <img
+                      src={alt.image || alt.url || fallbackProductImage}
+                      alt={alt.name}
+                      className="w-10 h-10 rounded object-cover border bg-white shadow group-hover:scale-105 transition-transform duration-200 flex-shrink-0"
+                      onError={e => { e.currentTarget.src = fallbackProductImage; }}
+                    />
+                    <div className="flex-1 min-w-0 flex flex-col items-start justify-center">
+                      <Link
+                        to={`/product/${alt._id}`}
+                        className="text-green-900 font-semibold text-xs underline hover:text-green-600 transition-colors max-w-[140px] line-clamp-2 leading-tight"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
+                      >
+                        {alt.name}
+                      </Link>
+                      <div className="flex flex-col gap-0.5 mt-0.5 w-full">
+                        <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-green-100 text-green-800 border border-green-300 w-fit">
+                          🌱 Eco Score: <span className="ml-1 font-bold">{alt.ecoScore}</span>
+                        </span>
+                        <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-yellow-100 text-yellow-800 border border-yellow-300 w-fit">
+                          💰 Price: <span className="ml-1 font-bold">{alt.price}</span>
+                        </span>
+                        {alt.isEcoFriendly && (
+                          <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-emerald-100 text-emerald-700 border border-emerald-300 w-fit">
+                            <Leaf className="w-3 h-3 mr-1" /> Eco-Friendly
+                          </span>
+                        )}
+                        {alt.groupBuyEligible && (
+                          <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-blue-100 text-blue-700 border border-blue-300 shadow w-fit">
+                            Group Buy
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       );
     }
@@ -384,7 +612,7 @@ const GreenPartnerChat = () => {
 
               {/* Messages */}
               <div className="flex-1 overflow-y-auto p-4 space-y-3">
-                {messages.map((message) => (
+                {messages.map((message, idx) => (
                   <div key={message.id}>
                     <div
                       className={`flex ${
@@ -401,7 +629,6 @@ const GreenPartnerChat = () => {
                         {message.type === 'bot' ? renderBotMessage(message) : message.content}
                       </div>
                     </div>
-                    
                     {/* Suggestions */}
                     {message.suggestions && message.type === 'bot' && (
                       <div className="mt-2 space-y-1">
@@ -418,15 +645,32 @@ const GreenPartnerChat = () => {
                     )}
                   </div>
                 ))}
-                
-                {isTyping && (
+                {/* Typing animation for char-by-char bot message */}
+                {typingMessage !== null && (
+                  <div className="flex justify-start">
+                    <div className="max-w-xs px-3 py-2 rounded-lg text-sm bg-gray-100 text-gray-900">
+                      {typingMessage}
+                    </div>
+                  </div>
+                )}
+                {/* Dots animation while typing */}
+                {isTyping && typingMessage === null && (
                   <div className="flex justify-start">
                     <div className="bg-gray-100 px-3 py-2 rounded-lg">
                       <div className="flex space-x-1">
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-100" />
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-200" />
+                        <span className="block w-2 h-2 bg-green-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <span className="block w-2 h-2 bg-green-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <span className="block w-2 h-2 bg-green-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                       </div>
+                      <style>{`
+                        @keyframes bounce {
+                          0%, 80%, 100% { transform: scale(0.8); opacity: 0.7; }
+                          40% { transform: scale(1.2); opacity: 1; }
+                        }
+                        .animate-bounce {
+                          animation: bounce 1.2s infinite;
+                        }
+                      `}</style>
                     </div>
                   </div>
                 )}

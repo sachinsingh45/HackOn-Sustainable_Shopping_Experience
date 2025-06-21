@@ -3,14 +3,12 @@ import { authAPI, productsAPI, cartAPI, ordersAPI, challengeAPI, aiAPI } from '.
 
 interface Product {
   _id: string;
-  id: string;
   name: string;
   price: string;
-  value: string;
-  accValue: number;
   image: string;
   url: string;
   category: string;
+  subCategory?: string;
   rating?: number;
   reviews?: number;
   carbonFootprint?: number;
@@ -20,10 +18,10 @@ interface Product {
   description?: string;
   features?: string[];
   points: string[];
+  mrp?: string;
 }
 
 interface CartItem {
-  id: string;
   cartItem: Product;
   qty: number;
 }
@@ -175,7 +173,7 @@ export const useStore = create<Store>((set, get) => ({
       if (response.status) {
         // Fetch user data after successful login
         const userData = await authAPI.getAuthUser();
-        set({ user: userData, cart: userData.cart || [] });
+        set({ user: userData, cart: (userData.cart || []).map(item => ({ ...item, id: item.cartItem?._id })) });
         return true;
       }
       return false;
@@ -230,7 +228,7 @@ export const useStore = create<Store>((set, get) => ({
   checkAuth: async () => {
     try {
       const userData = await authAPI.getAuthUser();
-      set({ user: userData, cart: userData.cart || [] });
+      set({ user: userData, cart: (userData.cart || []).map(item => ({ ...item, id: item.cartItem?._id })) });
     } catch (error) {
       set({ user: null, cart: [] });
     }
@@ -241,26 +239,8 @@ export const useStore = create<Store>((set, get) => ({
     try {
       set({ loading: true, error: null });
       const products = await productsAPI.getAllProducts();
-      
-      // Enhance products with eco data
-      const enhancedProducts = products.map((product: any) => ({
-        ...product,
-        rating: Math.random() * 2 + 3, // Random rating between 3-5
-        reviews: Math.floor(Math.random() * 5000) + 100,
-        carbonFootprint: Math.random() * 5 + 0.5,
-        ecoScore: Math.floor(Math.random() * 40) + 60,
-        isEcoFriendly: Math.random() > 0.6,
-        groupBuyEligible: Math.random() > 0.7,
-        category: product.category || 'General',
-        image: product.url || 'https://images.pexels.com/photos/1029236/pexels-photo-1029236.jpeg',
-        price: product.price || '₹0',
-        value: product.value || '0',
-        accValue: product.accValue || 0,
-        id: product.id || product._id,
-        _id: product._id || product.id
-      }));
-      
-      set({ products: enhancedProducts });
+      // Use only backend values, do not override or randomize any fields
+      set({ products });
     } catch (error: any) {
       set({ error: 'Failed to fetch products' });
       console.error('Error fetching products:', error);
@@ -304,7 +284,7 @@ export const useStore = create<Store>((set, get) => ({
       set({ loading: true, error: null });
       const response = await cartAPI.addToCart(productId);
       const userData = await authAPI.getAuthUser();
-      set({ user: userData, cart: userData.cart || [] });
+      set({ user: userData, cart: (userData.cart || []).map(item => ({ ...item, id: item.cartItem?._id })) });
     } catch (error: any) {
       set({ error: error.response?.data?.message || 'Failed to add to cart' });
     } finally {
@@ -317,7 +297,7 @@ export const useStore = create<Store>((set, get) => ({
       set({ loading: true, error: null });
       await cartAPI.removeFromCart(productId);
       const userData = await authAPI.getAuthUser();
-      set({ user: userData, cart: userData.cart || [] });
+      set({ user: userData, cart: (userData.cart || []).map(item => ({ ...item, id: item.cartItem?._id })) });
     } catch (error: any) {
       set({ error: error.response?.data?.message || 'Failed to remove from cart' });
     } finally {
@@ -330,7 +310,7 @@ export const useStore = create<Store>((set, get) => ({
       set({ loading: true, error: null });
       await cartAPI.updateCartQuantity(productId, quantity);
       const userData = await authAPI.getAuthUser();
-      set({ user: userData, cart: userData.cart || [] });
+      set({ user: userData, cart: (userData.cart || []).map(item => ({ ...item, id: item.cartItem?._id })) });
     } catch (error: any) {
       set({ error: error.response?.data?.message || 'Failed to update quantity' });
     } finally {
@@ -404,7 +384,7 @@ export const useStore = create<Store>((set, get) => ({
   getEcoAlternatives: async (productId) => {
     try {
       const state = get();
-      const product = state.products.find(p => p.id === productId);
+      const product = state.products.find(p => p._id === productId);
       if (!product) return { alternatives: [] };
 
       const userHistory = state.user?.orders || [];
@@ -449,8 +429,14 @@ export const useStore = create<Store>((set, get) => ({
     try {
       const state = get();
       const userId = state.user?._id;
+      // Add summarization prompt for general chat
+      let prompt = message;
+      // Only add the summarization instruction if not a special intent
+      if (!/eco alternative|eco-friendly alternative|carbon footprint|challenge|badge|progress|order|cart|product|analyze/i.test(message)) {
+        prompt = `${message}\n\nPlease respond in a single, complete summary under 40 words. Do not use ellipses (...), 'etc.', or any indication of omitted content. Always provide a full, self-contained answer.`;
+      }
       // Use new backend DeepSeek/Cohere endpoint
-      const response = await aiAPI.greenPartnerChat(message, userId);
+      const response = await aiAPI.greenPartnerChat(prompt, userId);
       return response; // Return all fields for custom rendering
     } catch (error) {
       return {

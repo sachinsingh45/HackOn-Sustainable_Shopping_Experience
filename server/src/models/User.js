@@ -24,9 +24,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  confirmPassword: {
-    type: String
-  },
   tokens: [
     {
       token: {
@@ -37,40 +34,26 @@ const userSchema = new mongoose.Schema({
   ],
   cart: [
     {
-      id: String,
       cartItem: {},
       qty: Number
     }
   ],
   orders: [
     {
-      orderInfo: {
-        items: [{
-          name: String,
-          quantity: Number,
-          price: Number,
-          carbonFootprint: Number,
-          ecoScore: Number,
-          isEcoFriendly: Boolean
-        }],
-        totalAmount: Number,
-        totalEcoScore: Number,
-        totalCarbonSaved: Number,
-        moneySaved: Number,
-        orderDate: Date,
-        date: Date,
-        status: String,
-        summary: {
-          name: String,
-          price: Number,
-          carbonFootprint: Number,
-          date: Date,
-          status: String
-        },
-        isEcoFriendly: Boolean,
+      items: [{
+        name: String,
+        quantity: Number,
+        price: Number,
+        carbonFootprint: Number,
         ecoScore: Number,
-        carbonFootprint: Number
-      }
+        isEcoFriendly: Boolean
+      }],
+      totalAmount: Number,
+      totalEcoScore: Number,
+      totalCarbonSaved: Number,
+      moneySaved: Number,
+      orderDate: Date,
+      status: String
     }
   ],
   location: {
@@ -109,7 +92,7 @@ const userSchema = new mongoose.Schema({
     default: 0
   },
   currentChallenges: {
-    type: [String], // or you can use an array of ObjectId if you have a Challenge model
+    type: [String],
     default: []
   },
   badges: {
@@ -181,9 +164,9 @@ userSchema.methods.addToCart = async function(productId, product) {
 }
 
 // Orders
-userSchema.methods.addOrder = async function(orderInfo) {
+userSchema.methods.addOrder = async function(order) {
   try {
-    this.orders = this.orders.concat({ orderInfo });
+    this.orders = this.orders.concat(order);
     this.cart = [];
     await this.save();
   } catch (error) {
