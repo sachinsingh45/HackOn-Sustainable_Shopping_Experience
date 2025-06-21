@@ -1,16 +1,65 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Trash2, Plus, Minus, Package, Truck, Shield, CreditCard, Leaf, AlertTriangle, BarChart3, Users, MessageCircle, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../store/useStore';
 import { useToast } from '../context/ToastContext';
+import { productsAPI } from '../services/api';
 
 const CartPage = () => {
   const { cart, removeFromCart, updateQuantity, user, checkout, toggleChat, setChatPrefillMessage } = useStore();
   const { showToast } = useToast();
   const [loading, setLoading] = useState(false);
   const [selectedPackaging, setSelectedPackaging] = useState<{ [key: string]: string }>({});
+  const [recommendations, setRecommendations] = useState<{ [key: string]: any[] }>({});
+  const [recommendationsLoading, setRecommendationsLoading] = useState<{ [key: string]: boolean }>({});
   const navigate = useNavigate();
+
+  // Fetch recommendations for each cart item
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      for (const item of cart) {
+        if (!recommendations[item.cartItem._id] && !recommendationsLoading[item.cartItem._id]) {
+          try {
+            setRecommendationsLoading(prev => ({ ...prev, [item.cartItem._id]: true }));
+            const response = await productsAPI.getEcoRecommendations(item.cartItem._id);
+            if (response.status && response.recommendations) {
+              setRecommendations(prev => ({
+                ...prev,
+                [item.cartItem._id]: response.recommendations
+              }));
+            }
+          } catch (error) {
+            console.error('Failed to fetch recommendations for:', item.cartItem._id);
+          } finally {
+            setRecommendationsLoading(prev => ({ ...prev, [item.cartItem._id]: false }));
+          }
+        }
+      }
+    };
+
+    if (cart.length > 0) {
+      fetchRecommendations();
+    }
+  }, [cart]);
+
+  // Set default packaging selections for new cart items
+  useEffect(() => {
+    const newSelections = { ...selectedPackaging };
+    let hasChanges = false;
+    
+    cart.forEach(item => {
+      const itemId = item.id || item.cartItem._id;
+      if (!selectedPackaging[itemId]) {
+        newSelections[itemId] = 'standard';
+        hasChanges = true;
+      }
+    });
+    
+    if (hasChanges) {
+      setSelectedPackaging(newSelections);
+    }
+  }, [cart, selectedPackaging]);
 
   const handleRemoveItem = async (productId: string) => {
     try {
@@ -40,7 +89,8 @@ const CartPage = () => {
   const calculateEcoImpact = () => {
     return cart.reduce((total, item) => {
       const carbonFootprint = item.cartItem.carbonFootprint || 0;
-      return total + carbonFootprint * item.qty;
+      const packagingCarbon = getPackagingCarbonFootprint(item);
+      return total + (carbonFootprint + packagingCarbon) * item.qty;
     }, 0);
   };
 
@@ -50,24 +100,71 @@ const CartPage = () => {
     }, 0);
   };
 
+  // Updated packaging options with carbon footprint per kg
   const packagingOptions = [
-    { id: 'standard', label: 'Standard Packaging', co2: 0.5, cost: 0, description: 'Regular plastic packaging' },
-    { id: 'minimal', label: 'Minimal Packaging', co2: 0.2, cost: 0, description: 'Reduced packaging materials' },
-    { id: 'biodegradable', label: 'Biodegradable Packaging', co2: 0.1, cost: 25, description: 'Compostable materials' }
+    { 
+      id: 'standard', 
+      label: 'Standard Packaging', 
+      co2PerKg: 0.5, 
+      cost: 0, 
+      description: 'Regular plastic packaging',
+      color: 'border-gray-300'
+    },
+    { 
+      id: 'minimal', 
+      label: 'Minimal Packaging', 
+      co2PerKg: 0.2, 
+      cost: 0, 
+      description: 'Reduced packaging materials',
+      color: 'border-blue-300'
+    },
+    { 
+      id: 'biodegradable', 
+      label: 'Biodegradable Packaging', 
+      co2PerKg: 0.1, 
+      cost: 25, 
+      description: 'Compostable materials',
+      color: 'border-green-300'
+    }
   ];
 
+  const getPackagingCarbonFootprint = (item: any) => {
+    const selectedPackagingType = selectedPackaging[item.id || item.cartItem._id] || 'standard';
+    const packagingOption = packagingOptions.find(opt => opt.id === selectedPackagingType);
+    const productWeight = item.cartItem.weight || 1; // Default to 1kg if weight not available
+    return packagingOption ? packagingOption.co2PerKg * productWeight : 0.5 * productWeight;
+  };
+
   const getEcoAlternatives = (productId: string) => {
-    // Mock eco alternatives
-    return [
-      { name: 'Eco-friendly alternative', savings: '2.5 kg CO₂', price: 1899 },
-      { name: 'Recycled version', savings: '1.8 kg CO₂', price: 2199 }
-    ];
+    const productRecommendations = recommendations[productId] || [];
+    return productRecommendations.slice(0, 2).map(rec => ({
+      name: rec.name,
+      savings: `${(rec.carbonFootprint ? (rec.carbonFootprint * -1).toFixed(1) : '0')} kg CO₂`,
+      price: rec.price,
+      id: rec._id
+    }));
   };
 
   const handleCheckout = async () => {
     try {
       setLoading(true);
-      await checkout();
+      
+      // Calculate total carbon footprint including packaging
+      const totalCarbonFootprint = calculateEcoImpact();
+      
+      // Prepare order data with packaging information
+      const orderData = {
+        items: cart.map(item => ({
+          productId: item.cartItem._id,
+          quantity: item.qty,
+          packaging: selectedPackaging[item.id || item.cartItem._id] || 'standard',
+          packagingCarbon: getPackagingCarbonFootprint(item)
+        })),
+        totalCarbonFootprint,
+        packagingSelections: selectedPackaging
+      };
+      
+      await checkout(orderData);
       showToast('Order placed successfully!', 'success');
       navigate('/orders'); // Redirect to orders page
     } catch (error: any) {
@@ -254,36 +351,41 @@ const CartPage = () => {
                 <div className="mt-3 sm:mt-4 border-t pt-3 sm:pt-4">
                   <h4 className="font-medium mb-2 text-xs sm:text-sm text-gray-700">Packaging Options:</h4>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                    {packagingOptions.map((option) => (
-                      <label
-                        key={option.id}
-                        className={`flex items-center p-2 border rounded cursor-pointer text-xs sm:text-sm transition-all duration-150 focus-within:ring-2 focus-within:ring-green-400 ${
-                          selectedPackaging[item.id] === option.id
-                            ? 'border-green-500 bg-green-50'
-                            : 'border-gray-300'
-                        }`}
-                        tabIndex={0}
-                      >
-                        <input
-                          type="radio"
-                          name={`packaging-${item.id}`}
-                          value={option.id}
-                          checked={selectedPackaging[item.id] === option.id}
-                          onChange={(e) => setSelectedPackaging({
-                            ...selectedPackaging,
-                            [item.id]: e.target.value
-                          })}
-                          className="sr-only"
-                        />
-                        <div>
-                          <div className="font-medium">{option.label}</div>
-                          <div className="text-xs text-gray-600">{option.description}</div>
-                          {option.cost > 0 && (
-                            <div className="text-xs text-green-600">+₹{option.cost}</div>
-                          )}
-                        </div>
-                      </label>
-                    ))}
+                    {packagingOptions.map((option) => {
+                      const productWeight = item.cartItem.weight || 1;
+                      const packagingCarbon = option.co2PerKg * productWeight;
+                      return (
+                        <label
+                          key={option.id}
+                          className={`flex items-center p-2 border rounded cursor-pointer text-xs sm:text-sm transition-all duration-150 focus-within:ring-2 focus-within:ring-green-400 ${
+                            selectedPackaging[item.id || item.cartItem._id] === option.id
+                              ? 'border-green-500 bg-green-50'
+                              : option.color
+                          }`}
+                          tabIndex={0}
+                        >
+                          <input
+                            type="radio"
+                            name={`packaging-${item.id || item.cartItem._id}`}
+                            value={option.id}
+                            checked={selectedPackaging[item.id || item.cartItem._id] === option.id}
+                            onChange={(e) => setSelectedPackaging({
+                              ...selectedPackaging,
+                              [item.id || item.cartItem._id]: e.target.value
+                            })}
+                            className="sr-only"
+                          />
+                          <div>
+                            <div className="font-medium">{option.label}</div>
+                            <div className="text-xs text-gray-600">{option.description}</div>
+                            <div className="text-xs text-orange-600">+{packagingCarbon.toFixed(1)} kg CO₂</div>
+                            {option.cost > 0 && (
+                              <div className="text-xs text-green-600">+₹{option.cost}</div>
+                            )}
+                          </div>
+                        </label>
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -293,14 +395,29 @@ const CartPage = () => {
                     <AlertTriangle className="w-4 h-4 mr-1" />
                     Eco-Friendly Alternatives
                   </h4>
-                  <div className="space-y-1">
-                    {getEcoAlternatives(item.cartItem._id).map((alt, index) => (
-                      <div key={index} className="flex justify-between items-center text-xs sm:text-sm">
-                        <span className="text-green-700">{alt.name}</span>
-                        <span className="text-green-600 font-medium">Save {alt.savings}</span>
-                      </div>
-                    ))}
-                  </div>
+                  {recommendationsLoading[item.cartItem._id] ? (
+                    <div className="flex items-center justify-center py-2">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-green-500"></div>
+                      <span className="ml-2 text-xs text-gray-600">Finding alternatives...</span>
+                    </div>
+                  ) : (
+                    <div className="space-y-1">
+                      {getEcoAlternatives(item.cartItem._id).map((alt, index) => (
+                        <div key={index} className="flex justify-between items-center text-xs sm:text-sm">
+                          <span className="text-green-700">{alt.name}</span>
+                          <div className="text-right">
+                            <span className="text-green-600 font-medium">Save {alt.savings}</span>
+                            <div className="text-xs text-gray-500">₹{alt.price}</div>
+                          </div>
+                        </div>
+                      ))}
+                      {getEcoAlternatives(item.cartItem._id).length === 0 && (
+                        <div className="text-xs text-gray-500 text-center py-2">
+                          No alternatives found
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </motion.div>
             ))}

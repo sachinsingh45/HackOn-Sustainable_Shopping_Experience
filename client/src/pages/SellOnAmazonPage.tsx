@@ -1,8 +1,113 @@
 import React, { useState } from 'react';
 import { Store, TrendingUp, Users, Package, ArrowRight, CheckCircle, Leaf, BarChart3 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useStore } from '../store/useStore';
+import axios from 'axios';
+import SellerDashboardPage from './SellerDashboardPage';
 
 const SellOnAmazonPage = () => {
+  const { user } = useStore();
+  const [showAddProduct, setShowAddProduct] = useState(false);
+  const [form, setForm] = useState({
+    name: '',
+    price: '',
+    mrp: '',
+    url: '',
+    category: '',
+    subCategory: '',
+    points: '',
+    unitsInStock: '',
+    weight: '',
+    materialComposition: '',
+    packaging: '',
+    recyclability: false,
+    distance: '',
+    lifespan: '',
+    repairability: false,
+  });
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState<string|null>(null);
+  const [error, setError] = useState<string|null>(null);
+
+  // Category presets optimized for ML model
+  const categoryPresets = {
+    'Electronics': {
+      subCategories: ['Smartphones', 'Laptops', 'Headphones', 'Cameras', 'Gaming', 'Accessories'],
+      materials: ['Plastic:70, Aluminum:20, Glass:10', 'Aluminum:60, Plastic:30, Steel:10', 'Plastic:80, Metal:20'],
+      packaging: ['Cardboard box', 'Plastic bubble wrap', 'Styrofoam'],
+      lifespan: '3-5',
+      repairability: true
+    },
+    'Personal Care': {
+      subCategories: ['Shampoo', 'Soap', 'Skincare', 'Hair Care', 'Oral Care', 'Fragrances'],
+      materials: ['Plastic:90, Organic:10', 'Organic:80, Plastic:20', 'Glass:70, Plastic:30'],
+      packaging: ['Plastic bottle', 'Glass bottle', 'Cardboard box'],
+      lifespan: '1-2',
+      repairability: false
+    },
+    'Grocery': {
+      subCategories: ['Organic Foods', 'Beverages', 'Snacks', 'Dairy', 'Fruits', 'Vegetables'],
+      materials: ['Organic:100', 'Plastic:80, Organic:20', 'Glass:90, Plastic:10'],
+      packaging: ['Plastic bag', 'Glass container', 'Cardboard box', 'Paper bag'],
+      lifespan: '0.1-0.5',
+      repairability: false
+    }
+  };
+
+  const handleCategoryChange = (category: string) => {
+    const preset = categoryPresets[category as keyof typeof categoryPresets];
+    if (preset) {
+      setForm(prev => ({
+        ...prev,
+        category,
+        subCategory: preset.subCategories[0],
+        materialComposition: preset.materials[0],
+        packaging: preset.packaging[0],
+        lifespan: preset.lifespan,
+        repairability: preset.repairability
+      }));
+    } else {
+      setForm(prev => ({ ...prev, category }));
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement>) => {
+    const { name, value, type } = e.target;
+    if (type === 'checkbox') {
+      const input = e.target as HTMLInputElement;
+      setForm(f => ({ ...f, [name]: input.checked }));
+    } else {
+      setForm(f => ({ ...f, [name]: value }));
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage(null);
+    setError(null);
+    try {
+      const res = await axios.post('http://localhost:8000/api/products', {
+        ...form,
+        unitsInStock: form.unitsInStock ? Number(form.unitsInStock) : undefined,
+        weight: Number(form.weight),
+        distance: Number(form.distance),
+        lifespan: form.lifespan ? Number(form.lifespan) : undefined,
+        repairability: !!form.repairability,
+        materialComposition: form.materialComposition,
+        points: form.points ? form.points.split('\n') : [],
+      }, { withCredentials: true });
+      setMessage('Product created successfully!');
+      setForm({
+        name: '', price: '', mrp: '', url: '', category: '', subCategory: '', points: '', unitsInStock: '', weight: '', materialComposition: '', packaging: '', recyclability: false, distance: '', lifespan: '', repairability: false,
+      });
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Failed to create product');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const [activeTab, setActiveTab] = useState('overview');
 
   const benefits = [
@@ -79,6 +184,288 @@ const SellOnAmazonPage = () => {
       recommended: true
     }
   ];
+
+  if (user) {
+    return (
+      <div className="max-w-5xl mx-auto py-12">
+        <h2 className="text-3xl font-bold mb-6">Seller Dashboard</h2>
+        <button
+          className="mb-6 bg-orange-600 text-white px-6 py-2 rounded font-semibold hover:bg-orange-700 transition-colors"
+          onClick={() => setShowAddProduct(v => !v)}
+        >
+          {showAddProduct ? 'Close Add Product' : 'Add Product'}
+        </button>
+        {showAddProduct && (
+          <div className="mb-8">
+            <form onSubmit={handleSubmit} className="space-y-6 bg-white p-8 rounded-lg shadow-lg border">
+              <div className="text-center mb-6">
+                <h3 className="text-2xl font-bold text-gray-900">Add New Product</h3>
+                <p className="text-gray-600 mt-2">Fill in the details below to list your product</p>
+              </div>
+
+              {/* Basic Information */}
+              <div className="bg-gray-50 p-6 rounded-lg">
+                <h4 className="text-lg font-semibold mb-4 text-gray-900">Basic Information</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Product Name *</label>
+                    <input 
+                      name="name" 
+                      value={form.name} 
+                      onChange={handleChange} 
+                      placeholder="Enter product name" 
+                      className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
+                      required 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Image URL *</label>
+                    <input 
+                      name="url" 
+                      value={form.url} 
+                      onChange={handleChange} 
+                      placeholder="https://example.com/image.jpg" 
+                      className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
+                      required 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Price (₹) *</label>
+                    <input 
+                      name="price" 
+                      value={form.price} 
+                      onChange={handleChange} 
+                      placeholder="999" 
+                      type="number" 
+                      min="0" 
+                      step="0.01"
+                      className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
+                      required 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">MRP (₹)</label>
+                    <input 
+                      name="mrp" 
+                      value={form.mrp} 
+                      onChange={handleChange} 
+                      placeholder="1299" 
+                      type="number" 
+                      min="0" 
+                      step="0.01"
+                      className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Units in Stock *</label>
+                    <input 
+                      name="unitsInStock" 
+                      value={form.unitsInStock} 
+                      onChange={handleChange} 
+                      placeholder="100" 
+                      type="number" 
+                      min="0"
+                      className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
+                      required 
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Category Selection */}
+              <div className="bg-gray-50 p-6 rounded-lg">
+                <h4 className="text-lg font-semibold mb-4 text-gray-900">Category & Classification</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Category *</label>
+                    <select 
+                      name="category" 
+                      value={form.category} 
+                      onChange={(e) => handleCategoryChange(e.target.value)}
+                      className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                      required
+                    >
+                      <option value="">Select Category</option>
+                      <option value="Electronics">Electronics</option>
+                      <option value="Personal Care">Personal Care</option>
+                      <option value="Grocery">Grocery</option>
+                      <option value="Other">Other</option>
+                    </select>
+                    <p className="text-xs text-gray-500 mt-1">Our ML model is optimized for Electronics, Personal Care, and Grocery</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Subcategory</label>
+                    <select 
+                      name="subCategory" 
+                      value={form.subCategory} 
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                    >
+                      <option value="">Select Subcategory</option>
+                      {form.category && categoryPresets[form.category as keyof typeof categoryPresets]?.subCategories.map(sub => (
+                        <option key={sub} value={sub}>{sub}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Sustainability Parameters */}
+              <div className="bg-gray-50 p-6 rounded-lg">
+                <h4 className="text-lg font-semibold mb-4 text-gray-900">Sustainability Parameters</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Weight (kg) *</label>
+                    <input 
+                      name="weight" 
+                      value={form.weight} 
+                      onChange={handleChange} 
+                      placeholder="0.5" 
+                      type="number" 
+                      min="0" 
+                      step="0.01"
+                      className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
+                      required 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Distance (km) *</label>
+                    <input 
+                      name="distance" 
+                      value={form.distance} 
+                      onChange={handleChange} 
+                      placeholder="500" 
+                      type="number" 
+                      min="0"
+                      className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
+                      required 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Lifespan (years)</label>
+                    <input 
+                      name="lifespan" 
+                      value={form.lifespan} 
+                      onChange={handleChange} 
+                      placeholder="3" 
+                      type="number" 
+                      min="0" 
+                      step="0.1"
+                      className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Packaging</label>
+                    <select 
+                      name="packaging" 
+                      value={form.packaging} 
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                    >
+                      <option value="">Select Packaging</option>
+                      <option value="Cardboard box">Cardboard box</option>
+                      <option value="Plastic bag">Plastic bag</option>
+                      <option value="Glass container">Glass container</option>
+                      <option value="Plastic bottle">Plastic bottle</option>
+                      <option value="Paper bag">Paper bag</option>
+                      <option value="Styrofoam">Styrofoam</option>
+                      <option value="Plastic bubble wrap">Plastic bubble wrap</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="mt-4 space-y-3">
+                  <div className="flex items-center">
+                    <input 
+                      name="recyclability" 
+                      type="checkbox" 
+                      checked={!!form.recyclability} 
+                      onChange={handleChange} 
+                      className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded" 
+                    />
+                    <label className="ml-2 text-sm text-gray-700">Product is recyclable</label>
+                  </div>
+                  <div className="flex items-center">
+                    <input 
+                      name="repairability" 
+                      type="checkbox" 
+                      checked={!!form.repairability} 
+                      onChange={handleChange} 
+                      className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded" 
+                    />
+                    <label className="ml-2 text-sm text-gray-700">Product is repairable</label>
+                  </div>
+                </div>
+              </div>
+
+              {/* Material Composition */}
+              <div className="bg-gray-50 p-6 rounded-lg">
+                <h4 className="text-lg font-semibold mb-4 text-gray-900">Material Composition</h4>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Material Composition *</label>
+                  <select 
+                    name="materialComposition" 
+                    value={form.materialComposition} 
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                    required
+                  >
+                    <option value="">Select Material Composition</option>
+                    <option value="Plastic:90, Organic:10">Plastic:90, Organic:10</option>
+                    <option value="Aluminum:60, Plastic:30, Steel:10">Aluminum:60, Plastic:30, Steel:10</option>
+                    <option value="Organic:100">Organic:100</option>
+                    <option value="Glass:70, Plastic:30">Glass:70, Plastic:30</option>
+                    <option value="Plastic:80, Metal:20">Plastic:80, Metal:20</option>
+                    <option value="Organic:80, Plastic:20">Organic:80, Plastic:20</option>
+                    <option value="Glass:90, Plastic:10">Glass:90, Plastic:10</option>
+                    <option value="Plastic:70, Aluminum:20, Glass:10">Plastic:70, Aluminum:20, Glass:10</option>
+                  </select>
+                  <p className="text-xs text-gray-500 mt-1">Format: Material:Percentage, Material:Percentage (e.g., Plastic:70, Aluminum:30)</p>
+                </div>
+              </div>
+
+              {/* Product Description */}
+              <div className="bg-gray-50 p-6 rounded-lg">
+                <h4 className="text-lg font-semibold mb-4 text-gray-900">Product Description</h4>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Product Points (one per line)</label>
+                  <textarea 
+                    name="points" 
+                    value={form.points} 
+                    onChange={handleChange} 
+                    placeholder="• High quality product&#10;• Eco-friendly packaging&#10;• Long lasting" 
+                    className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
+                    rows={4} 
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end space-x-4">
+                <button 
+                  type="button" 
+                  onClick={() => setShowAddProduct(false)}
+                  className="px-6 py-3 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit" 
+                  className="bg-orange-600 text-white px-8 py-3 rounded-md font-semibold hover:bg-orange-700 transition-colors" 
+                  disabled={loading}
+                >
+                  {loading ? 'Adding Product...' : 'Add Product'}
+                </button>
+              </div>
+
+              {message && <div className="text-green-600 font-medium mt-4 p-3 bg-green-50 rounded-md">{message}</div>}
+              {error && <div className="text-red-600 font-medium mt-4 p-3 bg-red-50 rounded-md">{error}</div>}
+            </form>
+          </div>
+        )}
+        <SellerDashboardPage />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">

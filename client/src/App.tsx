@@ -21,6 +21,7 @@ import { useStore } from './store/useStore';
 import MainLayout from './components/layout/MainLayout';
 import { ToastProvider } from './context/ToastContext';
 import OrderHistoryPage from './pages/OrderHistoryPage';
+import SellerDashboardPage from './pages/SellerDashboardPage';
 
 function App() {
   const { checkAuth, fetchProducts } = useStore();
@@ -67,6 +68,11 @@ function App() {
             <Route path="orders" element={
               <ProtectedRoute>
                 <OrderHistoryPage />
+              </ProtectedRoute>
+            } />
+            <Route path="seller-dashboard" element={
+              <ProtectedRoute>
+                <SellerDashboardPage />
               </ProtectedRoute>
             } />
           </Route>

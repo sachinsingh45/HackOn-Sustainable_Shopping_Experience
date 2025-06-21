@@ -454,7 +454,7 @@ router.post('/orders', authenticate, async (req, res) => {
       return res.status(400).json({ status: false, message: "Cart is empty" });
     }
 
-    const { items, totalAmount, totalEcoScore, totalCarbonSaved, moneySaved } = req.body;
+    const { items, totalAmount, totalEcoScore, totalCarbonSaved, moneySaved, totalCarbonFootprint, packagingSelections } = req.body;
 
     // Create order object with detailed information and eco-friendly flags
     const orderInfo = {
@@ -464,12 +464,16 @@ router.post('/orders', authenticate, async (req, res) => {
         price: item.price,
         carbonFootprint: item.carbonFootprint || 0,
         ecoScore: item.ecoScore || 0,
-        isEcoFriendly: item.isEcoFriendly || (item.ecoScore && item.ecoScore > 0)
+        isEcoFriendly: item.isEcoFriendly || (item.ecoScore && item.ecoScore > 0),
+        packaging: item.packaging || 'standard',
+        packagingCarbon: item.packagingCarbon || 0
       })),
       totalAmount,
       totalEcoScore,
       totalCarbonSaved,
+      totalCarbonFootprint: totalCarbonFootprint || totalCarbonSaved, // Include packaging carbon footprint
       moneySaved,
+      packagingSelections: packagingSelections || {},
       orderDate: new Date(),
       date: new Date(), // Add both date and orderDate for consistency
       status: 'completed',
@@ -477,19 +481,19 @@ router.post('/orders', authenticate, async (req, res) => {
       summary: {
         name: items[0].name + (items.length > 1 ? ` +${items.length - 1} more items` : ''),
         price: totalAmount,
-        carbonFootprint: totalCarbonSaved,
+        carbonFootprint: totalCarbonFootprint || totalCarbonSaved,
         date: new Date(),
         status: 'completed'
       },
       // Add eco-friendly flags for challenge tracking
       isEcoFriendly: items.some(item => item.isEcoFriendly || (item.ecoScore && item.ecoScore > 0)),
       ecoScore: totalEcoScore,
-      carbonFootprint: totalCarbonSaved
+      carbonFootprint: totalCarbonFootprint || totalCarbonSaved
     };
 
-    // Update user stats
+    // Update user stats with total carbon footprint (including packaging)
     user.ecoScore = (user.ecoScore + totalEcoScore) / 2; // Average of current and new eco score
-    user.carbonSaved += totalCarbonSaved;
+    user.carbonSaved += (totalCarbonFootprint || totalCarbonSaved); // Use total carbon footprint including packaging
     user.moneySaved += moneySaved;
 
     // Add order to user's orders
@@ -1107,6 +1111,356 @@ router.post('/chat', async (req, res) => {
       console.error("Cohere API error response:", err.response.data);
     }
     res.status(500).json({ reply: "Something went wrong.", intent: null, error: err.stack });
+  }
+});
+
+// POST: Create a new product (seller)
+router.post('/products', authenticate, async (req, res) => {
+  try {
+    console.log('Product creation request body:', req.body);
+    
+    const {
+      url,
+      price,
+      mrp,
+      name,
+      category,
+      subCategory,
+      points,
+      unitsInStock,
+      weight,
+      materialComposition,
+      packaging,
+      recyclability,
+      distance,
+      lifespan,
+      repairability
+    } = req.body;
+
+    console.log('Parsed fields:', {
+      name, category, subCategory, weight, distance, materialComposition
+    });
+
+    // Parse materialComposition if it's a string (e.g., 'Aluminum:50,Plastic:50')
+    let parsedMaterialComposition = materialComposition;
+    if (typeof materialComposition === 'string') {
+      parsedMaterialComposition = {};
+      materialComposition.split(',').forEach(pair => {
+        const [mat, val] = pair.split(':');
+        if (mat && val) parsedMaterialComposition[mat.trim()] = Number(val.trim());
+      });
+    }
+
+    console.log('Parsed material composition:', parsedMaterialComposition);
+
+    // Convert material composition to ML server format
+    const mlMaterialFeatures = {
+      "Material_Aluminum": 0,
+      "Material_Silicon": 0,
+      "Material_Plastic": 0,
+      "Material_Glass": 0,
+      "Material_Steel": 0,
+      "Material_Organic": 0,
+      "Material_Copper": 0,
+      "Material_Insulation Foam": 0,
+      "Material_Paper": 0,
+      "Material_Cotton": 0
+    };
+
+    // Map parsed materials to ML server format
+    if (parsedMaterialComposition) {
+      Object.keys(parsedMaterialComposition).forEach(material => {
+        const percentage = parsedMaterialComposition[material];
+        const mlKey = `Material_${material}`;
+        if (mlMaterialFeatures.hasOwnProperty(mlKey)) {
+          mlMaterialFeatures[mlKey] = percentage;
+        }
+      });
+    }
+
+    console.log('ML material features:', mlMaterialFeatures);
+
+    // Prepare data for ML server
+    const mlPayload = {
+      "Weight (kg)": Number(weight),
+      "Distance (km)": Number(distance),
+      "Recyclable": recyclability ? 1 : 0,
+      "Repairable": repairability ? 1 : 0,
+      "Lifespan (yrs)": lifespan ? Number(lifespan) : 5,
+      "Packaging Used": packaging || "Cardboard box",
+      "Category": category || 'General',
+      "Subcategory": subCategory || '',
+      ...mlMaterialFeatures
+    };
+
+    console.log('ML payload:', mlPayload);
+
+    // Validate required fields
+    const requiredFields = ['name', 'price', 'url', 'weight', 'distance', 'packaging'];
+    const missingFields = requiredFields.filter(field => !req.body[field]);
+    
+    if (missingFields.length > 0) {
+      return res.status(400).json({
+        status: false,
+        message: `Missing required fields: ${missingFields.join(', ')}`,
+        error: 'Validation failed',
+        details: { missingFields }
+      });
+    }
+
+    // Call ML server
+    console.log('Calling ML server...');
+    console.log('ML payload being sent:', JSON.stringify(mlPayload, null, 2));
+    let mlRes;
+    try {
+      mlRes = await axios.post('http://127.0.0.1:8000/predict', mlPayload);
+      console.log('ML server response status:', mlRes.status);
+      console.log('ML server response headers:', mlRes.headers);
+      console.log('ML server response data:', mlRes.data);
+      console.log('ML server response data type:', typeof mlRes.data);
+    } catch (mlError) {
+      console.error('ML server error:', mlError);
+      console.error('ML server error response:', mlError.response?.data);
+      console.error('ML server error status:', mlError.response?.status);
+      return res.status(500).json({
+        status: false,
+        message: 'Failed to get ML predictions',
+        error: mlError.message || 'ML server error',
+        details: mlError.response?.data || 'No response data available'
+      });
+    }
+    
+    const { carbon_footprint, eco_score, isEcoFriendly } = mlRes.data;
+
+    // Create product (rating and reviews will use model defaults)
+    const product = new Product({
+      url,
+      price,
+      mrp,
+      name,
+      category,
+      subCategory,
+      points: Array.isArray(points) ? points : (points ? points.split('\n').filter(p => p.trim()) : []),
+      unitsInStock: Number(unitsInStock) || 0,
+      weight,
+      materialComposition: new Map(Object.entries(parsedMaterialComposition)),
+      packaging,
+      recyclability,
+      distance,
+      lifespan: lifespan ? Number(lifespan) : 5,
+      repairability: !!repairability,
+      carbonFootprint: carbon_footprint,
+      ecoScore: eco_score * 100, // Convert decimal to percentage
+      isEcoFriendly: isEcoFriendly,
+      sellerId: req.userId,
+      salesCount: 0
+    });
+
+    console.log('Saving product...');
+    try {
+      await product.save();
+      console.log('Product saved successfully');
+      res.status(201).json({ status: true, product });
+    } catch (saveError) {
+      console.error('Product save error:', saveError);
+      return res.status(500).json({
+        status: false,
+        message: 'Failed to save product to database',
+        error: saveError.message || 'Database error',
+        details: saveError.errors ? Object.keys(saveError.errors) : 'No validation errors',
+        errorType: saveError.name || 'Unknown'
+      });
+    }
+  } catch (error) {
+    console.error('Product creation error:', error);
+    console.error('Error stack:', error.stack);
+    console.error('Error name:', error.name);
+    console.error('Error message:', error.message);
+    console.error('Error code:', error.code);
+    
+    // More detailed error response
+    let errorMessage = 'Failed to create product';
+    let errorDetails = '';
+    
+    if (error.name === 'ValidationError') {
+      errorMessage = 'Validation error: ' + Object.values(error.errors).map(e => e.message).join(', ');
+      errorDetails = error.errors;
+    } else if (error.name === 'CastError') {
+      errorMessage = 'Invalid data type: ' + error.message;
+      errorDetails = error.path + ' - ' + error.value;
+    } else if (error.code === 11000) {
+      errorMessage = 'Product already exists';
+      errorDetails = error.keyValue;
+    } else if (error.response) {
+      // Axios error (ML server error)
+      errorMessage = 'ML server error: ' + (error.response.data?.message || error.response.statusText);
+      errorDetails = error.response.data;
+    } else if (error.request) {
+      // Network error
+      errorMessage = 'Network error: Could not reach ML server';
+      errorDetails = 'Request failed';
+    } else if (error.message) {
+      errorMessage = error.message;
+    } else if (typeof error === 'string') {
+      errorMessage = error;
+    } else {
+      errorMessage = 'Unknown error occurred';
+      errorDetails = 'Error object could not be serialized';
+    }
+    
+    res.status(500).json({ 
+      status: false, 
+      message: errorMessage, 
+      error: error.message || 'No error message available',
+      details: errorDetails,
+      errorType: error.name || 'Unknown'
+    });
+  }
+});
+
+// GET: Products by seller
+router.get('/seller/products', authenticate, async (req, res) => {
+  try {
+    const products = await Product.find({ sellerId: req.userId });
+    res.status(200).json({ status: true, products });
+  } catch (error) {
+    console.error('Fetch seller products error:', error);
+    res.status(500).json({ status: false, message: 'Failed to fetch seller products' });
+  }
+});
+
+// PATCH: Update product sales count
+router.patch('/products/:id/sales', authenticate, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { quantity } = req.body;
+    const product = await Product.findById(id);
+    if (!product) {
+      return res.status(404).json({ status: false, message: 'Product not found' });
+    }
+    product.salesCount += quantity || 1;
+    product.unitsSold += quantity || 1;
+    await product.save();
+    res.status(200).json({ status: true, product });
+  } catch (error) {
+    console.error('Update product sales error:', error);
+    res.status(500).json({ status: false, message: 'Failed to update product sales' });
+  }
+});
+
+// GET: Eco-friendly product recommendations
+router.get('/products/:id/recommendations', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    // Find the current product
+    const currentProduct = await Product.findById(id);
+    if (!currentProduct) {
+      return res.status(404).json({ 
+        status: false, 
+        message: 'Product not found' 
+      });
+    }
+
+    console.log('Current product:', {
+      name: currentProduct.name,
+      category: currentProduct.category,
+      subCategory: currentProduct.subCategory,
+      carbonFootprint: currentProduct.carbonFootprint,
+      ecoScore: currentProduct.ecoScore
+    });
+
+    // First, try to find better alternatives in the same subcategory
+    let recommendations = await Product.find({
+      _id: { $ne: id }, // Exclude current product
+      category: currentProduct.category,
+      subCategory: currentProduct.subCategory, // Match exact subcategory
+      carbonFootprint: { $lt: currentProduct.carbonFootprint }, // Lower carbon footprint
+      ecoScore: { $gt: currentProduct.ecoScore } // Higher eco score
+    })
+    .sort({ 
+      carbonFootprint: 1, // Sort by lowest carbon footprint first
+      ecoScore: -1 // Then by highest eco score
+    })
+    .limit(4)
+    .select('name price url carbonFootprint ecoScore isEcoFriendly category subCategory');
+
+    console.log('Same subcategory recommendations found:', recommendations.length);
+
+    // If no alternatives found in same subcategory, try same category with better metrics
+    if (recommendations.length === 0) {
+      recommendations = await Product.find({
+        _id: { $ne: id },
+        category: currentProduct.category,
+        carbonFootprint: { $lt: currentProduct.carbonFootprint },
+        ecoScore: { $gt: currentProduct.ecoScore }
+      })
+      .sort({ 
+        carbonFootprint: 1,
+        ecoScore: -1
+      })
+      .limit(4)
+      .select('name price url carbonFootprint ecoScore isEcoFriendly category subCategory');
+
+      console.log('Same category recommendations found:', recommendations.length);
+    }
+
+    // If still no alternatives found, find products with better eco scores in same subcategory
+    if (recommendations.length === 0) {
+      recommendations = await Product.find({
+        _id: { $ne: id },
+        category: currentProduct.category,
+        subCategory: currentProduct.subCategory,
+        ecoScore: { $gt: currentProduct.ecoScore }
+      })
+      .sort({ 
+        carbonFootprint: 1,
+        ecoScore: -1
+      })
+      .limit(4)
+      .select('name price url carbonFootprint ecoScore isEcoFriendly category subCategory');
+
+      console.log('Better eco score in subcategory found:', recommendations.length);
+    }
+
+    // If still no alternatives found, find products with better eco scores in same category
+    if (recommendations.length === 0) {
+      recommendations = await Product.find({
+        _id: { $ne: id },
+        category: currentProduct.category,
+        ecoScore: { $gt: currentProduct.ecoScore }
+      })
+      .sort({ 
+        carbonFootprint: 1,
+        ecoScore: -1
+      })
+      .limit(4)
+      .select('name price url carbonFootprint ecoScore isEcoFriendly category subCategory');
+
+      console.log('Better eco score in category found:', recommendations.length);
+    }
+
+    console.log('Final recommendations:', recommendations.map(r => ({
+      name: r.name,
+      category: r.category,
+      subCategory: r.subCategory,
+      carbonFootprint: r.carbonFootprint,
+      ecoScore: r.ecoScore
+    })));
+
+    res.status(200).json({
+      status: true,
+      recommendations,
+      message: recommendations.length > 0 ? 'Better alternatives found' : 'No better alternatives found'
+    });
+
+  } catch (error) {
+    console.error('Get recommendations error:', error);
+    res.status(500).json({ 
+      status: false, 
+      message: 'Failed to get recommendations',
+      error: error.message 
+    });
   }
 });
 

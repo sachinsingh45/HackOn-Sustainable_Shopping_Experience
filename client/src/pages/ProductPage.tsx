@@ -4,6 +4,7 @@ import { Star, Heart, Share2, Truck, Shield, ArrowLeft, Plus, Minus, Leaf, Users
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../store/useStore';
 import { useToast } from '../context/ToastContext';
+import { productsAPI } from '../services/api';
 
 type SectionKey = 'details' | 'shipping' | 'returns' | 'eco';
 
@@ -17,7 +18,7 @@ interface ExpandedSections {
 const ProductPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { products, addToCart, user, fetchProduct, orderProduct } = useStore();
+  const { products, addToCart, user, fetchProduct } = useStore();
   const { showToast } = useToast();
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -25,6 +26,8 @@ const ProductPage = () => {
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [recommendations, setRecommendations] = useState<any[]>([]);
+  const [recommendationsLoading, setRecommendationsLoading] = useState(false);
   const [expandedSections, setExpandedSections] = useState<ExpandedSections>({
     details: true,
     shipping: false,
@@ -66,6 +69,7 @@ const ProductPage = () => {
 
         if (foundProduct) {
           setProduct(foundProduct);
+          await fetchRecommendations(id);
         } else {
           setError('Product not found');
           setTimeout(() => navigate('/'), 2000);
@@ -105,6 +109,21 @@ const ProductPage = () => {
     e.currentTarget.src = fallbackImage;
   };
 
+  const fetchRecommendations = async (productId: string) => {
+    try {
+      setRecommendationsLoading(true);
+      const response = await productsAPI.getEcoRecommendations(productId);
+      if (response.status) {
+        setRecommendations(response.recommendations || []);
+      }
+    } catch (error) {
+      console.error('Failed to fetch recommendations:', error);
+      // Don't show error toast for recommendations failure
+    } finally {
+      setRecommendationsLoading(false);
+    }
+  };
+
   const handleAddToCart = async () => {
     if (!user) {
       showToast('Please login to add items to cart', 'warning');
@@ -127,18 +146,7 @@ const ProductPage = () => {
       navigate('/login');
       return;
     }
-
-    try {
-      const response = await orderProduct(product._id);
-      if (response.status) {
-        showToast('Order placed successfully!', 'success');
-      } else {
-        showToast('Failed to place order', 'error');
-      }
-    } catch (error) {
-      console.error('Failed to place order:', error);
-      showToast('Failed to place order', 'error');
-    }
+    showToast('Buy Now feature coming soon! Please use the cart to checkout.', 'info');
   };
 
   if (loading) {
@@ -166,10 +174,6 @@ const ProductPage = () => {
   }
 
   const images = [product.url, product.url, product.url];
-  const ecoAlternatives = [
-    { name: 'Eco-friendly version', price: parseFloat(product.price.replace(/[^0-9.]/g, '')) + 200, savings: '2.5 kg CO₂' },
-    { name: 'Recycled material option', price: parseFloat(product.price.replace(/[^0-9.]/g, '')) + 150, savings: '1.8 kg CO₂' }
-  ];
 
   // Calculate discount percentage if both price and mrp exist
   let discountPercent = 0;
@@ -379,6 +383,20 @@ const ProductPage = () => {
                   Carbon Footprint: {product.carbonFootprint} kg CO₂e
                 </p>
               )}
+              {product.isEcoFriendly !== undefined && (
+                <div className="flex items-center mt-2">
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${product.isEcoFriendly ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}> 
+                    <Leaf className="w-3 h-3 mr-1" />
+                    {product.isEcoFriendly ? 'Eco-Friendly' : 'Not Eco-Friendly'}
+                  </span>
+                </div>
+              )}
+              {product.lifespan && (
+                <div className="text-sm text-gray-700 mt-1">Lifespan: <span className="font-semibold">{product.lifespan} years</span></div>
+              )}
+              {product.repairability !== undefined && (
+                <div className="text-sm text-gray-700 mt-1">Repairable: <span className="font-semibold">{product.repairability ? 'Yes' : 'No'}</span></div>
+              )}
             </motion.div>
           )}
 
@@ -531,23 +549,63 @@ const ProductPage = () => {
           <Leaf className="w-5 h-5 mr-2" />
           More Sustainable Alternatives
         </h3>
-        <div className="grid md:grid-cols-2 gap-4">
-          {ecoAlternatives.map((alt, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.2 }}
-              className="bg-white p-4 rounded-lg border hover:shadow-md transition-shadow"
-            >
-              <h4 className="font-medium mb-2">{alt.name}</h4>
-              <div className="flex justify-between items-center">
-                <span className="text-lg font-bold">₹{alt.price.toLocaleString()}</span>
-                <span className="text-green-600 text-sm font-medium">Save {alt.savings}</span>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        
+        {recommendationsLoading ? (
+          <div className="flex items-center justify-center py-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-500"></div>
+            <span className="ml-3 text-gray-600">Finding eco-friendly alternatives...</span>
+          </div>
+        ) : recommendations.length > 0 ? (
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {recommendations.map((rec, index) => (
+              <motion.div
+                key={rec._id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-white p-4 rounded-lg border hover:shadow-md transition-shadow cursor-pointer"
+                onClick={() => navigate(`/product/${rec._id}`)}
+              >
+                <div className="aspect-square bg-gray-100 rounded-lg mb-3 overflow-hidden">
+                  <img
+                    src={rec.url || fallbackImage}
+                    alt={rec.name}
+                    className="w-full h-full object-contain p-2"
+                    onError={(e) => {
+                      e.currentTarget.src = fallbackImage;
+                    }}
+                  />
+                </div>
+                <h4 className="font-medium text-sm mb-2 line-clamp-2">{rec.name}</h4>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-lg font-bold text-green-600">₹{rec.price}</span>
+                    {rec.isEcoFriendly && (
+                      <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                        Eco-Friendly
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex justify-between text-xs text-gray-600">
+                    <span>Carbon: {rec.carbonFootprint?.toFixed(1)} kg CO₂</span>
+                    <span>Eco Score: {rec.ecoScore?.toFixed(0)}%</span>
+                  </div>
+                  {product && rec.carbonFootprint && product.carbonFootprint && (
+                    <div className="text-xs text-green-600 font-medium">
+                      Save {(product.carbonFootprint - rec.carbonFootprint).toFixed(1)} kg CO₂
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-8">
+            <Leaf className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <p className="text-gray-600 mb-2">No eco-friendly alternatives found</p>
+            <p className="text-sm text-gray-500">This product might already be one of the most sustainable options in its category!</p>
+          </div>
+        )}
       </div>
 
       {/* Share Modal */}

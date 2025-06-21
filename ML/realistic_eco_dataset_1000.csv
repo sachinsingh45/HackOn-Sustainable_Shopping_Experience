@@ -1,0 +1,1001 @@
+Product Name,Category,Subcategory,Weight (kg),Material Composition,Distance (km),Recyclable,Repairable,Lifespan (yrs),Packaging Used,Eco Score,Carbon Footprint (kg CO2e),Is Eco-Friendly
+Apple iPhone 15 Var1,Electronics,Smartphone,0.178,"Aluminum 70%, Silicon 20%, Plastic 10%",5293,Yes,Yes,6,Cardboard,0.6,83.82,No
+MacBook Air M2 Var1,Electronics,Laptop,1.234,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5117,Yes,Yes,6,Cardboard,0.61,160.56,No
+Samsung Galaxy S24 Var1,Electronics,Smartphone,0.172,"Aluminum 60%, Glass 30%, Plastic 10%",5016,Yes,Yes,7,Cardboard,0.66,66.74,No
+HP Pavilion x360 Var1,Electronics,Laptop,1.667,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4179,Yes,Yes,7,Cardboard,0.64,136.63,No
+Samsung 322L Refrigerator Var1,Electronics,Refrigerator,56.506,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2037,Yes,Yes,13,Plastic,0.55,288.42,No
+Godrej 7 kg Washing Machine Var1,Electronics,Washing Machine,35.627,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1580,Yes,Yes,11,Plastic,0.6,249.71,No
+Philips 9W LED Bulb Var1,Electronics,LED Bulb,0.082,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1036,Yes,No,4,Paper,0.68,9.76,Yes
+Organic Bananas (1kg) Var1,Grocery,Bananas,1.014,Organic 100%,183,Yes,No,2,None,0.93,2.03,Yes
+Amul Gold Milk 1L Var1,Grocery,Milk,1.05,"Organic 90%, Plastic 10%",516,No,No,1,Tetrapak,0.63,3.62,Yes
+Khadi Natural Herbal Shampoo Var1,Personal Care,Shampoo,0.502,"Plastic 60%, Organic 40%",277,Yes,No,2,Plastic,0.6,8.47,No
+Apple iPhone 15 Var2,Electronics,Smartphone,0.179,"Aluminum 70%, Silicon 20%, Plastic 10%",4501,Yes,Yes,7,Cardboard,0.62,81.46,No
+MacBook Air M2 Var2,Electronics,Laptop,1.222,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5008,Yes,Yes,6,Cardboard,0.6,153.41,No
+Samsung Galaxy S24 Var2,Electronics,Smartphone,0.163,"Aluminum 60%, Glass 30%, Plastic 10%",4590,Yes,Yes,7,Cardboard,0.68,69.26,No
+HP Pavilion x360 Var2,Electronics,Laptop,1.698,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3868,Yes,Yes,6,Cardboard,0.66,128.6,No
+Samsung 322L Refrigerator Var2,Electronics,Refrigerator,53.483,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1978,Yes,Yes,11,Plastic,0.62,309.68,No
+Godrej 7 kg Washing Machine Var2,Electronics,Washing Machine,34.844,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1575,Yes,Yes,9,Plastic,0.6,237.55,No
+Philips 9W LED Bulb Var2,Electronics,LED Bulb,0.081,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",943,Yes,No,4,Paper,0.77,9.95,Yes
+Organic Bananas (1kg) Var2,Grocery,Bananas,0.972,Organic 100%,180,Yes,No,2,None,0.9,2.08,Yes
+Amul Gold Milk 1L Var2,Grocery,Milk,1.003,"Organic 90%, Plastic 10%",520,No,No,1,Tetrapak,0.64,3.67,Yes
+Khadi Natural Herbal Shampoo Var2,Personal Care,Shampoo,0.511,"Plastic 60%, Organic 40%",327,Yes,No,2,Plastic,0.6,8.16,No
+Apple iPhone 15 Var3,Electronics,Smartphone,0.172,"Aluminum 70%, Silicon 20%, Plastic 10%",5458,Yes,Yes,6,Cardboard,0.58,76.67,No
+MacBook Air M2 Var3,Electronics,Laptop,1.213,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4945,Yes,Yes,7,Cardboard,0.61,164.57,No
+Samsung Galaxy S24 Var3,Electronics,Smartphone,0.167,"Aluminum 60%, Glass 30%, Plastic 10%",4662,Yes,Yes,6,Cardboard,0.62,72.67,No
+HP Pavilion x360 Var3,Electronics,Laptop,1.697,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4118,Yes,Yes,5,Cardboard,0.64,138.25,No
+Samsung 322L Refrigerator Var3,Electronics,Refrigerator,56.455,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1861,Yes,Yes,13,Plastic,0.58,290.73,No
+Godrej 7 kg Washing Machine Var3,Electronics,Washing Machine,35.929,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1541,Yes,Yes,9,Plastic,0.54,253.04,No
+Philips 9W LED Bulb Var3,Electronics,LED Bulb,0.082,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1092,Yes,No,4,Paper,0.7,10.09,Yes
+Organic Bananas (1kg) Var3,Grocery,Bananas,1.009,Organic 100%,191,Yes,No,2,None,0.9,1.93,Yes
+Amul Gold Milk 1L Var3,Grocery,Milk,1.041,"Organic 90%, Plastic 10%",457,No,No,2,Tetrapak,0.64,3.47,Yes
+Khadi Natural Herbal Shampoo Var3,Personal Care,Shampoo,0.504,"Plastic 60%, Organic 40%",281,Yes,No,3,Plastic,0.65,8.83,Yes
+Apple iPhone 15 Var4,Electronics,Smartphone,0.175,"Aluminum 70%, Silicon 20%, Plastic 10%",4902,Yes,Yes,6,Cardboard,0.58,77.84,No
+MacBook Air M2 Var4,Electronics,Laptop,1.234,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4744,Yes,Yes,8,Cardboard,0.68,160.39,No
+Samsung Galaxy S24 Var4,Electronics,Smartphone,0.173,"Aluminum 60%, Glass 30%, Plastic 10%",4514,Yes,Yes,7,Cardboard,0.67,72.65,No
+HP Pavilion x360 Var4,Electronics,Laptop,1.66,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3957,Yes,Yes,5,Cardboard,0.58,130.31,No
+Samsung 322L Refrigerator Var4,Electronics,Refrigerator,54.142,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1856,Yes,Yes,12,Plastic,0.57,299.71,No
+Godrej 7 kg Washing Machine Var4,Electronics,Washing Machine,35.93,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1530,Yes,Yes,9,Plastic,0.57,248.98,No
+Philips 9W LED Bulb Var4,Electronics,LED Bulb,0.081,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1050,Yes,No,6,Paper,0.74,10.03,Yes
+Organic Bananas (1kg) Var4,Grocery,Bananas,1.009,Organic 100%,180,Yes,No,1,None,0.86,1.93,Yes
+Amul Gold Milk 1L Var4,Grocery,Milk,1.048,"Organic 90%, Plastic 10%",488,No,No,2,Tetrapak,0.64,3.66,Yes
+Khadi Natural Herbal Shampoo Var4,Personal Care,Shampoo,0.504,"Plastic 60%, Organic 40%",278,Yes,No,2,Plastic,0.68,8.23,Yes
+Apple iPhone 15 Var5,Electronics,Smartphone,0.174,"Aluminum 70%, Silicon 20%, Plastic 10%",5439,Yes,Yes,7,Cardboard,0.65,77.58,No
+MacBook Air M2 Var5,Electronics,Laptop,1.23,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4910,Yes,Yes,6,Cardboard,0.63,164.42,No
+Samsung Galaxy S24 Var5,Electronics,Smartphone,0.166,"Aluminum 60%, Glass 30%, Plastic 10%",4929,Yes,Yes,5,Cardboard,0.65,67.5,No
+HP Pavilion x360 Var5,Electronics,Laptop,1.673,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4199,Yes,Yes,5,Cardboard,0.65,141.5,No
+Samsung 322L Refrigerator Var5,Electronics,Refrigerator,55.082,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1905,Yes,Yes,13,Plastic,0.62,290.78,No
+Godrej 7 kg Washing Machine Var5,Electronics,Washing Machine,34.568,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1532,Yes,Yes,10,Plastic,0.57,261.02,No
+Philips 9W LED Bulb Var5,Electronics,LED Bulb,0.078,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1026,Yes,No,4,Paper,0.72,9.7,Yes
+Organic Bananas (1kg) Var5,Grocery,Bananas,0.976,Organic 100%,186,Yes,No,1,None,0.93,2.06,Yes
+Amul Gold Milk 1L Var5,Grocery,Milk,1.033,"Organic 90%, Plastic 10%",485,No,No,1,Tetrapak,0.64,3.38,Yes
+Khadi Natural Herbal Shampoo Var5,Personal Care,Shampoo,0.493,"Plastic 60%, Organic 40%",314,Yes,No,3,Plastic,0.6,8.39,No
+Apple iPhone 15 Var6,Electronics,Smartphone,0.172,"Aluminum 70%, Silicon 20%, Plastic 10%",4936,Yes,Yes,5,Cardboard,0.67,81.23,No
+MacBook Air M2 Var6,Electronics,Laptop,1.249,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5328,Yes,Yes,8,Cardboard,0.61,163.21,No
+Samsung Galaxy S24 Var6,Electronics,Smartphone,0.17,"Aluminum 60%, Glass 30%, Plastic 10%",4677,Yes,Yes,6,Cardboard,0.68,67.83,No
+HP Pavilion x360 Var6,Electronics,Laptop,1.717,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3738,Yes,Yes,6,Cardboard,0.6,138.55,No
+Samsung 322L Refrigerator Var6,Electronics,Refrigerator,54.141,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2136,Yes,Yes,11,Plastic,0.54,309.88,No
+Godrej 7 kg Washing Machine Var6,Electronics,Washing Machine,35.228,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1452,Yes,Yes,9,Plastic,0.52,254.3,No
+Philips 9W LED Bulb Var6,Electronics,LED Bulb,0.081,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",927,Yes,No,6,Paper,0.76,9.64,Yes
+Organic Bananas (1kg) Var6,Grocery,Bananas,1.016,Organic 100%,182,Yes,No,1,None,0.94,2.09,Yes
+Amul Gold Milk 1L Var6,Grocery,Milk,1.008,"Organic 90%, Plastic 10%",536,No,No,1,Tetrapak,0.62,3.61,Yes
+Khadi Natural Herbal Shampoo Var6,Personal Care,Shampoo,0.488,"Plastic 60%, Organic 40%",291,Yes,No,1,Plastic,0.66,8.4,Yes
+Apple iPhone 15 Var7,Electronics,Smartphone,0.172,"Aluminum 70%, Silicon 20%, Plastic 10%",4663,Yes,Yes,5,Cardboard,0.61,82.64,No
+MacBook Air M2 Var7,Electronics,Laptop,1.211,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5098,Yes,Yes,6,Cardboard,0.64,167.74,No
+Samsung Galaxy S24 Var7,Electronics,Smartphone,0.166,"Aluminum 60%, Glass 30%, Plastic 10%",5294,Yes,Yes,7,Cardboard,0.6,71.33,No
+HP Pavilion x360 Var7,Electronics,Laptop,1.715,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4148,Yes,Yes,5,Cardboard,0.59,140.11,No
+Samsung 322L Refrigerator Var7,Electronics,Refrigerator,55.583,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2157,Yes,Yes,12,Plastic,0.54,303.92,No
+Godrej 7 kg Washing Machine Var7,Electronics,Washing Machine,34.526,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1552,Yes,Yes,10,Plastic,0.58,245.86,No
+Philips 9W LED Bulb Var7,Electronics,LED Bulb,0.08,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",930,Yes,No,5,Paper,0.71,9.71,Yes
+Organic Bananas (1kg) Var7,Grocery,Bananas,0.987,Organic 100%,214,Yes,No,1,None,0.85,1.94,Yes
+Amul Gold Milk 1L Var7,Grocery,Milk,1.054,"Organic 90%, Plastic 10%",511,No,No,2,Tetrapak,0.56,3.57,No
+Khadi Natural Herbal Shampoo Var7,Personal Care,Shampoo,0.495,"Plastic 60%, Organic 40%",304,Yes,No,1,Plastic,0.68,8.83,Yes
+Apple iPhone 15 Var8,Electronics,Smartphone,0.173,"Aluminum 70%, Silicon 20%, Plastic 10%",5334,Yes,Yes,5,Cardboard,0.67,78.29,No
+MacBook Air M2 Var8,Electronics,Laptop,1.252,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4882,Yes,Yes,6,Cardboard,0.68,157.96,No
+Samsung Galaxy S24 Var8,Electronics,Smartphone,0.166,"Aluminum 60%, Glass 30%, Plastic 10%",4530,Yes,Yes,6,Cardboard,0.6,70.85,No
+HP Pavilion x360 Var8,Electronics,Laptop,1.7,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4152,Yes,Yes,7,Cardboard,0.64,140.93,No
+Samsung 322L Refrigerator Var8,Electronics,Refrigerator,56.532,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2086,Yes,Yes,11,Plastic,0.54,299.08,No
+Godrej 7 kg Washing Machine Var8,Electronics,Washing Machine,35.368,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1353,Yes,Yes,9,Plastic,0.61,246.43,No
+Philips 9W LED Bulb Var8,Electronics,LED Bulb,0.079,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1057,Yes,No,6,Paper,0.73,10.22,Yes
+Organic Bananas (1kg) Var8,Grocery,Bananas,1.022,Organic 100%,206,Yes,No,1,None,0.9,2.06,Yes
+Amul Gold Milk 1L Var8,Grocery,Milk,1.044,"Organic 90%, Plastic 10%",462,No,No,1,Tetrapak,0.57,3.57,No
+Khadi Natural Herbal Shampoo Var8,Personal Care,Shampoo,0.512,"Plastic 60%, Organic 40%",294,Yes,No,2,Plastic,0.65,8.54,Yes
+Apple iPhone 15 Var9,Electronics,Smartphone,0.172,"Aluminum 70%, Silicon 20%, Plastic 10%",5229,Yes,Yes,5,Cardboard,0.61,78.29,No
+MacBook Air M2 Var9,Electronics,Laptop,1.239,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4523,Yes,Yes,7,Cardboard,0.65,161.65,No
+Samsung Galaxy S24 Var9,Electronics,Smartphone,0.166,"Aluminum 60%, Glass 30%, Plastic 10%",5291,Yes,Yes,5,Cardboard,0.65,72.45,No
+HP Pavilion x360 Var9,Electronics,Laptop,1.744,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3781,Yes,Yes,7,Cardboard,0.64,133.57,No
+Samsung 322L Refrigerator Var9,Electronics,Refrigerator,54.645,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2136,Yes,Yes,13,Plastic,0.61,291.92,No
+Godrej 7 kg Washing Machine Var9,Electronics,Washing Machine,34.69,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1625,Yes,Yes,10,Plastic,0.56,243.09,No
+Philips 9W LED Bulb Var9,Electronics,LED Bulb,0.082,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1071,Yes,No,6,Paper,0.72,10.43,Yes
+Organic Bananas (1kg) Var9,Grocery,Bananas,1.013,Organic 100%,219,Yes,No,2,None,0.89,2.0,Yes
+Amul Gold Milk 1L Var9,Grocery,Milk,1.023,"Organic 90%, Plastic 10%",502,No,No,1,Tetrapak,0.59,3.43,No
+Khadi Natural Herbal Shampoo Var9,Personal Care,Shampoo,0.506,"Plastic 60%, Organic 40%",288,Yes,No,2,Plastic,0.66,8.63,Yes
+Apple iPhone 15 Var10,Electronics,Smartphone,0.176,"Aluminum 70%, Silicon 20%, Plastic 10%",5434,Yes,Yes,6,Cardboard,0.6,79.32,No
+MacBook Air M2 Var10,Electronics,Laptop,1.232,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5402,Yes,Yes,8,Cardboard,0.65,166.35,No
+Samsung Galaxy S24 Var10,Electronics,Smartphone,0.166,"Aluminum 60%, Glass 30%, Plastic 10%",4626,Yes,Yes,7,Cardboard,0.6,72.06,No
+HP Pavilion x360 Var10,Electronics,Laptop,1.737,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3919,Yes,Yes,6,Cardboard,0.67,136.54,No
+Samsung 322L Refrigerator Var10,Electronics,Refrigerator,53.77,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1834,Yes,Yes,13,Plastic,0.57,311.46,No
+Godrej 7 kg Washing Machine Var10,Electronics,Washing Machine,35.057,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1448,Yes,Yes,9,Plastic,0.54,246.76,No
+Philips 9W LED Bulb Var10,Electronics,LED Bulb,0.082,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1017,Yes,No,4,Paper,0.68,9.87,Yes
+Organic Bananas (1kg) Var10,Grocery,Bananas,1.009,Organic 100%,216,Yes,No,1,None,0.93,2.05,Yes
+Amul Gold Milk 1L Var10,Grocery,Milk,1.056,"Organic 90%, Plastic 10%",471,No,No,2,Tetrapak,0.62,3.46,Yes
+Khadi Natural Herbal Shampoo Var10,Personal Care,Shampoo,0.489,"Plastic 60%, Organic 40%",329,Yes,No,2,Plastic,0.66,8.45,Yes
+Apple iPhone 15 Var11,Electronics,Smartphone,0.178,"Aluminum 70%, Silicon 20%, Plastic 10%",4682,Yes,Yes,7,Cardboard,0.65,81.41,No
+MacBook Air M2 Var11,Electronics,Laptop,1.272,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4853,Yes,Yes,8,Cardboard,0.69,164.05,No
+Samsung Galaxy S24 Var11,Electronics,Smartphone,0.164,"Aluminum 60%, Glass 30%, Plastic 10%",5481,Yes,Yes,5,Cardboard,0.69,72.94,No
+HP Pavilion x360 Var11,Electronics,Laptop,1.713,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3613,Yes,Yes,6,Cardboard,0.61,130.07,No
+Samsung 322L Refrigerator Var11,Electronics,Refrigerator,53.446,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2192,Yes,Yes,12,Plastic,0.56,314.89,No
+Godrej 7 kg Washing Machine Var11,Electronics,Washing Machine,35.622,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1574,Yes,Yes,10,Plastic,0.59,256.91,No
+Philips 9W LED Bulb Var11,Electronics,LED Bulb,0.082,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1044,Yes,No,4,Paper,0.75,9.6,Yes
+Organic Bananas (1kg) Var11,Grocery,Bananas,1.009,Organic 100%,181,Yes,No,1,None,0.92,1.99,Yes
+Amul Gold Milk 1L Var11,Grocery,Milk,1.024,"Organic 90%, Plastic 10%",539,No,No,1,Tetrapak,0.65,3.59,Yes
+Khadi Natural Herbal Shampoo Var11,Personal Care,Shampoo,0.514,"Plastic 60%, Organic 40%",299,Yes,No,3,Plastic,0.67,8.21,Yes
+Apple iPhone 15 Var12,Electronics,Smartphone,0.176,"Aluminum 70%, Silicon 20%, Plastic 10%",5193,Yes,Yes,7,Cardboard,0.59,80.33,No
+MacBook Air M2 Var12,Electronics,Laptop,1.251,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5364,Yes,Yes,8,Cardboard,0.63,164.19,No
+Samsung Galaxy S24 Var12,Electronics,Smartphone,0.173,"Aluminum 60%, Glass 30%, Plastic 10%",5241,Yes,Yes,6,Cardboard,0.6,72.39,No
+HP Pavilion x360 Var12,Electronics,Laptop,1.711,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3691,Yes,Yes,6,Cardboard,0.62,137.18,No
+Samsung 322L Refrigerator Var12,Electronics,Refrigerator,55.974,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1870,Yes,Yes,11,Plastic,0.6,303.8,No
+Godrej 7 kg Washing Machine Var12,Electronics,Washing Machine,35.784,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1549,Yes,Yes,10,Plastic,0.58,258.47,No
+Philips 9W LED Bulb Var12,Electronics,LED Bulb,0.078,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1067,Yes,No,6,Paper,0.72,10.38,Yes
+Organic Bananas (1kg) Var12,Grocery,Bananas,0.993,Organic 100%,219,Yes,No,2,None,0.89,2.0,Yes
+Amul Gold Milk 1L Var12,Grocery,Milk,1.007,"Organic 90%, Plastic 10%",492,No,No,1,Tetrapak,0.62,3.58,Yes
+Khadi Natural Herbal Shampoo Var12,Personal Care,Shampoo,0.512,"Plastic 60%, Organic 40%",297,Yes,No,2,Plastic,0.69,8.64,Yes
+Apple iPhone 15 Var13,Electronics,Smartphone,0.177,"Aluminum 70%, Silicon 20%, Plastic 10%",5391,Yes,Yes,7,Cardboard,0.62,79.32,No
+MacBook Air M2 Var13,Electronics,Laptop,1.277,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5313,Yes,Yes,8,Cardboard,0.61,156.66,No
+Samsung Galaxy S24 Var13,Electronics,Smartphone,0.165,"Aluminum 60%, Glass 30%, Plastic 10%",4506,Yes,Yes,6,Cardboard,0.65,69.91,No
+HP Pavilion x360 Var13,Electronics,Laptop,1.711,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3808,Yes,Yes,7,Cardboard,0.65,135.62,No
+Samsung 322L Refrigerator Var13,Electronics,Refrigerator,54.606,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1828,Yes,Yes,13,Plastic,0.56,296.41,No
+Godrej 7 kg Washing Machine Var13,Electronics,Washing Machine,35.085,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1582,Yes,Yes,9,Plastic,0.58,257.9,No
+Philips 9W LED Bulb Var13,Electronics,LED Bulb,0.078,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1068,Yes,No,4,Paper,0.69,10.19,Yes
+Organic Bananas (1kg) Var13,Grocery,Bananas,1.015,Organic 100%,190,Yes,No,1,None,0.93,1.94,Yes
+Amul Gold Milk 1L Var13,Grocery,Milk,1.009,"Organic 90%, Plastic 10%",450,No,No,1,Tetrapak,0.65,3.51,Yes
+Khadi Natural Herbal Shampoo Var13,Personal Care,Shampoo,0.489,"Plastic 60%, Organic 40%",320,Yes,No,2,Plastic,0.61,8.21,Yes
+Apple iPhone 15 Var14,Electronics,Smartphone,0.171,"Aluminum 70%, Silicon 20%, Plastic 10%",5023,Yes,Yes,5,Cardboard,0.67,79.95,No
+MacBook Air M2 Var14,Electronics,Laptop,1.275,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5194,Yes,Yes,8,Cardboard,0.63,160.76,No
+Samsung Galaxy S24 Var14,Electronics,Smartphone,0.171,"Aluminum 60%, Glass 30%, Plastic 10%",4801,Yes,Yes,6,Cardboard,0.64,70.92,No
+HP Pavilion x360 Var14,Electronics,Laptop,1.737,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4037,Yes,Yes,6,Cardboard,0.61,133.23,No
+Samsung 322L Refrigerator Var14,Electronics,Refrigerator,55.579,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1950,Yes,Yes,11,Plastic,0.63,294.99,No
+Godrej 7 kg Washing Machine Var14,Electronics,Washing Machine,35.987,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1555,Yes,Yes,9,Plastic,0.61,262.32,No
+Philips 9W LED Bulb Var14,Electronics,LED Bulb,0.081,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",999,Yes,No,5,Paper,0.76,10.13,Yes
+Organic Bananas (1kg) Var14,Grocery,Bananas,0.975,Organic 100%,216,Yes,No,2,None,0.88,1.92,Yes
+Amul Gold Milk 1L Var14,Grocery,Milk,1.029,"Organic 90%, Plastic 10%",504,No,No,1,Tetrapak,0.64,3.43,Yes
+Khadi Natural Herbal Shampoo Var14,Personal Care,Shampoo,0.496,"Plastic 60%, Organic 40%",278,Yes,No,2,Plastic,0.67,8.9,Yes
+Apple iPhone 15 Var15,Electronics,Smartphone,0.175,"Aluminum 70%, Silicon 20%, Plastic 10%",5202,Yes,Yes,6,Cardboard,0.65,79.76,No
+MacBook Air M2 Var15,Electronics,Laptop,1.25,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4645,Yes,Yes,8,Cardboard,0.69,156.08,No
+Samsung Galaxy S24 Var15,Electronics,Smartphone,0.163,"Aluminum 60%, Glass 30%, Plastic 10%",5197,Yes,Yes,6,Cardboard,0.69,69.84,No
+HP Pavilion x360 Var15,Electronics,Laptop,1.73,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3962,Yes,Yes,6,Cardboard,0.58,140.02,No
+Samsung 322L Refrigerator Var15,Electronics,Refrigerator,55.654,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2077,Yes,Yes,11,Plastic,0.58,293.68,No
+Godrej 7 kg Washing Machine Var15,Electronics,Washing Machine,34.412,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1454,Yes,Yes,9,Plastic,0.6,247.03,No
+Philips 9W LED Bulb Var15,Electronics,LED Bulb,0.078,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1055,Yes,No,6,Paper,0.77,9.94,Yes
+Organic Bananas (1kg) Var15,Grocery,Bananas,1.025,Organic 100%,211,Yes,No,1,None,0.94,2.05,Yes
+Amul Gold Milk 1L Var15,Grocery,Milk,1.019,"Organic 90%, Plastic 10%",512,No,No,2,Tetrapak,0.57,3.67,No
+Khadi Natural Herbal Shampoo Var15,Personal Care,Shampoo,0.493,"Plastic 60%, Organic 40%",314,Yes,No,3,Plastic,0.63,8.89,Yes
+Apple iPhone 15 Var16,Electronics,Smartphone,0.169,"Aluminum 70%, Silicon 20%, Plastic 10%",4671,Yes,Yes,7,Cardboard,0.66,77.21,No
+MacBook Air M2 Var16,Electronics,Laptop,1.265,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5326,Yes,Yes,6,Cardboard,0.69,167.34,No
+Samsung Galaxy S24 Var16,Electronics,Smartphone,0.171,"Aluminum 60%, Glass 30%, Plastic 10%",4747,Yes,Yes,7,Cardboard,0.6,71.31,No
+HP Pavilion x360 Var16,Electronics,Laptop,1.711,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4365,Yes,Yes,6,Cardboard,0.65,141.56,No
+Samsung 322L Refrigerator Var16,Electronics,Refrigerator,56.629,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2173,Yes,Yes,12,Plastic,0.57,306.35,No
+Godrej 7 kg Washing Machine Var16,Electronics,Washing Machine,34.995,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1396,Yes,Yes,10,Plastic,0.52,257.66,No
+Philips 9W LED Bulb Var16,Electronics,LED Bulb,0.082,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1014,Yes,No,5,Paper,0.69,10.16,Yes
+Organic Bananas (1kg) Var16,Grocery,Bananas,1.013,Organic 100%,195,Yes,No,1,None,0.92,1.97,Yes
+Amul Gold Milk 1L Var16,Grocery,Milk,1.049,"Organic 90%, Plastic 10%",542,No,No,1,Tetrapak,0.61,3.6,Yes
+Khadi Natural Herbal Shampoo Var16,Personal Care,Shampoo,0.49,"Plastic 60%, Organic 40%",303,Yes,No,2,Plastic,0.61,8.44,Yes
+Apple iPhone 15 Var17,Electronics,Smartphone,0.176,"Aluminum 70%, Silicon 20%, Plastic 10%",5323,Yes,Yes,5,Cardboard,0.66,77.93,No
+MacBook Air M2 Var17,Electronics,Laptop,1.213,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4513,Yes,Yes,7,Cardboard,0.6,165.2,No
+Samsung Galaxy S24 Var17,Electronics,Smartphone,0.165,"Aluminum 60%, Glass 30%, Plastic 10%",4613,Yes,Yes,6,Cardboard,0.6,71.74,No
+HP Pavilion x360 Var17,Electronics,Laptop,1.699,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3959,Yes,Yes,5,Cardboard,0.59,139.23,No
+Samsung 322L Refrigerator Var17,Electronics,Refrigerator,56.3,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1889,Yes,Yes,12,Plastic,0.59,309.75,No
+Godrej 7 kg Washing Machine Var17,Electronics,Washing Machine,35.271,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1516,Yes,Yes,9,Plastic,0.57,239.15,No
+Philips 9W LED Bulb Var17,Electronics,LED Bulb,0.08,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",921,Yes,No,4,Paper,0.69,9.75,Yes
+Organic Bananas (1kg) Var17,Grocery,Bananas,0.972,Organic 100%,203,Yes,No,1,None,0.91,1.97,Yes
+Amul Gold Milk 1L Var17,Grocery,Milk,1.017,"Organic 90%, Plastic 10%",489,No,No,1,Tetrapak,0.64,3.45,Yes
+Khadi Natural Herbal Shampoo Var17,Personal Care,Shampoo,0.508,"Plastic 60%, Organic 40%",303,Yes,No,1,Plastic,0.64,8.87,Yes
+Apple iPhone 15 Var18,Electronics,Smartphone,0.178,"Aluminum 70%, Silicon 20%, Plastic 10%",4971,Yes,Yes,6,Cardboard,0.61,80.49,No
+MacBook Air M2 Var18,Electronics,Laptop,1.225,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4729,Yes,Yes,6,Cardboard,0.66,165.36,No
+Samsung Galaxy S24 Var18,Electronics,Smartphone,0.165,"Aluminum 60%, Glass 30%, Plastic 10%",4779,Yes,Yes,6,Cardboard,0.64,70.3,No
+HP Pavilion x360 Var18,Electronics,Laptop,1.681,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3824,Yes,Yes,6,Cardboard,0.61,131.35,No
+Samsung 322L Refrigerator Var18,Electronics,Refrigerator,55.965,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1949,Yes,Yes,11,Plastic,0.63,289.25,No
+Godrej 7 kg Washing Machine Var18,Electronics,Washing Machine,34.571,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1395,Yes,Yes,9,Plastic,0.61,243.02,No
+Philips 9W LED Bulb Var18,Electronics,LED Bulb,0.081,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",901,Yes,No,6,Paper,0.71,9.52,Yes
+Organic Bananas (1kg) Var18,Grocery,Bananas,1.003,Organic 100%,203,Yes,No,2,None,0.93,2.03,Yes
+Amul Gold Milk 1L Var18,Grocery,Milk,1.057,"Organic 90%, Plastic 10%",457,No,No,2,Tetrapak,0.59,3.45,No
+Khadi Natural Herbal Shampoo Var18,Personal Care,Shampoo,0.502,"Plastic 60%, Organic 40%",313,Yes,No,1,Plastic,0.66,8.28,Yes
+Apple iPhone 15 Var19,Electronics,Smartphone,0.178,"Aluminum 70%, Silicon 20%, Plastic 10%",5395,Yes,Yes,5,Cardboard,0.68,83.86,No
+MacBook Air M2 Var19,Electronics,Laptop,1.203,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5001,Yes,Yes,8,Cardboard,0.61,153.05,No
+Samsung Galaxy S24 Var19,Electronics,Smartphone,0.171,"Aluminum 60%, Glass 30%, Plastic 10%",4739,Yes,Yes,7,Cardboard,0.62,66.92,No
+HP Pavilion x360 Var19,Electronics,Laptop,1.686,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3662,Yes,Yes,5,Cardboard,0.63,129.55,No
+Samsung 322L Refrigerator Var19,Electronics,Refrigerator,54.038,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2081,Yes,Yes,13,Plastic,0.63,312.94,No
+Godrej 7 kg Washing Machine Var19,Electronics,Washing Machine,34.885,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1526,Yes,Yes,11,Plastic,0.58,241.54,No
+Philips 9W LED Bulb Var19,Electronics,LED Bulb,0.082,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1076,Yes,No,5,Paper,0.7,9.5,Yes
+Organic Bananas (1kg) Var19,Grocery,Bananas,0.988,Organic 100%,211,Yes,No,2,None,0.89,1.94,Yes
+Amul Gold Milk 1L Var19,Grocery,Milk,1.057,"Organic 90%, Plastic 10%",470,No,No,2,Tetrapak,0.61,3.33,Yes
+Khadi Natural Herbal Shampoo Var19,Personal Care,Shampoo,0.487,"Plastic 60%, Organic 40%",323,Yes,No,1,Plastic,0.66,8.28,Yes
+Apple iPhone 15 Var20,Electronics,Smartphone,0.175,"Aluminum 70%, Silicon 20%, Plastic 10%",5484,Yes,Yes,7,Cardboard,0.66,77.72,No
+MacBook Air M2 Var20,Electronics,Laptop,1.203,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4719,Yes,Yes,7,Cardboard,0.62,156.21,No
+Samsung Galaxy S24 Var20,Electronics,Smartphone,0.171,"Aluminum 60%, Glass 30%, Plastic 10%",5162,Yes,Yes,7,Cardboard,0.63,70.94,No
+HP Pavilion x360 Var20,Electronics,Laptop,1.706,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3647,Yes,Yes,6,Cardboard,0.63,135.27,No
+Samsung 322L Refrigerator Var20,Electronics,Refrigerator,56.088,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1997,Yes,Yes,12,Plastic,0.61,289.02,No
+Godrej 7 kg Washing Machine Var20,Electronics,Washing Machine,34.4,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1461,Yes,Yes,10,Plastic,0.57,260.8,No
+Philips 9W LED Bulb Var20,Electronics,LED Bulb,0.082,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1092,Yes,No,6,Paper,0.72,9.81,Yes
+Organic Bananas (1kg) Var20,Grocery,Bananas,0.972,Organic 100%,188,Yes,No,1,None,0.9,2.02,Yes
+Amul Gold Milk 1L Var20,Grocery,Milk,1.032,"Organic 90%, Plastic 10%",544,No,No,1,Tetrapak,0.62,3.41,Yes
+Khadi Natural Herbal Shampoo Var20,Personal Care,Shampoo,0.495,"Plastic 60%, Organic 40%",280,Yes,No,3,Plastic,0.61,8.23,Yes
+Apple iPhone 15 Var21,Electronics,Smartphone,0.172,"Aluminum 70%, Silicon 20%, Plastic 10%",4769,Yes,Yes,5,Cardboard,0.64,83.19,No
+MacBook Air M2 Var21,Electronics,Laptop,1.236,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5441,Yes,Yes,8,Cardboard,0.61,158.87,No
+Samsung Galaxy S24 Var21,Electronics,Smartphone,0.165,"Aluminum 60%, Glass 30%, Plastic 10%",4842,Yes,Yes,7,Cardboard,0.68,68.61,No
+HP Pavilion x360 Var21,Electronics,Laptop,1.745,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3940,Yes,Yes,7,Cardboard,0.58,137.15,No
+Samsung 322L Refrigerator Var21,Electronics,Refrigerator,55.181,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1961,Yes,Yes,12,Plastic,0.55,292.02,No
+Godrej 7 kg Washing Machine Var21,Electronics,Washing Machine,35.7,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1624,Yes,Yes,10,Plastic,0.52,247.25,No
+Philips 9W LED Bulb Var21,Electronics,LED Bulb,0.078,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1005,Yes,No,4,Paper,0.69,10.35,Yes
+Organic Bananas (1kg) Var21,Grocery,Bananas,0.997,Organic 100%,192,Yes,No,1,None,0.88,2.05,Yes
+Amul Gold Milk 1L Var21,Grocery,Milk,1.017,"Organic 90%, Plastic 10%",517,No,No,1,Tetrapak,0.59,3.38,No
+Khadi Natural Herbal Shampoo Var21,Personal Care,Shampoo,0.502,"Plastic 60%, Organic 40%",326,Yes,No,1,Plastic,0.61,8.25,Yes
+Apple iPhone 15 Var22,Electronics,Smartphone,0.178,"Aluminum 70%, Silicon 20%, Plastic 10%",5414,Yes,Yes,7,Cardboard,0.62,82.94,No
+MacBook Air M2 Var22,Electronics,Laptop,1.231,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5159,Yes,Yes,6,Cardboard,0.6,156.75,No
+Samsung Galaxy S24 Var22,Electronics,Smartphone,0.173,"Aluminum 60%, Glass 30%, Plastic 10%",4652,Yes,Yes,5,Cardboard,0.68,69.84,No
+HP Pavilion x360 Var22,Electronics,Laptop,1.728,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3600,Yes,Yes,6,Cardboard,0.6,137.67,No
+Samsung 322L Refrigerator Var22,Electronics,Refrigerator,54.664,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2139,Yes,Yes,11,Plastic,0.55,308.79,No
+Godrej 7 kg Washing Machine Var22,Electronics,Washing Machine,34.645,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1552,Yes,Yes,10,Plastic,0.54,244.17,No
+Philips 9W LED Bulb Var22,Electronics,LED Bulb,0.078,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1024,Yes,No,4,Paper,0.71,9.67,Yes
+Organic Bananas (1kg) Var22,Grocery,Bananas,1.013,Organic 100%,184,Yes,No,1,None,0.86,2.09,Yes
+Amul Gold Milk 1L Var22,Grocery,Milk,1.023,"Organic 90%, Plastic 10%",454,No,No,1,Tetrapak,0.58,3.5,No
+Khadi Natural Herbal Shampoo Var22,Personal Care,Shampoo,0.493,"Plastic 60%, Organic 40%",327,Yes,No,1,Plastic,0.69,8.25,Yes
+Apple iPhone 15 Var23,Electronics,Smartphone,0.175,"Aluminum 70%, Silicon 20%, Plastic 10%",4507,Yes,Yes,7,Cardboard,0.65,79.08,No
+MacBook Air M2 Var23,Electronics,Laptop,1.269,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4515,Yes,Yes,6,Cardboard,0.68,162.92,No
+Samsung Galaxy S24 Var23,Electronics,Smartphone,0.166,"Aluminum 60%, Glass 30%, Plastic 10%",4844,Yes,Yes,6,Cardboard,0.61,70.98,No
+HP Pavilion x360 Var23,Electronics,Laptop,1.704,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3701,Yes,Yes,7,Cardboard,0.66,136.72,No
+Samsung 322L Refrigerator Var23,Electronics,Refrigerator,53.43,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2066,Yes,Yes,13,Plastic,0.55,313.5,No
+Godrej 7 kg Washing Machine Var23,Electronics,Washing Machine,35.891,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1568,Yes,Yes,10,Plastic,0.53,242.33,No
+Philips 9W LED Bulb Var23,Electronics,LED Bulb,0.079,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",964,Yes,No,5,Paper,0.76,10.19,Yes
+Organic Bananas (1kg) Var23,Grocery,Bananas,0.998,Organic 100%,219,Yes,No,2,None,0.88,2.08,Yes
+Amul Gold Milk 1L Var23,Grocery,Milk,1.023,"Organic 90%, Plastic 10%",484,No,No,2,Tetrapak,0.6,3.53,No
+Khadi Natural Herbal Shampoo Var23,Personal Care,Shampoo,0.503,"Plastic 60%, Organic 40%",293,Yes,No,2,Plastic,0.66,8.26,Yes
+Apple iPhone 15 Var24,Electronics,Smartphone,0.179,"Aluminum 70%, Silicon 20%, Plastic 10%",4750,Yes,Yes,6,Cardboard,0.67,77.42,No
+MacBook Air M2 Var24,Electronics,Laptop,1.229,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5420,Yes,Yes,8,Cardboard,0.64,156.82,No
+Samsung Galaxy S24 Var24,Electronics,Smartphone,0.164,"Aluminum 60%, Glass 30%, Plastic 10%",4530,Yes,Yes,7,Cardboard,0.68,69.41,No
+HP Pavilion x360 Var24,Electronics,Laptop,1.65,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4141,Yes,Yes,7,Cardboard,0.61,137.48,No
+Samsung 322L Refrigerator Var24,Electronics,Refrigerator,54.027,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1957,Yes,Yes,13,Plastic,0.6,289.53,No
+Godrej 7 kg Washing Machine Var24,Electronics,Washing Machine,34.662,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1447,Yes,Yes,11,Plastic,0.56,238.48,No
+Philips 9W LED Bulb Var24,Electronics,LED Bulb,0.08,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",941,Yes,No,5,Paper,0.74,9.94,Yes
+Organic Bananas (1kg) Var24,Grocery,Bananas,1.001,Organic 100%,190,Yes,No,1,None,0.92,1.91,Yes
+Amul Gold Milk 1L Var24,Grocery,Milk,1.041,"Organic 90%, Plastic 10%",513,No,No,1,Tetrapak,0.57,3.41,No
+Khadi Natural Herbal Shampoo Var24,Personal Care,Shampoo,0.489,"Plastic 60%, Organic 40%",306,Yes,No,1,Plastic,0.64,8.17,Yes
+Apple iPhone 15 Var25,Electronics,Smartphone,0.17,"Aluminum 70%, Silicon 20%, Plastic 10%",5486,Yes,Yes,5,Cardboard,0.67,80.42,No
+MacBook Air M2 Var25,Electronics,Laptop,1.207,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5363,Yes,Yes,6,Cardboard,0.67,165.4,No
+Samsung Galaxy S24 Var25,Electronics,Smartphone,0.167,"Aluminum 60%, Glass 30%, Plastic 10%",4737,Yes,Yes,7,Cardboard,0.65,69.29,No
+HP Pavilion x360 Var25,Electronics,Laptop,1.699,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3772,Yes,Yes,5,Cardboard,0.63,137.37,No
+Samsung 322L Refrigerator Var25,Electronics,Refrigerator,54.062,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1907,Yes,Yes,11,Plastic,0.53,288.79,No
+Godrej 7 kg Washing Machine Var25,Electronics,Washing Machine,36.046,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1404,Yes,Yes,10,Plastic,0.57,248.02,No
+Philips 9W LED Bulb Var25,Electronics,LED Bulb,0.08,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",912,Yes,No,6,Paper,0.71,10.41,Yes
+Organic Bananas (1kg) Var25,Grocery,Bananas,0.982,Organic 100%,191,Yes,No,2,None,0.85,2.06,Yes
+Amul Gold Milk 1L Var25,Grocery,Milk,1.019,"Organic 90%, Plastic 10%",522,No,No,1,Tetrapak,0.59,3.58,No
+Khadi Natural Herbal Shampoo Var25,Personal Care,Shampoo,0.508,"Plastic 60%, Organic 40%",304,Yes,No,3,Plastic,0.66,8.58,Yes
+Apple iPhone 15 Var26,Electronics,Smartphone,0.177,"Aluminum 70%, Silicon 20%, Plastic 10%",5173,Yes,Yes,6,Cardboard,0.68,81.24,No
+MacBook Air M2 Var26,Electronics,Laptop,1.245,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4828,Yes,Yes,6,Cardboard,0.69,162.13,No
+Samsung Galaxy S24 Var26,Electronics,Smartphone,0.168,"Aluminum 60%, Glass 30%, Plastic 10%",5049,Yes,Yes,7,Cardboard,0.59,71.83,No
+HP Pavilion x360 Var26,Electronics,Laptop,1.712,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3735,Yes,Yes,7,Cardboard,0.59,129.06,No
+Samsung 322L Refrigerator Var26,Electronics,Refrigerator,55.539,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1997,Yes,Yes,12,Plastic,0.62,293.99,No
+Godrej 7 kg Washing Machine Var26,Electronics,Washing Machine,34.985,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1484,Yes,Yes,10,Plastic,0.58,249.95,No
+Philips 9W LED Bulb Var26,Electronics,LED Bulb,0.081,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1018,Yes,No,5,Paper,0.7,10.4,Yes
+Organic Bananas (1kg) Var26,Grocery,Bananas,1.009,Organic 100%,188,Yes,No,1,None,0.87,1.99,Yes
+Amul Gold Milk 1L Var26,Grocery,Milk,1.023,"Organic 90%, Plastic 10%",537,No,No,1,Tetrapak,0.61,3.33,Yes
+Khadi Natural Herbal Shampoo Var26,Personal Care,Shampoo,0.503,"Plastic 60%, Organic 40%",281,Yes,No,2,Plastic,0.6,8.58,No
+Apple iPhone 15 Var27,Electronics,Smartphone,0.171,"Aluminum 70%, Silicon 20%, Plastic 10%",5320,Yes,Yes,5,Cardboard,0.59,76.09,No
+MacBook Air M2 Var27,Electronics,Laptop,1.219,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4970,Yes,Yes,7,Cardboard,0.69,163.09,No
+Samsung Galaxy S24 Var27,Electronics,Smartphone,0.165,"Aluminum 60%, Glass 30%, Plastic 10%",5136,Yes,Yes,6,Cardboard,0.65,68.89,No
+HP Pavilion x360 Var27,Electronics,Laptop,1.655,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3962,Yes,Yes,7,Cardboard,0.67,130.4,No
+Samsung 322L Refrigerator Var27,Electronics,Refrigerator,54.585,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2179,Yes,Yes,13,Plastic,0.59,305.07,No
+Godrej 7 kg Washing Machine Var27,Electronics,Washing Machine,35.907,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1634,Yes,Yes,11,Plastic,0.53,237.82,No
+Philips 9W LED Bulb Var27,Electronics,LED Bulb,0.079,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",989,Yes,No,5,Paper,0.77,10.4,Yes
+Organic Bananas (1kg) Var27,Grocery,Bananas,1.029,Organic 100%,201,Yes,No,2,None,0.95,2.1,Yes
+Amul Gold Milk 1L Var27,Grocery,Milk,1.019,"Organic 90%, Plastic 10%",478,No,No,1,Tetrapak,0.57,3.49,No
+Khadi Natural Herbal Shampoo Var27,Personal Care,Shampoo,0.492,"Plastic 60%, Organic 40%",313,Yes,No,1,Plastic,0.67,8.14,Yes
+Apple iPhone 15 Var28,Electronics,Smartphone,0.178,"Aluminum 70%, Silicon 20%, Plastic 10%",5254,Yes,Yes,5,Cardboard,0.58,79.41,No
+MacBook Air M2 Var28,Electronics,Laptop,1.274,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4866,Yes,Yes,7,Cardboard,0.6,157.79,No
+Samsung Galaxy S24 Var28,Electronics,Smartphone,0.169,"Aluminum 60%, Glass 30%, Plastic 10%",4789,Yes,Yes,6,Cardboard,0.64,71.35,No
+HP Pavilion x360 Var28,Electronics,Laptop,1.688,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4231,Yes,Yes,7,Cardboard,0.65,141.04,No
+Samsung 322L Refrigerator Var28,Electronics,Refrigerator,56.164,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1811,Yes,Yes,13,Plastic,0.58,313.0,No
+Godrej 7 kg Washing Machine Var28,Electronics,Washing Machine,35.182,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1502,Yes,Yes,10,Plastic,0.57,238.85,No
+Philips 9W LED Bulb Var28,Electronics,LED Bulb,0.079,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1080,Yes,No,6,Paper,0.74,9.9,Yes
+Organic Bananas (1kg) Var28,Grocery,Bananas,0.98,Organic 100%,186,Yes,No,1,None,0.92,2.08,Yes
+Amul Gold Milk 1L Var28,Grocery,Milk,1.019,"Organic 90%, Plastic 10%",497,No,No,1,Tetrapak,0.62,3.54,Yes
+Khadi Natural Herbal Shampoo Var28,Personal Care,Shampoo,0.508,"Plastic 60%, Organic 40%",300,Yes,No,2,Plastic,0.67,8.19,Yes
+Apple iPhone 15 Var29,Electronics,Smartphone,0.171,"Aluminum 70%, Silicon 20%, Plastic 10%",4722,Yes,Yes,6,Cardboard,0.61,82.93,No
+MacBook Air M2 Var29,Electronics,Laptop,1.238,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5270,Yes,Yes,7,Cardboard,0.67,167.67,No
+Samsung Galaxy S24 Var29,Electronics,Smartphone,0.164,"Aluminum 60%, Glass 30%, Plastic 10%",4804,Yes,Yes,7,Cardboard,0.63,68.56,No
+HP Pavilion x360 Var29,Electronics,Laptop,1.725,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4153,Yes,Yes,6,Cardboard,0.64,141.07,No
+Samsung 322L Refrigerator Var29,Electronics,Refrigerator,55.677,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1823,Yes,Yes,13,Plastic,0.56,308.33,No
+Godrej 7 kg Washing Machine Var29,Electronics,Washing Machine,34.336,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1594,Yes,Yes,10,Plastic,0.59,251.86,No
+Philips 9W LED Bulb Var29,Electronics,LED Bulb,0.078,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1055,Yes,No,5,Paper,0.69,9.71,Yes
+Organic Bananas (1kg) Var29,Grocery,Bananas,0.99,Organic 100%,200,Yes,No,1,None,0.89,1.94,Yes
+Amul Gold Milk 1L Var29,Grocery,Milk,1.06,"Organic 90%, Plastic 10%",453,No,No,2,Tetrapak,0.57,3.38,No
+Khadi Natural Herbal Shampoo Var29,Personal Care,Shampoo,0.514,"Plastic 60%, Organic 40%",275,Yes,No,3,Plastic,0.63,8.89,Yes
+Apple iPhone 15 Var30,Electronics,Smartphone,0.177,"Aluminum 70%, Silicon 20%, Plastic 10%",5280,Yes,Yes,5,Cardboard,0.67,78.39,No
+MacBook Air M2 Var30,Electronics,Laptop,1.256,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5422,Yes,Yes,6,Cardboard,0.66,156.73,No
+Samsung Galaxy S24 Var30,Electronics,Smartphone,0.168,"Aluminum 60%, Glass 30%, Plastic 10%",4666,Yes,Yes,7,Cardboard,0.62,69.63,No
+HP Pavilion x360 Var30,Electronics,Laptop,1.681,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4271,Yes,Yes,7,Cardboard,0.58,130.62,No
+Samsung 322L Refrigerator Var30,Electronics,Refrigerator,53.437,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1995,Yes,Yes,13,Plastic,0.6,299.51,No
+Godrej 7 kg Washing Machine Var30,Electronics,Washing Machine,34.334,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1517,Yes,Yes,9,Plastic,0.61,250.12,No
+Philips 9W LED Bulb Var30,Electronics,LED Bulb,0.078,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1027,Yes,No,5,Paper,0.68,9.62,Yes
+Organic Bananas (1kg) Var30,Grocery,Bananas,0.972,Organic 100%,186,Yes,No,1,None,0.91,2.05,Yes
+Amul Gold Milk 1L Var30,Grocery,Milk,1.009,"Organic 90%, Plastic 10%",465,No,No,2,Tetrapak,0.57,3.67,No
+Khadi Natural Herbal Shampoo Var30,Personal Care,Shampoo,0.513,"Plastic 60%, Organic 40%",322,Yes,No,1,Plastic,0.67,8.5,Yes
+Apple iPhone 15 Var31,Electronics,Smartphone,0.178,"Aluminum 70%, Silicon 20%, Plastic 10%",5467,Yes,Yes,7,Cardboard,0.59,78.33,No
+MacBook Air M2 Var31,Electronics,Laptop,1.216,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4785,Yes,Yes,6,Cardboard,0.66,153.7,No
+Samsung Galaxy S24 Var31,Electronics,Smartphone,0.173,"Aluminum 60%, Glass 30%, Plastic 10%",5061,Yes,Yes,7,Cardboard,0.6,68.17,No
+HP Pavilion x360 Var31,Electronics,Laptop,1.673,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3787,Yes,Yes,6,Cardboard,0.61,131.2,No
+Samsung 322L Refrigerator Var31,Electronics,Refrigerator,54.565,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2163,Yes,Yes,11,Plastic,0.57,302.84,No
+Godrej 7 kg Washing Machine Var31,Electronics,Washing Machine,34.499,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1406,Yes,Yes,11,Plastic,0.56,245.78,No
+Philips 9W LED Bulb Var31,Electronics,LED Bulb,0.079,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1003,Yes,No,4,Paper,0.72,9.57,Yes
+Organic Bananas (1kg) Var31,Grocery,Bananas,0.978,Organic 100%,205,Yes,No,1,None,0.89,2.09,Yes
+Amul Gold Milk 1L Var31,Grocery,Milk,1.025,"Organic 90%, Plastic 10%",534,No,No,1,Tetrapak,0.58,3.41,No
+Khadi Natural Herbal Shampoo Var31,Personal Care,Shampoo,0.488,"Plastic 60%, Organic 40%",311,Yes,No,1,Plastic,0.66,8.34,Yes
+Apple iPhone 15 Var32,Electronics,Smartphone,0.173,"Aluminum 70%, Silicon 20%, Plastic 10%",4908,Yes,Yes,5,Cardboard,0.59,79.32,No
+MacBook Air M2 Var32,Electronics,Laptop,1.267,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4979,Yes,Yes,6,Cardboard,0.69,160.99,No
+Samsung Galaxy S24 Var32,Electronics,Smartphone,0.169,"Aluminum 60%, Glass 30%, Plastic 10%",5318,Yes,Yes,5,Cardboard,0.62,71.04,No
+HP Pavilion x360 Var32,Electronics,Laptop,1.68,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4372,Yes,Yes,5,Cardboard,0.59,139.72,No
+Samsung 322L Refrigerator Var32,Electronics,Refrigerator,54.181,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2096,Yes,Yes,13,Plastic,0.62,312.82,No
+Godrej 7 kg Washing Machine Var32,Electronics,Washing Machine,34.753,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1600,Yes,Yes,10,Plastic,0.61,243.8,No
+Philips 9W LED Bulb Var32,Electronics,LED Bulb,0.08,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",979,Yes,No,6,Paper,0.77,10.11,Yes
+Organic Bananas (1kg) Var32,Grocery,Bananas,0.995,Organic 100%,204,Yes,No,1,None,0.92,1.99,Yes
+Amul Gold Milk 1L Var32,Grocery,Milk,1.031,"Organic 90%, Plastic 10%",531,No,No,1,Tetrapak,0.62,3.48,Yes
+Khadi Natural Herbal Shampoo Var32,Personal Care,Shampoo,0.489,"Plastic 60%, Organic 40%",280,Yes,No,2,Plastic,0.66,8.4,Yes
+Apple iPhone 15 Var33,Electronics,Smartphone,0.174,"Aluminum 70%, Silicon 20%, Plastic 10%",4709,Yes,Yes,7,Cardboard,0.65,81.46,No
+MacBook Air M2 Var33,Electronics,Laptop,1.26,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5373,Yes,Yes,8,Cardboard,0.63,157.74,No
+Samsung Galaxy S24 Var33,Electronics,Smartphone,0.165,"Aluminum 60%, Glass 30%, Plastic 10%",4680,Yes,Yes,5,Cardboard,0.64,71.62,No
+HP Pavilion x360 Var33,Electronics,Laptop,1.708,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3997,Yes,Yes,5,Cardboard,0.6,130.4,No
+Samsung 322L Refrigerator Var33,Electronics,Refrigerator,56.072,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2004,Yes,Yes,12,Plastic,0.6,287.34,No
+Godrej 7 kg Washing Machine Var33,Electronics,Washing Machine,33.995,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1412,Yes,Yes,9,Plastic,0.59,259.23,No
+Philips 9W LED Bulb Var33,Electronics,LED Bulb,0.078,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",937,Yes,No,6,Paper,0.76,10.28,Yes
+Organic Bananas (1kg) Var33,Grocery,Bananas,1.013,Organic 100%,180,Yes,No,1,None,0.94,2.07,Yes
+Amul Gold Milk 1L Var33,Grocery,Milk,1.022,"Organic 90%, Plastic 10%",465,No,No,2,Tetrapak,0.57,3.38,No
+Khadi Natural Herbal Shampoo Var33,Personal Care,Shampoo,0.508,"Plastic 60%, Organic 40%",280,Yes,No,3,Plastic,0.65,8.1,Yes
+Apple iPhone 15 Var34,Electronics,Smartphone,0.17,"Aluminum 70%, Silicon 20%, Plastic 10%",4629,Yes,Yes,5,Cardboard,0.59,80.7,No
+MacBook Air M2 Var34,Electronics,Laptop,1.237,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4865,Yes,Yes,6,Cardboard,0.65,156.6,No
+Samsung Galaxy S24 Var34,Electronics,Smartphone,0.168,"Aluminum 60%, Glass 30%, Plastic 10%",4943,Yes,Yes,6,Cardboard,0.68,68.63,No
+HP Pavilion x360 Var34,Electronics,Laptop,1.678,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3997,Yes,Yes,5,Cardboard,0.61,130.06,No
+Samsung 322L Refrigerator Var34,Electronics,Refrigerator,54.378,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2040,Yes,Yes,11,Plastic,0.55,304.51,No
+Godrej 7 kg Washing Machine Var34,Electronics,Washing Machine,34.492,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1496,Yes,Yes,9,Plastic,0.53,251.33,No
+Philips 9W LED Bulb Var34,Electronics,LED Bulb,0.081,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1002,Yes,No,6,Paper,0.68,10.06,Yes
+Organic Bananas (1kg) Var34,Grocery,Bananas,1.021,Organic 100%,204,Yes,No,2,None,0.91,1.93,Yes
+Amul Gold Milk 1L Var34,Grocery,Milk,1.042,"Organic 90%, Plastic 10%",464,No,No,1,Tetrapak,0.57,3.62,No
+Khadi Natural Herbal Shampoo Var34,Personal Care,Shampoo,0.507,"Plastic 60%, Organic 40%",308,Yes,No,2,Plastic,0.61,8.29,Yes
+Apple iPhone 15 Var35,Electronics,Smartphone,0.172,"Aluminum 70%, Silicon 20%, Plastic 10%",4890,Yes,Yes,7,Cardboard,0.62,77.44,No
+MacBook Air M2 Var35,Electronics,Laptop,1.221,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4700,Yes,Yes,6,Cardboard,0.65,161.62,No
+Samsung Galaxy S24 Var35,Electronics,Smartphone,0.169,"Aluminum 60%, Glass 30%, Plastic 10%",5420,Yes,Yes,5,Cardboard,0.64,73.41,No
+HP Pavilion x360 Var35,Electronics,Laptop,1.706,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3927,Yes,Yes,6,Cardboard,0.65,128.94,No
+Samsung 322L Refrigerator Var35,Electronics,Refrigerator,55.15,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1947,Yes,Yes,12,Plastic,0.58,302.19,No
+Godrej 7 kg Washing Machine Var35,Electronics,Washing Machine,35.699,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1432,Yes,Yes,9,Plastic,0.6,243.88,No
+Philips 9W LED Bulb Var35,Electronics,LED Bulb,0.081,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1086,Yes,No,5,Paper,0.76,9.91,Yes
+Organic Bananas (1kg) Var35,Grocery,Bananas,1.001,Organic 100%,198,Yes,No,2,None,0.92,2.0,Yes
+Amul Gold Milk 1L Var35,Grocery,Milk,1.008,"Organic 90%, Plastic 10%",488,No,No,1,Tetrapak,0.57,3.55,No
+Khadi Natural Herbal Shampoo Var35,Personal Care,Shampoo,0.504,"Plastic 60%, Organic 40%",291,Yes,No,3,Plastic,0.69,8.78,Yes
+Apple iPhone 15 Var36,Electronics,Smartphone,0.177,"Aluminum 70%, Silicon 20%, Plastic 10%",5498,Yes,Yes,5,Cardboard,0.65,77.53,No
+MacBook Air M2 Var36,Electronics,Laptop,1.242,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5466,Yes,Yes,7,Cardboard,0.61,161.29,No
+Samsung Galaxy S24 Var36,Electronics,Smartphone,0.165,"Aluminum 60%, Glass 30%, Plastic 10%",5404,Yes,Yes,5,Cardboard,0.62,67.75,No
+HP Pavilion x360 Var36,Electronics,Laptop,1.65,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4120,Yes,Yes,7,Cardboard,0.6,135.23,No
+Samsung 322L Refrigerator Var36,Electronics,Refrigerator,56.204,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2004,Yes,Yes,13,Plastic,0.59,301.6,No
+Godrej 7 kg Washing Machine Var36,Electronics,Washing Machine,35.726,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1543,Yes,Yes,11,Plastic,0.6,249.72,No
+Philips 9W LED Bulb Var36,Electronics,LED Bulb,0.079,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1090,Yes,No,5,Paper,0.74,10.42,Yes
+Organic Bananas (1kg) Var36,Grocery,Bananas,1.004,Organic 100%,189,Yes,No,1,None,0.85,2.08,Yes
+Amul Gold Milk 1L Var36,Grocery,Milk,1.041,"Organic 90%, Plastic 10%",452,No,No,1,Tetrapak,0.59,3.61,No
+Khadi Natural Herbal Shampoo Var36,Personal Care,Shampoo,0.512,"Plastic 60%, Organic 40%",272,Yes,No,1,Plastic,0.7,8.5,Yes
+Apple iPhone 15 Var37,Electronics,Smartphone,0.171,"Aluminum 70%, Silicon 20%, Plastic 10%",5068,Yes,Yes,7,Cardboard,0.58,82.05,No
+MacBook Air M2 Var37,Electronics,Laptop,1.211,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4590,Yes,Yes,6,Cardboard,0.65,154.34,No
+Samsung Galaxy S24 Var37,Electronics,Smartphone,0.172,"Aluminum 60%, Glass 30%, Plastic 10%",5473,Yes,Yes,6,Cardboard,0.61,69.62,No
+HP Pavilion x360 Var37,Electronics,Laptop,1.741,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4280,Yes,Yes,5,Cardboard,0.59,131.76,No
+Samsung 322L Refrigerator Var37,Electronics,Refrigerator,55.083,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2003,Yes,Yes,13,Plastic,0.55,305.92,No
+Godrej 7 kg Washing Machine Var37,Electronics,Washing Machine,35.514,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1606,Yes,Yes,10,Plastic,0.58,258.26,No
+Philips 9W LED Bulb Var37,Electronics,LED Bulb,0.082,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",957,Yes,No,4,Paper,0.76,9.99,Yes
+Organic Bananas (1kg) Var37,Grocery,Bananas,0.996,Organic 100%,211,Yes,No,1,None,0.92,1.95,Yes
+Amul Gold Milk 1L Var37,Grocery,Milk,1.017,"Organic 90%, Plastic 10%",457,No,No,1,Tetrapak,0.61,3.65,Yes
+Khadi Natural Herbal Shampoo Var37,Personal Care,Shampoo,0.499,"Plastic 60%, Organic 40%",300,Yes,No,3,Plastic,0.61,8.54,Yes
+Apple iPhone 15 Var38,Electronics,Smartphone,0.172,"Aluminum 70%, Silicon 20%, Plastic 10%",4980,Yes,Yes,5,Cardboard,0.59,76.99,No
+MacBook Air M2 Var38,Electronics,Laptop,1.215,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4877,Yes,Yes,8,Cardboard,0.65,157.38,No
+Samsung Galaxy S24 Var38,Electronics,Smartphone,0.163,"Aluminum 60%, Glass 30%, Plastic 10%",4547,Yes,Yes,7,Cardboard,0.66,69.04,No
+HP Pavilion x360 Var38,Electronics,Laptop,1.673,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4268,Yes,Yes,6,Cardboard,0.61,129.61,No
+Samsung 322L Refrigerator Var38,Electronics,Refrigerator,55.684,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1959,Yes,Yes,12,Plastic,0.57,294.56,No
+Godrej 7 kg Washing Machine Var38,Electronics,Washing Machine,35.238,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1416,Yes,Yes,9,Plastic,0.55,258.88,No
+Philips 9W LED Bulb Var38,Electronics,LED Bulb,0.08,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1009,Yes,No,4,Paper,0.67,9.63,Yes
+Organic Bananas (1kg) Var38,Grocery,Bananas,0.997,Organic 100%,216,Yes,No,1,None,0.94,2.09,Yes
+Amul Gold Milk 1L Var38,Grocery,Milk,1.04,"Organic 90%, Plastic 10%",542,No,No,1,Tetrapak,0.66,3.66,Yes
+Khadi Natural Herbal Shampoo Var38,Personal Care,Shampoo,0.498,"Plastic 60%, Organic 40%",307,Yes,No,2,Plastic,0.62,8.77,Yes
+Apple iPhone 15 Var39,Electronics,Smartphone,0.178,"Aluminum 70%, Silicon 20%, Plastic 10%",4763,Yes,Yes,5,Cardboard,0.65,77.89,No
+MacBook Air M2 Var39,Electronics,Laptop,1.27,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4618,Yes,Yes,6,Cardboard,0.63,152.4,No
+Samsung Galaxy S24 Var39,Electronics,Smartphone,0.17,"Aluminum 60%, Glass 30%, Plastic 10%",5184,Yes,Yes,7,Cardboard,0.66,69.06,No
+HP Pavilion x360 Var39,Electronics,Laptop,1.736,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4099,Yes,Yes,6,Cardboard,0.63,128.73,No
+Samsung 322L Refrigerator Var39,Electronics,Refrigerator,55.051,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2184,Yes,Yes,11,Plastic,0.63,297.23,No
+Godrej 7 kg Washing Machine Var39,Electronics,Washing Machine,35.184,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1387,Yes,Yes,10,Plastic,0.58,259.67,No
+Philips 9W LED Bulb Var39,Electronics,LED Bulb,0.081,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1018,Yes,No,4,Paper,0.75,10.14,Yes
+Organic Bananas (1kg) Var39,Grocery,Bananas,0.991,Organic 100%,215,Yes,No,1,None,0.93,2.04,Yes
+Amul Gold Milk 1L Var39,Grocery,Milk,1.025,"Organic 90%, Plastic 10%",510,No,No,2,Tetrapak,0.6,3.4,No
+Khadi Natural Herbal Shampoo Var39,Personal Care,Shampoo,0.49,"Plastic 60%, Organic 40%",312,Yes,No,3,Plastic,0.61,8.75,Yes
+Apple iPhone 15 Var40,Electronics,Smartphone,0.179,"Aluminum 70%, Silicon 20%, Plastic 10%",5086,Yes,Yes,6,Cardboard,0.6,78.73,No
+MacBook Air M2 Var40,Electronics,Laptop,1.273,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4933,Yes,Yes,8,Cardboard,0.61,157.27,No
+Samsung Galaxy S24 Var40,Electronics,Smartphone,0.169,"Aluminum 60%, Glass 30%, Plastic 10%",5434,Yes,Yes,5,Cardboard,0.64,67.36,No
+HP Pavilion x360 Var40,Electronics,Laptop,1.678,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4066,Yes,Yes,6,Cardboard,0.58,136.11,No
+Samsung 322L Refrigerator Var40,Electronics,Refrigerator,54.57,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2139,Yes,Yes,13,Plastic,0.56,290.29,No
+Godrej 7 kg Washing Machine Var40,Electronics,Washing Machine,34.733,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1639,Yes,Yes,11,Plastic,0.6,244.0,No
+Philips 9W LED Bulb Var40,Electronics,LED Bulb,0.081,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",950,Yes,No,4,Paper,0.76,9.54,Yes
+Organic Bananas (1kg) Var40,Grocery,Bananas,0.999,Organic 100%,214,Yes,No,1,None,0.92,1.98,Yes
+Amul Gold Milk 1L Var40,Grocery,Milk,1.035,"Organic 90%, Plastic 10%",525,No,No,1,Tetrapak,0.6,3.39,No
+Khadi Natural Herbal Shampoo Var40,Personal Care,Shampoo,0.494,"Plastic 60%, Organic 40%",277,Yes,No,2,Plastic,0.69,8.24,Yes
+Apple iPhone 15 Var41,Electronics,Smartphone,0.173,"Aluminum 70%, Silicon 20%, Plastic 10%",5383,Yes,Yes,5,Cardboard,0.64,77.85,No
+MacBook Air M2 Var41,Electronics,Laptop,1.266,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5121,Yes,Yes,6,Cardboard,0.67,162.02,No
+Samsung Galaxy S24 Var41,Electronics,Smartphone,0.168,"Aluminum 60%, Glass 30%, Plastic 10%",4748,Yes,Yes,5,Cardboard,0.67,66.9,No
+HP Pavilion x360 Var41,Electronics,Laptop,1.719,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4297,Yes,Yes,7,Cardboard,0.66,131.42,No
+Samsung 322L Refrigerator Var41,Electronics,Refrigerator,55.797,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2174,Yes,Yes,12,Plastic,0.63,291.71,No
+Godrej 7 kg Washing Machine Var41,Electronics,Washing Machine,34.644,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1490,Yes,Yes,10,Plastic,0.61,255.8,No
+Philips 9W LED Bulb Var41,Electronics,LED Bulb,0.08,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1055,Yes,No,4,Paper,0.74,10.31,Yes
+Organic Bananas (1kg) Var41,Grocery,Bananas,1.005,Organic 100%,186,Yes,No,2,None,0.92,2.09,Yes
+Amul Gold Milk 1L Var41,Grocery,Milk,1.021,"Organic 90%, Plastic 10%",472,No,No,1,Tetrapak,0.57,3.55,No
+Khadi Natural Herbal Shampoo Var41,Personal Care,Shampoo,0.496,"Plastic 60%, Organic 40%",272,Yes,No,3,Plastic,0.66,8.78,Yes
+Apple iPhone 15 Var42,Electronics,Smartphone,0.177,"Aluminum 70%, Silicon 20%, Plastic 10%",4551,Yes,Yes,7,Cardboard,0.63,77.74,No
+MacBook Air M2 Var42,Electronics,Laptop,1.219,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5088,Yes,Yes,8,Cardboard,0.62,156.76,No
+Samsung Galaxy S24 Var42,Electronics,Smartphone,0.166,"Aluminum 60%, Glass 30%, Plastic 10%",4811,Yes,Yes,5,Cardboard,0.67,70.0,No
+HP Pavilion x360 Var42,Electronics,Laptop,1.671,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4243,Yes,Yes,7,Cardboard,0.58,134.79,No
+Samsung 322L Refrigerator Var42,Electronics,Refrigerator,56.218,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2025,Yes,Yes,11,Plastic,0.54,297.29,No
+Godrej 7 kg Washing Machine Var42,Electronics,Washing Machine,34.266,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1364,Yes,Yes,10,Plastic,0.58,251.8,No
+Philips 9W LED Bulb Var42,Electronics,LED Bulb,0.079,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",920,Yes,No,6,Paper,0.72,9.93,Yes
+Organic Bananas (1kg) Var42,Grocery,Bananas,1.017,Organic 100%,201,Yes,No,1,None,0.86,2.03,Yes
+Amul Gold Milk 1L Var42,Grocery,Milk,1.024,"Organic 90%, Plastic 10%",480,No,No,1,Tetrapak,0.63,3.35,Yes
+Khadi Natural Herbal Shampoo Var42,Personal Care,Shampoo,0.491,"Plastic 60%, Organic 40%",324,Yes,No,2,Plastic,0.63,8.8,Yes
+Apple iPhone 15 Var43,Electronics,Smartphone,0.17,"Aluminum 70%, Silicon 20%, Plastic 10%",5054,Yes,Yes,6,Cardboard,0.66,83.64,No
+MacBook Air M2 Var43,Electronics,Laptop,1.247,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5441,Yes,Yes,8,Cardboard,0.63,162.71,No
+Samsung Galaxy S24 Var43,Electronics,Smartphone,0.166,"Aluminum 60%, Glass 30%, Plastic 10%",4946,Yes,Yes,5,Cardboard,0.67,68.08,No
+HP Pavilion x360 Var43,Electronics,Laptop,1.658,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3930,Yes,Yes,5,Cardboard,0.65,129.91,No
+Samsung 322L Refrigerator Var43,Electronics,Refrigerator,54.111,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1857,Yes,Yes,13,Plastic,0.62,301.4,No
+Godrej 7 kg Washing Machine Var43,Electronics,Washing Machine,34.428,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1359,Yes,Yes,9,Plastic,0.56,243.73,No
+Philips 9W LED Bulb Var43,Electronics,LED Bulb,0.082,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1012,Yes,No,5,Paper,0.69,10.29,Yes
+Organic Bananas (1kg) Var43,Grocery,Bananas,0.97,Organic 100%,180,Yes,No,1,None,0.88,1.96,Yes
+Amul Gold Milk 1L Var43,Grocery,Milk,1.057,"Organic 90%, Plastic 10%",502,No,No,1,Tetrapak,0.63,3.54,Yes
+Khadi Natural Herbal Shampoo Var43,Personal Care,Shampoo,0.513,"Plastic 60%, Organic 40%",323,Yes,No,3,Plastic,0.7,8.76,Yes
+Apple iPhone 15 Var44,Electronics,Smartphone,0.173,"Aluminum 70%, Silicon 20%, Plastic 10%",4728,Yes,Yes,7,Cardboard,0.61,81.32,No
+MacBook Air M2 Var44,Electronics,Laptop,1.257,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4835,Yes,Yes,6,Cardboard,0.7,152.62,No
+Samsung Galaxy S24 Var44,Electronics,Smartphone,0.164,"Aluminum 60%, Glass 30%, Plastic 10%",4933,Yes,Yes,6,Cardboard,0.65,71.95,No
+HP Pavilion x360 Var44,Electronics,Laptop,1.682,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3891,Yes,Yes,6,Cardboard,0.63,131.92,No
+Samsung 322L Refrigerator Var44,Electronics,Refrigerator,55.75,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1961,Yes,Yes,13,Plastic,0.54,308.58,No
+Godrej 7 kg Washing Machine Var44,Electronics,Washing Machine,34.177,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1461,Yes,Yes,9,Plastic,0.54,246.36,No
+Philips 9W LED Bulb Var44,Electronics,LED Bulb,0.078,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",900,Yes,No,4,Paper,0.76,9.99,Yes
+Organic Bananas (1kg) Var44,Grocery,Bananas,0.999,Organic 100%,216,Yes,No,1,None,0.88,1.95,Yes
+Amul Gold Milk 1L Var44,Grocery,Milk,1.057,"Organic 90%, Plastic 10%",502,No,No,1,Tetrapak,0.64,3.61,Yes
+Khadi Natural Herbal Shampoo Var44,Personal Care,Shampoo,0.485,"Plastic 60%, Organic 40%",295,Yes,No,2,Plastic,0.64,8.89,Yes
+Apple iPhone 15 Var45,Electronics,Smartphone,0.177,"Aluminum 70%, Silicon 20%, Plastic 10%",5001,Yes,Yes,5,Cardboard,0.6,78.05,No
+MacBook Air M2 Var45,Electronics,Laptop,1.239,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4617,Yes,Yes,6,Cardboard,0.63,166.84,No
+Samsung Galaxy S24 Var45,Electronics,Smartphone,0.171,"Aluminum 60%, Glass 30%, Plastic 10%",5002,Yes,Yes,5,Cardboard,0.68,71.21,No
+HP Pavilion x360 Var45,Electronics,Laptop,1.661,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4306,Yes,Yes,6,Cardboard,0.65,128.98,No
+Samsung 322L Refrigerator Var45,Electronics,Refrigerator,55.279,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1878,Yes,Yes,13,Plastic,0.62,291.21,No
+Godrej 7 kg Washing Machine Var45,Electronics,Washing Machine,35.899,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1627,Yes,Yes,9,Plastic,0.55,246.08,No
+Philips 9W LED Bulb Var45,Electronics,LED Bulb,0.078,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1016,Yes,No,4,Paper,0.72,9.62,Yes
+Organic Bananas (1kg) Var45,Grocery,Bananas,0.993,Organic 100%,211,Yes,No,1,None,0.91,2.09,Yes
+Amul Gold Milk 1L Var45,Grocery,Milk,1.011,"Organic 90%, Plastic 10%",475,No,No,1,Tetrapak,0.57,3.34,No
+Khadi Natural Herbal Shampoo Var45,Personal Care,Shampoo,0.505,"Plastic 60%, Organic 40%",307,Yes,No,3,Plastic,0.66,8.64,Yes
+Apple iPhone 15 Var46,Electronics,Smartphone,0.178,"Aluminum 70%, Silicon 20%, Plastic 10%",4709,Yes,Yes,5,Cardboard,0.63,79.61,No
+MacBook Air M2 Var46,Electronics,Laptop,1.276,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4961,Yes,Yes,7,Cardboard,0.65,160.16,No
+Samsung Galaxy S24 Var46,Electronics,Smartphone,0.166,"Aluminum 60%, Glass 30%, Plastic 10%",4529,Yes,Yes,5,Cardboard,0.63,70.47,No
+HP Pavilion x360 Var46,Electronics,Laptop,1.655,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3985,Yes,Yes,7,Cardboard,0.61,136.5,No
+Samsung 322L Refrigerator Var46,Electronics,Refrigerator,55.166,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1830,Yes,Yes,13,Plastic,0.6,297.16,No
+Godrej 7 kg Washing Machine Var46,Electronics,Washing Machine,35.233,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1372,Yes,Yes,11,Plastic,0.57,237.71,No
+Philips 9W LED Bulb Var46,Electronics,LED Bulb,0.082,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1008,Yes,No,4,Paper,0.71,9.82,Yes
+Organic Bananas (1kg) Var46,Grocery,Bananas,0.97,Organic 100%,198,Yes,No,1,None,0.93,2.04,Yes
+Amul Gold Milk 1L Var46,Grocery,Milk,1.049,"Organic 90%, Plastic 10%",460,No,No,1,Tetrapak,0.57,3.48,No
+Khadi Natural Herbal Shampoo Var46,Personal Care,Shampoo,0.509,"Plastic 60%, Organic 40%",285,Yes,No,3,Plastic,0.66,8.81,Yes
+Apple iPhone 15 Var47,Electronics,Smartphone,0.173,"Aluminum 70%, Silicon 20%, Plastic 10%",4829,Yes,Yes,7,Cardboard,0.62,82.37,No
+MacBook Air M2 Var47,Electronics,Laptop,1.208,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4913,Yes,Yes,6,Cardboard,0.68,158.45,No
+Samsung Galaxy S24 Var47,Electronics,Smartphone,0.165,"Aluminum 60%, Glass 30%, Plastic 10%",5092,Yes,Yes,7,Cardboard,0.65,73.12,No
+HP Pavilion x360 Var47,Electronics,Laptop,1.743,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4051,Yes,Yes,7,Cardboard,0.62,136.91,No
+Samsung 322L Refrigerator Var47,Electronics,Refrigerator,53.637,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2009,Yes,Yes,13,Plastic,0.59,292.67,No
+Godrej 7 kg Washing Machine Var47,Electronics,Washing Machine,34.722,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1459,Yes,Yes,10,Plastic,0.58,245.02,No
+Philips 9W LED Bulb Var47,Electronics,LED Bulb,0.079,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",996,Yes,No,6,Paper,0.73,10.15,Yes
+Organic Bananas (1kg) Var47,Grocery,Bananas,1.002,Organic 100%,189,Yes,No,1,None,0.89,1.93,Yes
+Amul Gold Milk 1L Var47,Grocery,Milk,1.038,"Organic 90%, Plastic 10%",464,No,No,1,Tetrapak,0.58,3.56,No
+Khadi Natural Herbal Shampoo Var47,Personal Care,Shampoo,0.507,"Plastic 60%, Organic 40%",313,Yes,No,2,Plastic,0.7,8.39,Yes
+Apple iPhone 15 Var48,Electronics,Smartphone,0.177,"Aluminum 70%, Silicon 20%, Plastic 10%",5097,Yes,Yes,5,Cardboard,0.61,79.41,No
+MacBook Air M2 Var48,Electronics,Laptop,1.225,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5169,Yes,Yes,6,Cardboard,0.64,162.63,No
+Samsung Galaxy S24 Var48,Electronics,Smartphone,0.171,"Aluminum 60%, Glass 30%, Plastic 10%",5394,Yes,Yes,7,Cardboard,0.59,70.4,No
+HP Pavilion x360 Var48,Electronics,Laptop,1.677,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4024,Yes,Yes,6,Cardboard,0.61,135.1,No
+Samsung 322L Refrigerator Var48,Electronics,Refrigerator,54.425,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2022,Yes,Yes,11,Plastic,0.61,300.97,No
+Godrej 7 kg Washing Machine Var48,Electronics,Washing Machine,35.152,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1525,Yes,Yes,9,Plastic,0.62,257.13,No
+Philips 9W LED Bulb Var48,Electronics,LED Bulb,0.082,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",923,Yes,No,5,Paper,0.77,10.17,Yes
+Organic Bananas (1kg) Var48,Grocery,Bananas,1.009,Organic 100%,186,Yes,No,2,None,0.93,1.98,Yes
+Amul Gold Milk 1L Var48,Grocery,Milk,1.017,"Organic 90%, Plastic 10%",521,No,No,1,Tetrapak,0.64,3.65,Yes
+Khadi Natural Herbal Shampoo Var48,Personal Care,Shampoo,0.504,"Plastic 60%, Organic 40%",289,Yes,No,1,Plastic,0.69,8.25,Yes
+Apple iPhone 15 Var49,Electronics,Smartphone,0.172,"Aluminum 70%, Silicon 20%, Plastic 10%",4676,Yes,Yes,7,Cardboard,0.66,79.84,No
+MacBook Air M2 Var49,Electronics,Laptop,1.254,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5219,Yes,Yes,6,Cardboard,0.67,163.16,No
+Samsung Galaxy S24 Var49,Electronics,Smartphone,0.169,"Aluminum 60%, Glass 30%, Plastic 10%",4970,Yes,Yes,6,Cardboard,0.68,67.32,No
+HP Pavilion x360 Var49,Electronics,Laptop,1.651,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4015,Yes,Yes,7,Cardboard,0.6,135.54,No
+Samsung 322L Refrigerator Var49,Electronics,Refrigerator,55.255,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2104,Yes,Yes,12,Plastic,0.54,301.07,No
+Godrej 7 kg Washing Machine Var49,Electronics,Washing Machine,35.872,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1423,Yes,Yes,10,Plastic,0.61,251.41,No
+Philips 9W LED Bulb Var49,Electronics,LED Bulb,0.081,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",925,Yes,No,6,Paper,0.72,10.19,Yes
+Organic Bananas (1kg) Var49,Grocery,Bananas,0.982,Organic 100%,204,Yes,No,1,None,0.91,1.97,Yes
+Amul Gold Milk 1L Var49,Grocery,Milk,1.037,"Organic 90%, Plastic 10%",533,No,No,2,Tetrapak,0.57,3.34,No
+Khadi Natural Herbal Shampoo Var49,Personal Care,Shampoo,0.489,"Plastic 60%, Organic 40%",278,Yes,No,2,Plastic,0.62,8.64,Yes
+Apple iPhone 15 Var50,Electronics,Smartphone,0.173,"Aluminum 70%, Silicon 20%, Plastic 10%",4601,Yes,Yes,7,Cardboard,0.64,83.07,No
+MacBook Air M2 Var50,Electronics,Laptop,1.211,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5239,Yes,Yes,6,Cardboard,0.65,155.56,No
+Samsung Galaxy S24 Var50,Electronics,Smartphone,0.173,"Aluminum 60%, Glass 30%, Plastic 10%",5049,Yes,Yes,7,Cardboard,0.69,67.44,No
+HP Pavilion x360 Var50,Electronics,Laptop,1.729,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3658,Yes,Yes,7,Cardboard,0.64,135.73,No
+Samsung 322L Refrigerator Var50,Electronics,Refrigerator,54.311,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1946,Yes,Yes,13,Plastic,0.6,291.8,No
+Godrej 7 kg Washing Machine Var50,Electronics,Washing Machine,34.079,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1619,Yes,Yes,11,Plastic,0.57,257.2,No
+Philips 9W LED Bulb Var50,Electronics,LED Bulb,0.081,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1000,Yes,No,4,Paper,0.76,10.02,Yes
+Organic Bananas (1kg) Var50,Grocery,Bananas,0.986,Organic 100%,191,Yes,No,1,None,0.9,1.96,Yes
+Amul Gold Milk 1L Var50,Grocery,Milk,1.054,"Organic 90%, Plastic 10%",514,No,No,1,Tetrapak,0.62,3.38,Yes
+Khadi Natural Herbal Shampoo Var50,Personal Care,Shampoo,0.497,"Plastic 60%, Organic 40%",295,Yes,No,2,Plastic,0.7,8.89,Yes
+Apple iPhone 15 Var51,Electronics,Smartphone,0.171,"Aluminum 70%, Silicon 20%, Plastic 10%",4706,Yes,Yes,7,Cardboard,0.61,77.08,No
+MacBook Air M2 Var51,Electronics,Laptop,1.272,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4730,Yes,Yes,8,Cardboard,0.67,159.27,No
+Samsung Galaxy S24 Var51,Electronics,Smartphone,0.169,"Aluminum 60%, Glass 30%, Plastic 10%",4500,Yes,Yes,5,Cardboard,0.61,68.51,No
+HP Pavilion x360 Var51,Electronics,Laptop,1.733,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3612,Yes,Yes,5,Cardboard,0.63,131.38,No
+Samsung 322L Refrigerator Var51,Electronics,Refrigerator,56.0,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2109,Yes,Yes,13,Plastic,0.58,289.55,No
+Godrej 7 kg Washing Machine Var51,Electronics,Washing Machine,35.354,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1635,Yes,Yes,9,Plastic,0.57,251.73,No
+Philips 9W LED Bulb Var51,Electronics,LED Bulb,0.078,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",984,Yes,No,4,Paper,0.74,10.3,Yes
+Organic Bananas (1kg) Var51,Grocery,Bananas,1.017,Organic 100%,207,Yes,No,1,None,0.85,2.09,Yes
+Amul Gold Milk 1L Var51,Grocery,Milk,1.018,"Organic 90%, Plastic 10%",497,No,No,1,Tetrapak,0.61,3.52,Yes
+Khadi Natural Herbal Shampoo Var51,Personal Care,Shampoo,0.496,"Plastic 60%, Organic 40%",324,Yes,No,2,Plastic,0.68,8.19,Yes
+Apple iPhone 15 Var52,Electronics,Smartphone,0.178,"Aluminum 70%, Silicon 20%, Plastic 10%",5140,Yes,Yes,6,Cardboard,0.63,79.35,No
+MacBook Air M2 Var52,Electronics,Laptop,1.273,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5460,Yes,Yes,8,Cardboard,0.63,158.44,No
+Samsung Galaxy S24 Var52,Electronics,Smartphone,0.164,"Aluminum 60%, Glass 30%, Plastic 10%",4541,Yes,Yes,6,Cardboard,0.66,72.32,No
+HP Pavilion x360 Var52,Electronics,Laptop,1.649,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4015,Yes,Yes,7,Cardboard,0.57,130.44,No
+Samsung 322L Refrigerator Var52,Electronics,Refrigerator,54.409,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2142,Yes,Yes,13,Plastic,0.6,288.17,No
+Godrej 7 kg Washing Machine Var52,Electronics,Washing Machine,34.787,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1499,Yes,Yes,9,Plastic,0.52,253.97,No
+Philips 9W LED Bulb Var52,Electronics,LED Bulb,0.08,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1055,Yes,No,5,Paper,0.7,9.66,Yes
+Organic Bananas (1kg) Var52,Grocery,Bananas,1.011,Organic 100%,209,Yes,No,1,None,0.89,1.94,Yes
+Amul Gold Milk 1L Var52,Grocery,Milk,1.023,"Organic 90%, Plastic 10%",531,No,No,1,Tetrapak,0.65,3.58,Yes
+Khadi Natural Herbal Shampoo Var52,Personal Care,Shampoo,0.501,"Plastic 60%, Organic 40%",295,Yes,No,1,Plastic,0.7,8.45,Yes
+Apple iPhone 15 Var53,Electronics,Smartphone,0.178,"Aluminum 70%, Silicon 20%, Plastic 10%",5089,Yes,Yes,5,Cardboard,0.59,76.08,No
+MacBook Air M2 Var53,Electronics,Laptop,1.257,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5018,Yes,Yes,8,Cardboard,0.62,156.62,No
+Samsung Galaxy S24 Var53,Electronics,Smartphone,0.17,"Aluminum 60%, Glass 30%, Plastic 10%",5051,Yes,Yes,7,Cardboard,0.67,72.84,No
+HP Pavilion x360 Var53,Electronics,Laptop,1.683,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4280,Yes,Yes,7,Cardboard,0.66,137.79,No
+Samsung 322L Refrigerator Var53,Electronics,Refrigerator,53.975,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1832,Yes,Yes,12,Plastic,0.56,298.8,No
+Godrej 7 kg Washing Machine Var53,Electronics,Washing Machine,34.257,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1419,Yes,Yes,11,Plastic,0.58,242.76,No
+Philips 9W LED Bulb Var53,Electronics,LED Bulb,0.079,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",994,Yes,No,4,Paper,0.72,10.22,Yes
+Organic Bananas (1kg) Var53,Grocery,Bananas,0.992,Organic 100%,208,Yes,No,1,None,0.88,2.02,Yes
+Amul Gold Milk 1L Var53,Grocery,Milk,1.038,"Organic 90%, Plastic 10%",508,No,No,1,Tetrapak,0.6,3.67,No
+Khadi Natural Herbal Shampoo Var53,Personal Care,Shampoo,0.492,"Plastic 60%, Organic 40%",275,Yes,No,1,Plastic,0.66,8.22,Yes
+Apple iPhone 15 Var54,Electronics,Smartphone,0.173,"Aluminum 70%, Silicon 20%, Plastic 10%",5081,Yes,Yes,5,Cardboard,0.62,82.48,No
+MacBook Air M2 Var54,Electronics,Laptop,1.239,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4606,Yes,Yes,8,Cardboard,0.69,155.23,No
+Samsung Galaxy S24 Var54,Electronics,Smartphone,0.165,"Aluminum 60%, Glass 30%, Plastic 10%",4805,Yes,Yes,5,Cardboard,0.63,71.47,No
+HP Pavilion x360 Var54,Electronics,Laptop,1.716,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4321,Yes,Yes,7,Cardboard,0.64,132.06,No
+Samsung 322L Refrigerator Var54,Electronics,Refrigerator,55.614,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2114,Yes,Yes,11,Plastic,0.6,299.21,No
+Godrej 7 kg Washing Machine Var54,Electronics,Washing Machine,34.446,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1440,Yes,Yes,10,Plastic,0.57,238.73,No
+Philips 9W LED Bulb Var54,Electronics,LED Bulb,0.08,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",909,Yes,No,4,Paper,0.74,9.59,Yes
+Organic Bananas (1kg) Var54,Grocery,Bananas,0.995,Organic 100%,188,Yes,No,1,None,0.87,2.1,Yes
+Amul Gold Milk 1L Var54,Grocery,Milk,1.0,"Organic 90%, Plastic 10%",506,No,No,2,Tetrapak,0.61,3.42,Yes
+Khadi Natural Herbal Shampoo Var54,Personal Care,Shampoo,0.503,"Plastic 60%, Organic 40%",308,Yes,No,2,Plastic,0.62,8.39,Yes
+Apple iPhone 15 Var55,Electronics,Smartphone,0.169,"Aluminum 70%, Silicon 20%, Plastic 10%",5247,Yes,Yes,6,Cardboard,0.61,78.78,No
+MacBook Air M2 Var55,Electronics,Laptop,1.23,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4680,Yes,Yes,6,Cardboard,0.65,154.02,No
+Samsung Galaxy S24 Var55,Electronics,Smartphone,0.168,"Aluminum 60%, Glass 30%, Plastic 10%",5149,Yes,Yes,5,Cardboard,0.6,72.48,No
+HP Pavilion x360 Var55,Electronics,Laptop,1.739,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4024,Yes,Yes,5,Cardboard,0.57,137.95,No
+Samsung 322L Refrigerator Var55,Electronics,Refrigerator,55.669,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2161,Yes,Yes,12,Plastic,0.62,308.02,No
+Godrej 7 kg Washing Machine Var55,Electronics,Washing Machine,34.758,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1639,Yes,Yes,11,Plastic,0.53,250.98,No
+Philips 9W LED Bulb Var55,Electronics,LED Bulb,0.081,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1066,Yes,No,6,Paper,0.67,10.43,Yes
+Organic Bananas (1kg) Var55,Grocery,Bananas,0.989,Organic 100%,182,Yes,No,1,None,0.88,1.95,Yes
+Amul Gold Milk 1L Var55,Grocery,Milk,1.032,"Organic 90%, Plastic 10%",496,No,No,1,Tetrapak,0.64,3.58,Yes
+Khadi Natural Herbal Shampoo Var55,Personal Care,Shampoo,0.511,"Plastic 60%, Organic 40%",295,Yes,No,2,Plastic,0.61,8.3,Yes
+Apple iPhone 15 Var56,Electronics,Smartphone,0.174,"Aluminum 70%, Silicon 20%, Plastic 10%",5188,Yes,Yes,5,Cardboard,0.59,76.32,No
+MacBook Air M2 Var56,Electronics,Laptop,1.221,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5346,Yes,Yes,8,Cardboard,0.67,153.23,No
+Samsung Galaxy S24 Var56,Electronics,Smartphone,0.166,"Aluminum 60%, Glass 30%, Plastic 10%",4772,Yes,Yes,6,Cardboard,0.66,66.8,No
+HP Pavilion x360 Var56,Electronics,Laptop,1.709,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4029,Yes,Yes,7,Cardboard,0.57,133.16,No
+Samsung 322L Refrigerator Var56,Electronics,Refrigerator,55.713,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2066,Yes,Yes,13,Plastic,0.6,290.34,No
+Godrej 7 kg Washing Machine Var56,Electronics,Washing Machine,34.586,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1532,Yes,Yes,10,Plastic,0.53,260.51,No
+Philips 9W LED Bulb Var56,Electronics,LED Bulb,0.082,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1054,Yes,No,6,Paper,0.71,10.15,Yes
+Organic Bananas (1kg) Var56,Grocery,Bananas,0.972,Organic 100%,187,Yes,No,1,None,0.91,2.06,Yes
+Amul Gold Milk 1L Var56,Grocery,Milk,1.043,"Organic 90%, Plastic 10%",501,No,No,2,Tetrapak,0.66,3.36,Yes
+Khadi Natural Herbal Shampoo Var56,Personal Care,Shampoo,0.501,"Plastic 60%, Organic 40%",271,Yes,No,2,Plastic,0.67,8.74,Yes
+Apple iPhone 15 Var57,Electronics,Smartphone,0.174,"Aluminum 70%, Silicon 20%, Plastic 10%",5054,Yes,Yes,5,Cardboard,0.65,78.89,No
+MacBook Air M2 Var57,Electronics,Laptop,1.269,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4974,Yes,Yes,8,Cardboard,0.66,160.15,No
+Samsung Galaxy S24 Var57,Electronics,Smartphone,0.164,"Aluminum 60%, Glass 30%, Plastic 10%",4972,Yes,Yes,7,Cardboard,0.6,70.02,No
+HP Pavilion x360 Var57,Electronics,Laptop,1.698,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4077,Yes,Yes,6,Cardboard,0.59,134.91,No
+Samsung 322L Refrigerator Var57,Electronics,Refrigerator,56.037,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2035,Yes,Yes,11,Plastic,0.62,311.54,No
+Godrej 7 kg Washing Machine Var57,Electronics,Washing Machine,35.844,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1384,Yes,Yes,10,Plastic,0.62,251.41,No
+Philips 9W LED Bulb Var57,Electronics,LED Bulb,0.082,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1019,Yes,No,4,Paper,0.67,10.31,Yes
+Organic Bananas (1kg) Var57,Grocery,Bananas,0.984,Organic 100%,208,Yes,No,2,None,0.86,2.02,Yes
+Amul Gold Milk 1L Var57,Grocery,Milk,1.056,"Organic 90%, Plastic 10%",484,No,No,1,Tetrapak,0.62,3.62,Yes
+Khadi Natural Herbal Shampoo Var57,Personal Care,Shampoo,0.5,"Plastic 60%, Organic 40%",323,Yes,No,2,Plastic,0.68,8.26,Yes
+Apple iPhone 15 Var58,Electronics,Smartphone,0.175,"Aluminum 70%, Silicon 20%, Plastic 10%",5058,Yes,Yes,5,Cardboard,0.63,80.74,No
+MacBook Air M2 Var58,Electronics,Laptop,1.216,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4574,Yes,Yes,6,Cardboard,0.62,164.08,No
+Samsung Galaxy S24 Var58,Electronics,Smartphone,0.163,"Aluminum 60%, Glass 30%, Plastic 10%",4852,Yes,Yes,5,Cardboard,0.62,69.33,No
+HP Pavilion x360 Var58,Electronics,Laptop,1.728,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4054,Yes,Yes,5,Cardboard,0.65,134.87,No
+Samsung 322L Refrigerator Var58,Electronics,Refrigerator,53.784,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1969,Yes,Yes,13,Plastic,0.57,313.05,No
+Godrej 7 kg Washing Machine Var58,Electronics,Washing Machine,34.612,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1413,Yes,Yes,11,Plastic,0.55,255.96,No
+Philips 9W LED Bulb Var58,Electronics,LED Bulb,0.08,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",947,Yes,No,4,Paper,0.73,9.6,Yes
+Organic Bananas (1kg) Var58,Grocery,Bananas,0.985,Organic 100%,181,Yes,No,2,None,0.92,2.09,Yes
+Amul Gold Milk 1L Var58,Grocery,Milk,1.002,"Organic 90%, Plastic 10%",489,No,No,1,Tetrapak,0.61,3.49,Yes
+Khadi Natural Herbal Shampoo Var58,Personal Care,Shampoo,0.506,"Plastic 60%, Organic 40%",303,Yes,No,2,Plastic,0.68,8.3,Yes
+Apple iPhone 15 Var59,Electronics,Smartphone,0.179,"Aluminum 70%, Silicon 20%, Plastic 10%",4792,Yes,Yes,5,Cardboard,0.63,81.32,No
+MacBook Air M2 Var59,Electronics,Laptop,1.254,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4843,Yes,Yes,8,Cardboard,0.66,165.75,No
+Samsung Galaxy S24 Var59,Electronics,Smartphone,0.173,"Aluminum 60%, Glass 30%, Plastic 10%",4856,Yes,Yes,6,Cardboard,0.69,68.37,No
+HP Pavilion x360 Var59,Electronics,Laptop,1.707,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4271,Yes,Yes,7,Cardboard,0.65,140.03,No
+Samsung 322L Refrigerator Var59,Electronics,Refrigerator,54.322,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1877,Yes,Yes,13,Plastic,0.59,298.24,No
+Godrej 7 kg Washing Machine Var59,Electronics,Washing Machine,34.449,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1548,Yes,Yes,11,Plastic,0.55,251.96,No
+Philips 9W LED Bulb Var59,Electronics,LED Bulb,0.08,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1085,Yes,No,4,Paper,0.73,9.99,Yes
+Organic Bananas (1kg) Var59,Grocery,Bananas,1.024,Organic 100%,217,Yes,No,1,None,0.94,1.94,Yes
+Amul Gold Milk 1L Var59,Grocery,Milk,1.034,"Organic 90%, Plastic 10%",481,No,No,1,Tetrapak,0.58,3.56,No
+Khadi Natural Herbal Shampoo Var59,Personal Care,Shampoo,0.503,"Plastic 60%, Organic 40%",306,Yes,No,2,Plastic,0.64,8.79,Yes
+Apple iPhone 15 Var60,Electronics,Smartphone,0.179,"Aluminum 70%, Silicon 20%, Plastic 10%",4662,Yes,Yes,5,Cardboard,0.64,76.42,No
+MacBook Air M2 Var60,Electronics,Laptop,1.268,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5132,Yes,Yes,8,Cardboard,0.64,160.95,No
+Samsung Galaxy S24 Var60,Electronics,Smartphone,0.17,"Aluminum 60%, Glass 30%, Plastic 10%",4892,Yes,Yes,6,Cardboard,0.62,73.19,No
+HP Pavilion x360 Var60,Electronics,Laptop,1.734,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4134,Yes,Yes,5,Cardboard,0.61,135.87,No
+Samsung 322L Refrigerator Var60,Electronics,Refrigerator,54.746,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1812,Yes,Yes,13,Plastic,0.53,306.38,No
+Godrej 7 kg Washing Machine Var60,Electronics,Washing Machine,34.119,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1598,Yes,Yes,11,Plastic,0.62,254.76,No
+Philips 9W LED Bulb Var60,Electronics,LED Bulb,0.078,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1081,Yes,No,5,Paper,0.74,10.4,Yes
+Organic Bananas (1kg) Var60,Grocery,Bananas,1.004,Organic 100%,183,Yes,No,1,None,0.92,2.04,Yes
+Amul Gold Milk 1L Var60,Grocery,Milk,1.003,"Organic 90%, Plastic 10%",475,No,No,2,Tetrapak,0.57,3.43,No
+Khadi Natural Herbal Shampoo Var60,Personal Care,Shampoo,0.503,"Plastic 60%, Organic 40%",293,Yes,No,3,Plastic,0.63,8.53,Yes
+Apple iPhone 15 Var61,Electronics,Smartphone,0.176,"Aluminum 70%, Silicon 20%, Plastic 10%",4608,Yes,Yes,5,Cardboard,0.67,80.48,No
+MacBook Air M2 Var61,Electronics,Laptop,1.23,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5493,Yes,Yes,8,Cardboard,0.66,164.72,No
+Samsung Galaxy S24 Var61,Electronics,Smartphone,0.166,"Aluminum 60%, Glass 30%, Plastic 10%",5284,Yes,Yes,7,Cardboard,0.59,69.74,No
+HP Pavilion x360 Var61,Electronics,Laptop,1.74,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4149,Yes,Yes,5,Cardboard,0.57,135.61,No
+Samsung 322L Refrigerator Var61,Electronics,Refrigerator,53.491,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2170,Yes,Yes,11,Plastic,0.54,304.61,No
+Godrej 7 kg Washing Machine Var61,Electronics,Washing Machine,34.642,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1378,Yes,Yes,10,Plastic,0.57,246.65,No
+Philips 9W LED Bulb Var61,Electronics,LED Bulb,0.079,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",900,Yes,No,4,Paper,0.67,9.87,Yes
+Organic Bananas (1kg) Var61,Grocery,Bananas,1.024,Organic 100%,207,Yes,No,2,None,0.89,1.93,Yes
+Amul Gold Milk 1L Var61,Grocery,Milk,1.026,"Organic 90%, Plastic 10%",500,No,No,1,Tetrapak,0.6,3.37,No
+Khadi Natural Herbal Shampoo Var61,Personal Care,Shampoo,0.51,"Plastic 60%, Organic 40%",301,Yes,No,2,Plastic,0.66,8.78,Yes
+Apple iPhone 15 Var62,Electronics,Smartphone,0.169,"Aluminum 70%, Silicon 20%, Plastic 10%",5146,Yes,Yes,6,Cardboard,0.63,80.81,No
+MacBook Air M2 Var62,Electronics,Laptop,1.261,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5392,Yes,Yes,7,Cardboard,0.63,156.78,No
+Samsung Galaxy S24 Var62,Electronics,Smartphone,0.165,"Aluminum 60%, Glass 30%, Plastic 10%",4990,Yes,Yes,6,Cardboard,0.61,67.82,No
+HP Pavilion x360 Var62,Electronics,Laptop,1.722,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3834,Yes,Yes,5,Cardboard,0.65,129.02,No
+Samsung 322L Refrigerator Var62,Electronics,Refrigerator,54.103,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1918,Yes,Yes,12,Plastic,0.58,285.22,No
+Godrej 7 kg Washing Machine Var62,Electronics,Washing Machine,34.959,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1371,Yes,Yes,11,Plastic,0.54,255.85,No
+Philips 9W LED Bulb Var62,Electronics,LED Bulb,0.081,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1078,Yes,No,6,Paper,0.75,10.44,Yes
+Organic Bananas (1kg) Var62,Grocery,Bananas,0.993,Organic 100%,219,Yes,No,1,None,0.9,1.96,Yes
+Amul Gold Milk 1L Var62,Grocery,Milk,1.026,"Organic 90%, Plastic 10%",492,No,No,1,Tetrapak,0.66,3.55,Yes
+Khadi Natural Herbal Shampoo Var62,Personal Care,Shampoo,0.503,"Plastic 60%, Organic 40%",316,Yes,No,1,Plastic,0.62,8.43,Yes
+Apple iPhone 15 Var63,Electronics,Smartphone,0.17,"Aluminum 70%, Silicon 20%, Plastic 10%",5149,Yes,Yes,5,Cardboard,0.61,79.83,No
+MacBook Air M2 Var63,Electronics,Laptop,1.232,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4561,Yes,Yes,7,Cardboard,0.69,157.83,No
+Samsung Galaxy S24 Var63,Electronics,Smartphone,0.169,"Aluminum 60%, Glass 30%, Plastic 10%",5316,Yes,Yes,5,Cardboard,0.66,71.28,No
+HP Pavilion x360 Var63,Electronics,Laptop,1.67,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4209,Yes,Yes,5,Cardboard,0.64,140.24,No
+Samsung 322L Refrigerator Var63,Electronics,Refrigerator,53.555,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1950,Yes,Yes,11,Plastic,0.54,306.38,No
+Godrej 7 kg Washing Machine Var63,Electronics,Washing Machine,36.039,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1405,Yes,Yes,11,Plastic,0.61,242.36,No
+Philips 9W LED Bulb Var63,Electronics,LED Bulb,0.078,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1080,Yes,No,5,Paper,0.67,10.49,Yes
+Organic Bananas (1kg) Var63,Grocery,Bananas,0.998,Organic 100%,192,Yes,No,2,None,0.94,1.91,Yes
+Amul Gold Milk 1L Var63,Grocery,Milk,1.053,"Organic 90%, Plastic 10%",466,No,No,1,Tetrapak,0.65,3.66,Yes
+Khadi Natural Herbal Shampoo Var63,Personal Care,Shampoo,0.485,"Plastic 60%, Organic 40%",291,Yes,No,3,Plastic,0.64,8.16,Yes
+Apple iPhone 15 Var64,Electronics,Smartphone,0.175,"Aluminum 70%, Silicon 20%, Plastic 10%",5104,Yes,Yes,7,Cardboard,0.66,79.25,No
+MacBook Air M2 Var64,Electronics,Laptop,1.269,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4834,Yes,Yes,7,Cardboard,0.69,157.42,No
+Samsung Galaxy S24 Var64,Electronics,Smartphone,0.173,"Aluminum 60%, Glass 30%, Plastic 10%",5446,Yes,Yes,5,Cardboard,0.6,72.9,No
+HP Pavilion x360 Var64,Electronics,Laptop,1.717,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3913,Yes,Yes,7,Cardboard,0.62,130.28,No
+Samsung 322L Refrigerator Var64,Electronics,Refrigerator,56.287,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1941,Yes,Yes,13,Plastic,0.61,292.24,No
+Godrej 7 kg Washing Machine Var64,Electronics,Washing Machine,34.26,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1580,Yes,Yes,11,Plastic,0.57,243.92,No
+Philips 9W LED Bulb Var64,Electronics,LED Bulb,0.08,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1053,Yes,No,4,Paper,0.73,9.68,Yes
+Organic Bananas (1kg) Var64,Grocery,Bananas,0.971,Organic 100%,214,Yes,No,2,None,0.9,1.91,Yes
+Amul Gold Milk 1L Var64,Grocery,Milk,1.019,"Organic 90%, Plastic 10%",529,No,No,1,Tetrapak,0.64,3.56,Yes
+Khadi Natural Herbal Shampoo Var64,Personal Care,Shampoo,0.508,"Plastic 60%, Organic 40%",325,Yes,No,1,Plastic,0.65,8.92,Yes
+Apple iPhone 15 Var65,Electronics,Smartphone,0.176,"Aluminum 70%, Silicon 20%, Plastic 10%",4580,Yes,Yes,5,Cardboard,0.63,76.8,No
+MacBook Air M2 Var65,Electronics,Laptop,1.204,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4670,Yes,Yes,6,Cardboard,0.67,163.72,No
+Samsung Galaxy S24 Var65,Electronics,Smartphone,0.164,"Aluminum 60%, Glass 30%, Plastic 10%",5011,Yes,Yes,7,Cardboard,0.66,69.46,No
+HP Pavilion x360 Var65,Electronics,Laptop,1.661,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3736,Yes,Yes,5,Cardboard,0.66,141.24,No
+Samsung 322L Refrigerator Var65,Electronics,Refrigerator,55.456,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1991,Yes,Yes,12,Plastic,0.58,294.25,No
+Godrej 7 kg Washing Machine Var65,Electronics,Washing Machine,35.628,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1600,Yes,Yes,9,Plastic,0.57,261.77,No
+Philips 9W LED Bulb Var65,Electronics,LED Bulb,0.078,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",996,Yes,No,5,Paper,0.73,10.05,Yes
+Organic Bananas (1kg) Var65,Grocery,Bananas,0.97,Organic 100%,190,Yes,No,1,None,0.86,1.96,Yes
+Amul Gold Milk 1L Var65,Grocery,Milk,1.049,"Organic 90%, Plastic 10%",505,No,No,1,Tetrapak,0.59,3.5,No
+Khadi Natural Herbal Shampoo Var65,Personal Care,Shampoo,0.513,"Plastic 60%, Organic 40%",313,Yes,No,1,Plastic,0.7,8.76,Yes
+Apple iPhone 15 Var66,Electronics,Smartphone,0.179,"Aluminum 70%, Silicon 20%, Plastic 10%",4828,Yes,Yes,5,Cardboard,0.64,81.36,No
+MacBook Air M2 Var66,Electronics,Laptop,1.233,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4692,Yes,Yes,8,Cardboard,0.62,165.69,No
+Samsung Galaxy S24 Var66,Electronics,Smartphone,0.169,"Aluminum 60%, Glass 30%, Plastic 10%",4936,Yes,Yes,6,Cardboard,0.69,72.83,No
+HP Pavilion x360 Var66,Electronics,Laptop,1.728,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4332,Yes,Yes,6,Cardboard,0.67,135.15,No
+Samsung 322L Refrigerator Var66,Electronics,Refrigerator,54.097,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2138,Yes,Yes,13,Plastic,0.62,310.67,No
+Godrej 7 kg Washing Machine Var66,Electronics,Washing Machine,35.801,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1579,Yes,Yes,9,Plastic,0.56,242.72,No
+Philips 9W LED Bulb Var66,Electronics,LED Bulb,0.078,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1066,Yes,No,4,Paper,0.68,9.79,Yes
+Organic Bananas (1kg) Var66,Grocery,Bananas,0.993,Organic 100%,211,Yes,No,1,None,0.95,2.02,Yes
+Amul Gold Milk 1L Var66,Grocery,Milk,1.059,"Organic 90%, Plastic 10%",521,No,No,1,Tetrapak,0.61,3.49,Yes
+Khadi Natural Herbal Shampoo Var66,Personal Care,Shampoo,0.513,"Plastic 60%, Organic 40%",326,Yes,No,3,Plastic,0.61,8.11,Yes
+Apple iPhone 15 Var67,Electronics,Smartphone,0.176,"Aluminum 70%, Silicon 20%, Plastic 10%",4809,Yes,Yes,5,Cardboard,0.66,81.93,No
+MacBook Air M2 Var67,Electronics,Laptop,1.277,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5388,Yes,Yes,6,Cardboard,0.62,165.34,No
+Samsung Galaxy S24 Var67,Electronics,Smartphone,0.167,"Aluminum 60%, Glass 30%, Plastic 10%",4919,Yes,Yes,5,Cardboard,0.65,67.99,No
+HP Pavilion x360 Var67,Electronics,Laptop,1.741,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3912,Yes,Yes,7,Cardboard,0.59,128.96,No
+Samsung 322L Refrigerator Var67,Electronics,Refrigerator,55.687,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2136,Yes,Yes,13,Plastic,0.63,302.37,No
+Godrej 7 kg Washing Machine Var67,Electronics,Washing Machine,34.861,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1398,Yes,Yes,11,Plastic,0.59,261.33,No
+Philips 9W LED Bulb Var67,Electronics,LED Bulb,0.079,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1088,Yes,No,4,Paper,0.74,10.39,Yes
+Organic Bananas (1kg) Var67,Grocery,Bananas,1.003,Organic 100%,180,Yes,No,1,None,0.91,2.08,Yes
+Amul Gold Milk 1L Var67,Grocery,Milk,1.006,"Organic 90%, Plastic 10%",473,No,No,1,Tetrapak,0.66,3.33,Yes
+Khadi Natural Herbal Shampoo Var67,Personal Care,Shampoo,0.507,"Plastic 60%, Organic 40%",298,Yes,No,2,Plastic,0.62,8.28,Yes
+Apple iPhone 15 Var68,Electronics,Smartphone,0.175,"Aluminum 70%, Silicon 20%, Plastic 10%",5214,Yes,Yes,6,Cardboard,0.62,76.58,No
+MacBook Air M2 Var68,Electronics,Laptop,1.26,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4838,Yes,Yes,8,Cardboard,0.68,155.83,No
+Samsung Galaxy S24 Var68,Electronics,Smartphone,0.166,"Aluminum 60%, Glass 30%, Plastic 10%",4994,Yes,Yes,5,Cardboard,0.67,67.22,No
+HP Pavilion x360 Var68,Electronics,Laptop,1.662,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3695,Yes,Yes,5,Cardboard,0.64,134.39,No
+Samsung 322L Refrigerator Var68,Electronics,Refrigerator,54.832,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2188,Yes,Yes,13,Plastic,0.54,305.52,No
+Godrej 7 kg Washing Machine Var68,Electronics,Washing Machine,34.398,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1427,Yes,Yes,11,Plastic,0.54,251.46,No
+Philips 9W LED Bulb Var68,Electronics,LED Bulb,0.079,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1051,Yes,No,4,Paper,0.7,9.88,Yes
+Organic Bananas (1kg) Var68,Grocery,Bananas,0.983,Organic 100%,209,Yes,No,1,None,0.93,2.0,Yes
+Amul Gold Milk 1L Var68,Grocery,Milk,1.039,"Organic 90%, Plastic 10%",511,No,No,1,Tetrapak,0.63,3.58,Yes
+Khadi Natural Herbal Shampoo Var68,Personal Care,Shampoo,0.504,"Plastic 60%, Organic 40%",327,Yes,No,1,Plastic,0.65,8.13,Yes
+Apple iPhone 15 Var69,Electronics,Smartphone,0.172,"Aluminum 70%, Silicon 20%, Plastic 10%",5174,Yes,Yes,6,Cardboard,0.66,79.15,No
+MacBook Air M2 Var69,Electronics,Laptop,1.245,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5071,Yes,Yes,6,Cardboard,0.67,153.16,No
+Samsung Galaxy S24 Var69,Electronics,Smartphone,0.169,"Aluminum 60%, Glass 30%, Plastic 10%",5458,Yes,Yes,5,Cardboard,0.64,72.41,No
+HP Pavilion x360 Var69,Electronics,Laptop,1.687,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4224,Yes,Yes,6,Cardboard,0.59,140.7,No
+Samsung 322L Refrigerator Var69,Electronics,Refrigerator,55.341,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2199,Yes,Yes,11,Plastic,0.56,293.12,No
+Godrej 7 kg Washing Machine Var69,Electronics,Washing Machine,34.413,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1626,Yes,Yes,10,Plastic,0.53,239.57,No
+Philips 9W LED Bulb Var69,Electronics,LED Bulb,0.082,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",936,Yes,No,4,Paper,0.68,10.18,Yes
+Organic Bananas (1kg) Var69,Grocery,Bananas,1.011,Organic 100%,206,Yes,No,1,None,0.92,2.02,Yes
+Amul Gold Milk 1L Var69,Grocery,Milk,1.038,"Organic 90%, Plastic 10%",514,No,No,1,Tetrapak,0.62,3.42,Yes
+Khadi Natural Herbal Shampoo Var69,Personal Care,Shampoo,0.51,"Plastic 60%, Organic 40%",319,Yes,No,1,Plastic,0.64,8.36,Yes
+Apple iPhone 15 Var70,Electronics,Smartphone,0.17,"Aluminum 70%, Silicon 20%, Plastic 10%",5021,Yes,Yes,7,Cardboard,0.66,78.29,No
+MacBook Air M2 Var70,Electronics,Laptop,1.276,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4606,Yes,Yes,7,Cardboard,0.63,164.66,No
+Samsung Galaxy S24 Var70,Electronics,Smartphone,0.173,"Aluminum 60%, Glass 30%, Plastic 10%",4513,Yes,Yes,6,Cardboard,0.68,70.31,No
+HP Pavilion x360 Var70,Electronics,Laptop,1.654,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3969,Yes,Yes,6,Cardboard,0.59,128.38,No
+Samsung 322L Refrigerator Var70,Electronics,Refrigerator,54.524,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2043,Yes,Yes,12,Plastic,0.53,306.37,No
+Godrej 7 kg Washing Machine Var70,Electronics,Washing Machine,35.363,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1399,Yes,Yes,9,Plastic,0.59,246.23,No
+Philips 9W LED Bulb Var70,Electronics,LED Bulb,0.079,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1013,Yes,No,6,Paper,0.69,10.26,Yes
+Organic Bananas (1kg) Var70,Grocery,Bananas,0.972,Organic 100%,195,Yes,No,1,None,0.93,2.07,Yes
+Amul Gold Milk 1L Var70,Grocery,Milk,1.052,"Organic 90%, Plastic 10%",507,No,No,1,Tetrapak,0.64,3.52,Yes
+Khadi Natural Herbal Shampoo Var70,Personal Care,Shampoo,0.487,"Plastic 60%, Organic 40%",302,Yes,No,2,Plastic,0.62,8.56,Yes
+Apple iPhone 15 Var71,Electronics,Smartphone,0.173,"Aluminum 70%, Silicon 20%, Plastic 10%",4591,Yes,Yes,5,Cardboard,0.6,77.47,No
+MacBook Air M2 Var71,Electronics,Laptop,1.268,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4501,Yes,Yes,6,Cardboard,0.62,161.67,No
+Samsung Galaxy S24 Var71,Electronics,Smartphone,0.164,"Aluminum 60%, Glass 30%, Plastic 10%",5266,Yes,Yes,6,Cardboard,0.59,66.74,No
+HP Pavilion x360 Var71,Electronics,Laptop,1.735,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3972,Yes,Yes,5,Cardboard,0.58,138.46,No
+Samsung 322L Refrigerator Var71,Electronics,Refrigerator,55.737,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1934,Yes,Yes,13,Plastic,0.53,309.93,No
+Godrej 7 kg Washing Machine Var71,Electronics,Washing Machine,34.643,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1554,Yes,Yes,10,Plastic,0.6,260.23,No
+Philips 9W LED Bulb Var71,Electronics,LED Bulb,0.078,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",974,Yes,No,5,Paper,0.72,9.79,Yes
+Organic Bananas (1kg) Var71,Grocery,Bananas,1.007,Organic 100%,214,Yes,No,2,None,0.9,2.1,Yes
+Amul Gold Milk 1L Var71,Grocery,Milk,1.021,"Organic 90%, Plastic 10%",481,No,No,1,Tetrapak,0.6,3.39,No
+Khadi Natural Herbal Shampoo Var71,Personal Care,Shampoo,0.491,"Plastic 60%, Organic 40%",307,Yes,No,2,Plastic,0.61,8.32,Yes
+Apple iPhone 15 Var72,Electronics,Smartphone,0.178,"Aluminum 70%, Silicon 20%, Plastic 10%",5435,Yes,Yes,6,Cardboard,0.68,81.16,No
+MacBook Air M2 Var72,Electronics,Laptop,1.208,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5411,Yes,Yes,6,Cardboard,0.64,166.37,No
+Samsung Galaxy S24 Var72,Electronics,Smartphone,0.168,"Aluminum 60%, Glass 30%, Plastic 10%",5346,Yes,Yes,7,Cardboard,0.63,73.3,No
+HP Pavilion x360 Var72,Electronics,Laptop,1.739,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4191,Yes,Yes,7,Cardboard,0.59,139.12,No
+Samsung 322L Refrigerator Var72,Electronics,Refrigerator,56.223,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1834,Yes,Yes,13,Plastic,0.6,288.64,No
+Godrej 7 kg Washing Machine Var72,Electronics,Washing Machine,34.859,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1647,Yes,Yes,10,Plastic,0.57,242.33,No
+Philips 9W LED Bulb Var72,Electronics,LED Bulb,0.079,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",982,Yes,No,5,Paper,0.73,10.14,Yes
+Organic Bananas (1kg) Var72,Grocery,Bananas,1.019,Organic 100%,189,Yes,No,2,None,0.88,1.94,Yes
+Amul Gold Milk 1L Var72,Grocery,Milk,1.032,"Organic 90%, Plastic 10%",462,No,No,1,Tetrapak,0.57,3.49,No
+Khadi Natural Herbal Shampoo Var72,Personal Care,Shampoo,0.498,"Plastic 60%, Organic 40%",284,Yes,No,1,Plastic,0.62,8.75,Yes
+Apple iPhone 15 Var73,Electronics,Smartphone,0.179,"Aluminum 70%, Silicon 20%, Plastic 10%",4781,Yes,Yes,6,Cardboard,0.65,82.82,No
+MacBook Air M2 Var73,Electronics,Laptop,1.266,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5166,Yes,Yes,8,Cardboard,0.64,165.87,No
+Samsung Galaxy S24 Var73,Electronics,Smartphone,0.163,"Aluminum 60%, Glass 30%, Plastic 10%",5033,Yes,Yes,6,Cardboard,0.62,67.57,No
+HP Pavilion x360 Var73,Electronics,Laptop,1.654,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3607,Yes,Yes,6,Cardboard,0.67,136.43,No
+Samsung 322L Refrigerator Var73,Electronics,Refrigerator,53.805,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1965,Yes,Yes,11,Plastic,0.57,291.09,No
+Godrej 7 kg Washing Machine Var73,Electronics,Washing Machine,34.275,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1376,Yes,Yes,11,Plastic,0.57,241.91,No
+Philips 9W LED Bulb Var73,Electronics,LED Bulb,0.079,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1043,Yes,No,4,Paper,0.71,10.3,Yes
+Organic Bananas (1kg) Var73,Grocery,Bananas,0.981,Organic 100%,215,Yes,No,1,None,0.87,1.97,Yes
+Amul Gold Milk 1L Var73,Grocery,Milk,1.021,"Organic 90%, Plastic 10%",546,No,No,1,Tetrapak,0.65,3.38,Yes
+Khadi Natural Herbal Shampoo Var73,Personal Care,Shampoo,0.493,"Plastic 60%, Organic 40%",287,Yes,No,3,Plastic,0.66,8.12,Yes
+Apple iPhone 15 Var74,Electronics,Smartphone,0.171,"Aluminum 70%, Silicon 20%, Plastic 10%",4787,Yes,Yes,5,Cardboard,0.68,80.88,No
+MacBook Air M2 Var74,Electronics,Laptop,1.24,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4685,Yes,Yes,6,Cardboard,0.67,160.45,No
+Samsung Galaxy S24 Var74,Electronics,Smartphone,0.172,"Aluminum 60%, Glass 30%, Plastic 10%",5449,Yes,Yes,6,Cardboard,0.65,68.22,No
+HP Pavilion x360 Var74,Electronics,Laptop,1.668,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4078,Yes,Yes,5,Cardboard,0.63,134.59,No
+Samsung 322L Refrigerator Var74,Electronics,Refrigerator,54.411,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2089,Yes,Yes,11,Plastic,0.58,313.11,No
+Godrej 7 kg Washing Machine Var74,Electronics,Washing Machine,34.223,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1412,Yes,Yes,10,Plastic,0.55,260.89,No
+Philips 9W LED Bulb Var74,Electronics,LED Bulb,0.081,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",936,Yes,No,6,Paper,0.72,9.76,Yes
+Organic Bananas (1kg) Var74,Grocery,Bananas,1.015,Organic 100%,182,Yes,No,1,None,0.87,1.91,Yes
+Amul Gold Milk 1L Var74,Grocery,Milk,1.052,"Organic 90%, Plastic 10%",529,No,No,2,Tetrapak,0.65,3.56,Yes
+Khadi Natural Herbal Shampoo Var74,Personal Care,Shampoo,0.511,"Plastic 60%, Organic 40%",321,Yes,No,3,Plastic,0.69,8.56,Yes
+Apple iPhone 15 Var75,Electronics,Smartphone,0.174,"Aluminum 70%, Silicon 20%, Plastic 10%",5461,Yes,Yes,5,Cardboard,0.67,83.67,No
+MacBook Air M2 Var75,Electronics,Laptop,1.268,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4699,Yes,Yes,8,Cardboard,0.63,166.4,No
+Samsung Galaxy S24 Var75,Electronics,Smartphone,0.167,"Aluminum 60%, Glass 30%, Plastic 10%",4512,Yes,Yes,5,Cardboard,0.64,70.51,No
+HP Pavilion x360 Var75,Electronics,Laptop,1.711,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4130,Yes,Yes,6,Cardboard,0.65,133.09,No
+Samsung 322L Refrigerator Var75,Electronics,Refrigerator,55.193,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1870,Yes,Yes,12,Plastic,0.62,308.4,No
+Godrej 7 kg Washing Machine Var75,Electronics,Washing Machine,35.504,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1624,Yes,Yes,9,Plastic,0.59,258.63,No
+Philips 9W LED Bulb Var75,Electronics,LED Bulb,0.082,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",983,Yes,No,6,Paper,0.75,10.21,Yes
+Organic Bananas (1kg) Var75,Grocery,Bananas,0.97,Organic 100%,206,Yes,No,1,None,0.87,1.96,Yes
+Amul Gold Milk 1L Var75,Grocery,Milk,1.004,"Organic 90%, Plastic 10%",463,No,No,1,Tetrapak,0.6,3.4,No
+Khadi Natural Herbal Shampoo Var75,Personal Care,Shampoo,0.485,"Plastic 60%, Organic 40%",300,Yes,No,1,Plastic,0.66,8.64,Yes
+Apple iPhone 15 Var76,Electronics,Smartphone,0.174,"Aluminum 70%, Silicon 20%, Plastic 10%",4543,Yes,Yes,5,Cardboard,0.67,79.85,No
+MacBook Air M2 Var76,Electronics,Laptop,1.259,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5312,Yes,Yes,7,Cardboard,0.63,162.31,No
+Samsung Galaxy S24 Var76,Electronics,Smartphone,0.169,"Aluminum 60%, Glass 30%, Plastic 10%",5205,Yes,Yes,5,Cardboard,0.61,72.21,No
+HP Pavilion x360 Var76,Electronics,Laptop,1.744,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3787,Yes,Yes,5,Cardboard,0.65,130.18,No
+Samsung 322L Refrigerator Var76,Electronics,Refrigerator,53.432,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1900,Yes,Yes,13,Plastic,0.61,310.09,No
+Godrej 7 kg Washing Machine Var76,Electronics,Washing Machine,35.138,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1437,Yes,Yes,9,Plastic,0.52,246.81,No
+Philips 9W LED Bulb Var76,Electronics,LED Bulb,0.079,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",970,Yes,No,5,Paper,0.75,10.47,Yes
+Organic Bananas (1kg) Var76,Grocery,Bananas,1.013,Organic 100%,205,Yes,No,1,None,0.92,2.05,Yes
+Amul Gold Milk 1L Var76,Grocery,Milk,1.057,"Organic 90%, Plastic 10%",523,No,No,1,Tetrapak,0.64,3.57,Yes
+Khadi Natural Herbal Shampoo Var76,Personal Care,Shampoo,0.508,"Plastic 60%, Organic 40%",274,Yes,No,2,Plastic,0.7,8.54,Yes
+Apple iPhone 15 Var77,Electronics,Smartphone,0.177,"Aluminum 70%, Silicon 20%, Plastic 10%",5279,Yes,Yes,5,Cardboard,0.63,80.34,No
+MacBook Air M2 Var77,Electronics,Laptop,1.259,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5276,Yes,Yes,6,Cardboard,0.65,166.36,No
+Samsung Galaxy S24 Var77,Electronics,Smartphone,0.169,"Aluminum 60%, Glass 30%, Plastic 10%",5215,Yes,Yes,7,Cardboard,0.69,69.28,No
+HP Pavilion x360 Var77,Electronics,Laptop,1.696,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4170,Yes,Yes,5,Cardboard,0.59,135.96,No
+Samsung 322L Refrigerator Var77,Electronics,Refrigerator,56.296,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2096,Yes,Yes,11,Plastic,0.54,295.51,No
+Godrej 7 kg Washing Machine Var77,Electronics,Washing Machine,34.389,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1471,Yes,Yes,11,Plastic,0.58,244.7,No
+Philips 9W LED Bulb Var77,Electronics,LED Bulb,0.079,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",911,Yes,No,6,Paper,0.67,10.02,Yes
+Organic Bananas (1kg) Var77,Grocery,Bananas,1.008,Organic 100%,194,Yes,No,1,None,0.92,2.09,Yes
+Amul Gold Milk 1L Var77,Grocery,Milk,1.051,"Organic 90%, Plastic 10%",498,No,No,1,Tetrapak,0.62,3.51,Yes
+Khadi Natural Herbal Shampoo Var77,Personal Care,Shampoo,0.509,"Plastic 60%, Organic 40%",312,Yes,No,2,Plastic,0.62,8.37,Yes
+Apple iPhone 15 Var78,Electronics,Smartphone,0.171,"Aluminum 70%, Silicon 20%, Plastic 10%",5255,Yes,Yes,5,Cardboard,0.64,82.35,No
+MacBook Air M2 Var78,Electronics,Laptop,1.237,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4613,Yes,Yes,8,Cardboard,0.65,160.01,No
+Samsung Galaxy S24 Var78,Electronics,Smartphone,0.171,"Aluminum 60%, Glass 30%, Plastic 10%",4892,Yes,Yes,7,Cardboard,0.6,71.87,No
+HP Pavilion x360 Var78,Electronics,Laptop,1.689,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4151,Yes,Yes,7,Cardboard,0.57,137.29,No
+Samsung 322L Refrigerator Var78,Electronics,Refrigerator,54.567,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1819,Yes,Yes,13,Plastic,0.6,312.29,No
+Godrej 7 kg Washing Machine Var78,Electronics,Washing Machine,35.14,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1383,Yes,Yes,10,Plastic,0.59,253.09,No
+Philips 9W LED Bulb Var78,Electronics,LED Bulb,0.078,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",919,Yes,No,5,Paper,0.69,9.82,Yes
+Organic Bananas (1kg) Var78,Grocery,Bananas,0.973,Organic 100%,181,Yes,No,2,None,0.89,2.09,Yes
+Amul Gold Milk 1L Var78,Grocery,Milk,1.033,"Organic 90%, Plastic 10%",505,No,No,2,Tetrapak,0.66,3.48,Yes
+Khadi Natural Herbal Shampoo Var78,Personal Care,Shampoo,0.499,"Plastic 60%, Organic 40%",303,Yes,No,2,Plastic,0.65,8.68,Yes
+Apple iPhone 15 Var79,Electronics,Smartphone,0.175,"Aluminum 70%, Silicon 20%, Plastic 10%",5287,Yes,Yes,5,Cardboard,0.6,83.32,No
+MacBook Air M2 Var79,Electronics,Laptop,1.276,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4702,Yes,Yes,6,Cardboard,0.66,158.73,No
+Samsung Galaxy S24 Var79,Electronics,Smartphone,0.167,"Aluminum 60%, Glass 30%, Plastic 10%",4738,Yes,Yes,6,Cardboard,0.59,68.57,No
+HP Pavilion x360 Var79,Electronics,Laptop,1.682,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4299,Yes,Yes,6,Cardboard,0.6,139.82,No
+Samsung 322L Refrigerator Var79,Electronics,Refrigerator,53.82,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2093,Yes,Yes,11,Plastic,0.6,313.94,No
+Godrej 7 kg Washing Machine Var79,Electronics,Washing Machine,35.543,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1441,Yes,Yes,10,Plastic,0.61,256.28,No
+Philips 9W LED Bulb Var79,Electronics,LED Bulb,0.081,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",966,Yes,No,6,Paper,0.68,10.07,Yes
+Organic Bananas (1kg) Var79,Grocery,Bananas,1.024,Organic 100%,184,Yes,No,1,None,0.89,2.06,Yes
+Amul Gold Milk 1L Var79,Grocery,Milk,1.008,"Organic 90%, Plastic 10%",457,No,No,2,Tetrapak,0.56,3.33,No
+Khadi Natural Herbal Shampoo Var79,Personal Care,Shampoo,0.512,"Plastic 60%, Organic 40%",316,Yes,No,3,Plastic,0.66,8.46,Yes
+Apple iPhone 15 Var80,Electronics,Smartphone,0.177,"Aluminum 70%, Silicon 20%, Plastic 10%",5417,Yes,Yes,6,Cardboard,0.66,82.73,No
+MacBook Air M2 Var80,Electronics,Laptop,1.231,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4718,Yes,Yes,6,Cardboard,0.61,154.27,No
+Samsung Galaxy S24 Var80,Electronics,Smartphone,0.165,"Aluminum 60%, Glass 30%, Plastic 10%",5000,Yes,Yes,7,Cardboard,0.65,70.02,No
+HP Pavilion x360 Var80,Electronics,Laptop,1.715,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4216,Yes,Yes,7,Cardboard,0.59,136.12,No
+Samsung 322L Refrigerator Var80,Electronics,Refrigerator,56.636,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1815,Yes,Yes,11,Plastic,0.62,302.21,No
+Godrej 7 kg Washing Machine Var80,Electronics,Washing Machine,35.627,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1460,Yes,Yes,11,Plastic,0.54,252.94,No
+Philips 9W LED Bulb Var80,Electronics,LED Bulb,0.078,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1091,Yes,No,4,Paper,0.74,9.8,Yes
+Organic Bananas (1kg) Var80,Grocery,Bananas,0.971,Organic 100%,188,Yes,No,1,None,0.89,1.98,Yes
+Amul Gold Milk 1L Var80,Grocery,Milk,1.06,"Organic 90%, Plastic 10%",470,No,No,2,Tetrapak,0.66,3.65,Yes
+Khadi Natural Herbal Shampoo Var80,Personal Care,Shampoo,0.499,"Plastic 60%, Organic 40%",299,Yes,No,2,Plastic,0.66,8.87,Yes
+Apple iPhone 15 Var81,Electronics,Smartphone,0.178,"Aluminum 70%, Silicon 20%, Plastic 10%",5089,Yes,Yes,7,Cardboard,0.61,79.05,No
+MacBook Air M2 Var81,Electronics,Laptop,1.25,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5365,Yes,Yes,8,Cardboard,0.69,161.14,No
+Samsung Galaxy S24 Var81,Electronics,Smartphone,0.17,"Aluminum 60%, Glass 30%, Plastic 10%",4910,Yes,Yes,7,Cardboard,0.68,71.29,No
+HP Pavilion x360 Var81,Electronics,Laptop,1.718,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4318,Yes,Yes,7,Cardboard,0.62,138.9,No
+Samsung 322L Refrigerator Var81,Electronics,Refrigerator,53.675,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1907,Yes,Yes,11,Plastic,0.55,290.95,No
+Godrej 7 kg Washing Machine Var81,Electronics,Washing Machine,34.057,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1646,Yes,Yes,10,Plastic,0.59,261.89,No
+Philips 9W LED Bulb Var81,Electronics,LED Bulb,0.08,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",917,Yes,No,6,Paper,0.72,9.54,Yes
+Organic Bananas (1kg) Var81,Grocery,Bananas,0.97,Organic 100%,205,Yes,No,1,None,0.92,2.08,Yes
+Amul Gold Milk 1L Var81,Grocery,Milk,1.039,"Organic 90%, Plastic 10%",464,No,No,1,Tetrapak,0.6,3.39,No
+Khadi Natural Herbal Shampoo Var81,Personal Care,Shampoo,0.496,"Plastic 60%, Organic 40%",322,Yes,No,1,Plastic,0.64,8.79,Yes
+Apple iPhone 15 Var82,Electronics,Smartphone,0.177,"Aluminum 70%, Silicon 20%, Plastic 10%",5143,Yes,Yes,5,Cardboard,0.67,82.73,No
+MacBook Air M2 Var82,Electronics,Laptop,1.213,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4938,Yes,Yes,7,Cardboard,0.62,155.29,No
+Samsung Galaxy S24 Var82,Electronics,Smartphone,0.172,"Aluminum 60%, Glass 30%, Plastic 10%",4650,Yes,Yes,5,Cardboard,0.64,68.34,No
+HP Pavilion x360 Var82,Electronics,Laptop,1.701,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3817,Yes,Yes,6,Cardboard,0.58,137.22,No
+Samsung 322L Refrigerator Var82,Electronics,Refrigerator,55.933,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2125,Yes,Yes,12,Plastic,0.61,285.08,No
+Godrej 7 kg Washing Machine Var82,Electronics,Washing Machine,34.6,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1378,Yes,Yes,9,Plastic,0.59,258.34,No
+Philips 9W LED Bulb Var82,Electronics,LED Bulb,0.078,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",938,Yes,No,4,Paper,0.74,9.6,Yes
+Organic Bananas (1kg) Var82,Grocery,Bananas,1.001,Organic 100%,199,Yes,No,1,None,0.9,1.96,Yes
+Amul Gold Milk 1L Var82,Grocery,Milk,1.056,"Organic 90%, Plastic 10%",539,No,No,1,Tetrapak,0.62,3.63,Yes
+Khadi Natural Herbal Shampoo Var82,Personal Care,Shampoo,0.507,"Plastic 60%, Organic 40%",273,Yes,No,3,Plastic,0.65,8.43,Yes
+Apple iPhone 15 Var83,Electronics,Smartphone,0.169,"Aluminum 70%, Silicon 20%, Plastic 10%",5296,Yes,Yes,6,Cardboard,0.62,81.95,No
+MacBook Air M2 Var83,Electronics,Laptop,1.255,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4562,Yes,Yes,7,Cardboard,0.7,161.95,No
+Samsung Galaxy S24 Var83,Electronics,Smartphone,0.169,"Aluminum 60%, Glass 30%, Plastic 10%",5376,Yes,Yes,6,Cardboard,0.66,72.4,No
+HP Pavilion x360 Var83,Electronics,Laptop,1.654,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3850,Yes,Yes,5,Cardboard,0.59,131.42,No
+Samsung 322L Refrigerator Var83,Electronics,Refrigerator,54.91,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1993,Yes,Yes,11,Plastic,0.58,294.93,No
+Godrej 7 kg Washing Machine Var83,Electronics,Washing Machine,36.034,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1647,Yes,Yes,9,Plastic,0.61,244.64,No
+Philips 9W LED Bulb Var83,Electronics,LED Bulb,0.079,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1035,Yes,No,4,Paper,0.69,10.33,Yes
+Organic Bananas (1kg) Var83,Grocery,Bananas,0.978,Organic 100%,184,Yes,No,1,None,0.91,1.93,Yes
+Amul Gold Milk 1L Var83,Grocery,Milk,1.021,"Organic 90%, Plastic 10%",470,No,No,2,Tetrapak,0.66,3.38,Yes
+Khadi Natural Herbal Shampoo Var83,Personal Care,Shampoo,0.491,"Plastic 60%, Organic 40%",284,Yes,No,2,Plastic,0.67,8.86,Yes
+Apple iPhone 15 Var84,Electronics,Smartphone,0.171,"Aluminum 70%, Silicon 20%, Plastic 10%",5331,Yes,Yes,7,Cardboard,0.65,83.63,No
+MacBook Air M2 Var84,Electronics,Laptop,1.216,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4888,Yes,Yes,6,Cardboard,0.66,159.74,No
+Samsung Galaxy S24 Var84,Electronics,Smartphone,0.164,"Aluminum 60%, Glass 30%, Plastic 10%",5103,Yes,Yes,7,Cardboard,0.65,71.71,No
+HP Pavilion x360 Var84,Electronics,Laptop,1.691,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4343,Yes,Yes,5,Cardboard,0.65,139.3,No
+Samsung 322L Refrigerator Var84,Electronics,Refrigerator,54.246,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2078,Yes,Yes,11,Plastic,0.6,298.37,No
+Godrej 7 kg Washing Machine Var84,Electronics,Washing Machine,35.228,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1647,Yes,Yes,11,Plastic,0.61,247.57,No
+Philips 9W LED Bulb Var84,Electronics,LED Bulb,0.082,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1052,Yes,No,6,Paper,0.73,9.61,Yes
+Organic Bananas (1kg) Var84,Grocery,Bananas,0.995,Organic 100%,200,Yes,No,2,None,0.92,1.93,Yes
+Amul Gold Milk 1L Var84,Grocery,Milk,1.022,"Organic 90%, Plastic 10%",529,No,No,2,Tetrapak,0.58,3.54,No
+Khadi Natural Herbal Shampoo Var84,Personal Care,Shampoo,0.503,"Plastic 60%, Organic 40%",301,Yes,No,3,Plastic,0.65,8.63,Yes
+Apple iPhone 15 Var85,Electronics,Smartphone,0.173,"Aluminum 70%, Silicon 20%, Plastic 10%",5074,Yes,Yes,6,Cardboard,0.65,78.6,No
+MacBook Air M2 Var85,Electronics,Laptop,1.248,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5256,Yes,Yes,6,Cardboard,0.69,157.43,No
+Samsung Galaxy S24 Var85,Electronics,Smartphone,0.165,"Aluminum 60%, Glass 30%, Plastic 10%",5215,Yes,Yes,5,Cardboard,0.6,71.69,No
+HP Pavilion x360 Var85,Electronics,Laptop,1.653,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3683,Yes,Yes,7,Cardboard,0.62,139.08,No
+Samsung 322L Refrigerator Var85,Electronics,Refrigerator,53.99,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2127,Yes,Yes,12,Plastic,0.62,297.72,No
+Godrej 7 kg Washing Machine Var85,Electronics,Washing Machine,34.245,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1425,Yes,Yes,9,Plastic,0.59,240.4,No
+Philips 9W LED Bulb Var85,Electronics,LED Bulb,0.079,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1097,Yes,No,5,Paper,0.74,10.19,Yes
+Organic Bananas (1kg) Var85,Grocery,Bananas,0.995,Organic 100%,197,Yes,No,2,None,0.9,2.03,Yes
+Amul Gold Milk 1L Var85,Grocery,Milk,1.034,"Organic 90%, Plastic 10%",465,No,No,1,Tetrapak,0.63,3.42,Yes
+Khadi Natural Herbal Shampoo Var85,Personal Care,Shampoo,0.504,"Plastic 60%, Organic 40%",274,Yes,No,1,Plastic,0.65,8.25,Yes
+Apple iPhone 15 Var86,Electronics,Smartphone,0.176,"Aluminum 70%, Silicon 20%, Plastic 10%",4576,Yes,Yes,7,Cardboard,0.58,76.67,No
+MacBook Air M2 Var86,Electronics,Laptop,1.228,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4953,Yes,Yes,8,Cardboard,0.6,153.02,No
+Samsung Galaxy S24 Var86,Electronics,Smartphone,0.172,"Aluminum 60%, Glass 30%, Plastic 10%",4761,Yes,Yes,5,Cardboard,0.63,68.11,No
+HP Pavilion x360 Var86,Electronics,Laptop,1.694,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4015,Yes,Yes,6,Cardboard,0.66,137.75,No
+Samsung 322L Refrigerator Var86,Electronics,Refrigerator,53.991,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2110,Yes,Yes,12,Plastic,0.61,290.24,No
+Godrej 7 kg Washing Machine Var86,Electronics,Washing Machine,34.276,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1526,Yes,Yes,10,Plastic,0.52,250.48,No
+Philips 9W LED Bulb Var86,Electronics,LED Bulb,0.082,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",910,Yes,No,5,Paper,0.74,9.64,Yes
+Organic Bananas (1kg) Var86,Grocery,Bananas,1.006,Organic 100%,192,Yes,No,2,None,0.9,2.06,Yes
+Amul Gold Milk 1L Var86,Grocery,Milk,1.036,"Organic 90%, Plastic 10%",509,No,No,1,Tetrapak,0.57,3.63,No
+Khadi Natural Herbal Shampoo Var86,Personal Care,Shampoo,0.502,"Plastic 60%, Organic 40%",327,Yes,No,3,Plastic,0.64,8.4,Yes
+Apple iPhone 15 Var87,Electronics,Smartphone,0.179,"Aluminum 70%, Silicon 20%, Plastic 10%",4995,Yes,Yes,6,Cardboard,0.65,76.24,No
+MacBook Air M2 Var87,Electronics,Laptop,1.246,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4578,Yes,Yes,8,Cardboard,0.64,162.79,No
+Samsung Galaxy S24 Var87,Electronics,Smartphone,0.165,"Aluminum 60%, Glass 30%, Plastic 10%",5054,Yes,Yes,5,Cardboard,0.6,73.48,No
+HP Pavilion x360 Var87,Electronics,Laptop,1.705,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4266,Yes,Yes,7,Cardboard,0.63,140.11,No
+Samsung 322L Refrigerator Var87,Electronics,Refrigerator,55.446,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1885,Yes,Yes,12,Plastic,0.62,306.66,No
+Godrej 7 kg Washing Machine Var87,Electronics,Washing Machine,33.956,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1548,Yes,Yes,11,Plastic,0.62,248.71,No
+Philips 9W LED Bulb Var87,Electronics,LED Bulb,0.078,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1026,Yes,No,4,Paper,0.67,9.69,Yes
+Organic Bananas (1kg) Var87,Grocery,Bananas,1.027,Organic 100%,189,Yes,No,2,None,0.95,2.02,Yes
+Amul Gold Milk 1L Var87,Grocery,Milk,1.004,"Organic 90%, Plastic 10%",541,No,No,2,Tetrapak,0.58,3.61,No
+Khadi Natural Herbal Shampoo Var87,Personal Care,Shampoo,0.487,"Plastic 60%, Organic 40%",304,Yes,No,1,Plastic,0.61,8.34,Yes
+Apple iPhone 15 Var88,Electronics,Smartphone,0.173,"Aluminum 70%, Silicon 20%, Plastic 10%",5297,Yes,Yes,7,Cardboard,0.66,81.9,No
+MacBook Air M2 Var88,Electronics,Laptop,1.242,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5026,Yes,Yes,7,Cardboard,0.61,164.65,No
+Samsung Galaxy S24 Var88,Electronics,Smartphone,0.165,"Aluminum 60%, Glass 30%, Plastic 10%",5100,Yes,Yes,5,Cardboard,0.67,73.47,No
+HP Pavilion x360 Var88,Electronics,Laptop,1.733,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3614,Yes,Yes,6,Cardboard,0.58,136.29,No
+Samsung 322L Refrigerator Var88,Electronics,Refrigerator,56.636,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1940,Yes,Yes,13,Plastic,0.58,299.08,No
+Godrej 7 kg Washing Machine Var88,Electronics,Washing Machine,34.394,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1375,Yes,Yes,11,Plastic,0.56,259.38,No
+Philips 9W LED Bulb Var88,Electronics,LED Bulb,0.081,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",960,Yes,No,5,Paper,0.72,9.53,Yes
+Organic Bananas (1kg) Var88,Grocery,Bananas,0.982,Organic 100%,187,Yes,No,2,None,0.87,1.96,Yes
+Amul Gold Milk 1L Var88,Grocery,Milk,1.051,"Organic 90%, Plastic 10%",517,No,No,1,Tetrapak,0.59,3.52,No
+Khadi Natural Herbal Shampoo Var88,Personal Care,Shampoo,0.497,"Plastic 60%, Organic 40%",329,Yes,No,1,Plastic,0.69,8.82,Yes
+Apple iPhone 15 Var89,Electronics,Smartphone,0.17,"Aluminum 70%, Silicon 20%, Plastic 10%",5265,Yes,Yes,7,Cardboard,0.6,83.12,No
+MacBook Air M2 Var89,Electronics,Laptop,1.218,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4793,Yes,Yes,6,Cardboard,0.7,155.64,No
+Samsung Galaxy S24 Var89,Electronics,Smartphone,0.168,"Aluminum 60%, Glass 30%, Plastic 10%",5443,Yes,Yes,7,Cardboard,0.67,69.47,No
+HP Pavilion x360 Var89,Electronics,Laptop,1.748,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3963,Yes,Yes,5,Cardboard,0.64,136.58,No
+Samsung 322L Refrigerator Var89,Electronics,Refrigerator,56.061,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1998,Yes,Yes,12,Plastic,0.61,299.29,No
+Godrej 7 kg Washing Machine Var89,Electronics,Washing Machine,35.518,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1530,Yes,Yes,10,Plastic,0.58,255.78,No
+Philips 9W LED Bulb Var89,Electronics,LED Bulb,0.081,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",996,Yes,No,5,Paper,0.7,10.39,Yes
+Organic Bananas (1kg) Var89,Grocery,Bananas,0.985,Organic 100%,193,Yes,No,2,None,0.9,1.92,Yes
+Amul Gold Milk 1L Var89,Grocery,Milk,1.015,"Organic 90%, Plastic 10%",525,No,No,1,Tetrapak,0.65,3.38,Yes
+Khadi Natural Herbal Shampoo Var89,Personal Care,Shampoo,0.508,"Plastic 60%, Organic 40%",298,Yes,No,1,Plastic,0.63,8.59,Yes
+Apple iPhone 15 Var90,Electronics,Smartphone,0.17,"Aluminum 70%, Silicon 20%, Plastic 10%",5020,Yes,Yes,5,Cardboard,0.65,79.68,No
+MacBook Air M2 Var90,Electronics,Laptop,1.212,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4770,Yes,Yes,8,Cardboard,0.64,160.89,No
+Samsung Galaxy S24 Var90,Electronics,Smartphone,0.172,"Aluminum 60%, Glass 30%, Plastic 10%",5039,Yes,Yes,6,Cardboard,0.61,68.25,No
+HP Pavilion x360 Var90,Electronics,Laptop,1.739,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4351,Yes,Yes,6,Cardboard,0.61,131.28,No
+Samsung 322L Refrigerator Var90,Electronics,Refrigerator,54.714,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2188,Yes,Yes,13,Plastic,0.54,295.63,No
+Godrej 7 kg Washing Machine Var90,Electronics,Washing Machine,33.972,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1583,Yes,Yes,10,Plastic,0.61,257.3,No
+Philips 9W LED Bulb Var90,Electronics,LED Bulb,0.081,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1035,Yes,No,4,Paper,0.75,9.7,Yes
+Organic Bananas (1kg) Var90,Grocery,Bananas,0.994,Organic 100%,188,Yes,No,1,None,0.87,1.94,Yes
+Amul Gold Milk 1L Var90,Grocery,Milk,1.023,"Organic 90%, Plastic 10%",521,No,No,1,Tetrapak,0.65,3.48,Yes
+Khadi Natural Herbal Shampoo Var90,Personal Care,Shampoo,0.505,"Plastic 60%, Organic 40%",316,Yes,No,3,Plastic,0.63,8.8,Yes
+Apple iPhone 15 Var91,Electronics,Smartphone,0.175,"Aluminum 70%, Silicon 20%, Plastic 10%",4677,Yes,Yes,7,Cardboard,0.67,77.35,No
+MacBook Air M2 Var91,Electronics,Laptop,1.224,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5318,Yes,Yes,8,Cardboard,0.61,166.44,No
+Samsung Galaxy S24 Var91,Electronics,Smartphone,0.172,"Aluminum 60%, Glass 30%, Plastic 10%",5187,Yes,Yes,6,Cardboard,0.66,72.74,No
+HP Pavilion x360 Var91,Electronics,Laptop,1.725,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3702,Yes,Yes,7,Cardboard,0.64,131.36,No
+Samsung 322L Refrigerator Var91,Electronics,Refrigerator,53.999,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1861,Yes,Yes,13,Plastic,0.58,309.82,No
+Godrej 7 kg Washing Machine Var91,Electronics,Washing Machine,35.931,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1643,Yes,Yes,10,Plastic,0.59,262.36,No
+Philips 9W LED Bulb Var91,Electronics,LED Bulb,0.081,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1067,Yes,No,5,Paper,0.69,9.76,Yes
+Organic Bananas (1kg) Var91,Grocery,Bananas,1.007,Organic 100%,206,Yes,No,2,None,0.9,1.98,Yes
+Amul Gold Milk 1L Var91,Grocery,Milk,1.0,"Organic 90%, Plastic 10%",501,No,No,2,Tetrapak,0.61,3.55,Yes
+Khadi Natural Herbal Shampoo Var91,Personal Care,Shampoo,0.504,"Plastic 60%, Organic 40%",288,Yes,No,3,Plastic,0.66,8.35,Yes
+Apple iPhone 15 Var92,Electronics,Smartphone,0.17,"Aluminum 70%, Silicon 20%, Plastic 10%",4683,Yes,Yes,6,Cardboard,0.63,81.25,No
+MacBook Air M2 Var92,Electronics,Laptop,1.244,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5088,Yes,Yes,6,Cardboard,0.61,155.61,No
+Samsung Galaxy S24 Var92,Electronics,Smartphone,0.17,"Aluminum 60%, Glass 30%, Plastic 10%",4580,Yes,Yes,7,Cardboard,0.68,71.67,No
+HP Pavilion x360 Var92,Electronics,Laptop,1.661,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4181,Yes,Yes,5,Cardboard,0.62,139.32,No
+Samsung 322L Refrigerator Var92,Electronics,Refrigerator,53.835,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1922,Yes,Yes,12,Plastic,0.56,306.26,No
+Godrej 7 kg Washing Machine Var92,Electronics,Washing Machine,35.239,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1376,Yes,Yes,11,Plastic,0.57,257.73,No
+Philips 9W LED Bulb Var92,Electronics,LED Bulb,0.081,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",948,Yes,No,5,Paper,0.76,10.14,Yes
+Organic Bananas (1kg) Var92,Grocery,Bananas,1.027,Organic 100%,183,Yes,No,1,None,0.91,2.05,Yes
+Amul Gold Milk 1L Var92,Grocery,Milk,1.057,"Organic 90%, Plastic 10%",517,No,No,1,Tetrapak,0.57,3.39,No
+Khadi Natural Herbal Shampoo Var92,Personal Care,Shampoo,0.506,"Plastic 60%, Organic 40%",288,Yes,No,2,Plastic,0.63,8.44,Yes
+Apple iPhone 15 Var93,Electronics,Smartphone,0.175,"Aluminum 70%, Silicon 20%, Plastic 10%",4873,Yes,Yes,7,Cardboard,0.59,76.1,No
+MacBook Air M2 Var93,Electronics,Laptop,1.217,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5132,Yes,Yes,7,Cardboard,0.61,152.68,No
+Samsung Galaxy S24 Var93,Electronics,Smartphone,0.166,"Aluminum 60%, Glass 30%, Plastic 10%",4678,Yes,Yes,5,Cardboard,0.61,69.66,No
+HP Pavilion x360 Var93,Electronics,Laptop,1.671,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4167,Yes,Yes,6,Cardboard,0.64,129.34,No
+Samsung 322L Refrigerator Var93,Electronics,Refrigerator,55.57,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1860,Yes,Yes,13,Plastic,0.63,288.52,No
+Godrej 7 kg Washing Machine Var93,Electronics,Washing Machine,34.41,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1615,Yes,Yes,10,Plastic,0.56,238.48,No
+Philips 9W LED Bulb Var93,Electronics,LED Bulb,0.079,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",929,Yes,No,4,Paper,0.73,9.84,Yes
+Organic Bananas (1kg) Var93,Grocery,Bananas,0.996,Organic 100%,197,Yes,No,2,None,0.93,2.09,Yes
+Amul Gold Milk 1L Var93,Grocery,Milk,1.056,"Organic 90%, Plastic 10%",455,No,No,2,Tetrapak,0.57,3.53,No
+Khadi Natural Herbal Shampoo Var93,Personal Care,Shampoo,0.507,"Plastic 60%, Organic 40%",314,Yes,No,2,Plastic,0.63,8.72,Yes
+Apple iPhone 15 Var94,Electronics,Smartphone,0.175,"Aluminum 70%, Silicon 20%, Plastic 10%",4603,Yes,Yes,5,Cardboard,0.6,81.13,No
+MacBook Air M2 Var94,Electronics,Laptop,1.226,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5470,Yes,Yes,6,Cardboard,0.65,160.9,No
+Samsung Galaxy S24 Var94,Electronics,Smartphone,0.169,"Aluminum 60%, Glass 30%, Plastic 10%",4817,Yes,Yes,5,Cardboard,0.66,69.06,No
+HP Pavilion x360 Var94,Electronics,Laptop,1.726,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4011,Yes,Yes,5,Cardboard,0.65,140.51,No
+Samsung 322L Refrigerator Var94,Electronics,Refrigerator,54.075,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1812,Yes,Yes,12,Plastic,0.58,287.56,No
+Godrej 7 kg Washing Machine Var94,Electronics,Washing Machine,35.08,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1617,Yes,Yes,11,Plastic,0.6,246.58,No
+Philips 9W LED Bulb Var94,Electronics,LED Bulb,0.081,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",923,Yes,No,6,Paper,0.72,10.46,Yes
+Organic Bananas (1kg) Var94,Grocery,Bananas,1.017,Organic 100%,181,Yes,No,1,None,0.86,2.04,Yes
+Amul Gold Milk 1L Var94,Grocery,Milk,1.034,"Organic 90%, Plastic 10%",485,No,No,1,Tetrapak,0.61,3.42,Yes
+Khadi Natural Herbal Shampoo Var94,Personal Care,Shampoo,0.492,"Plastic 60%, Organic 40%",274,Yes,No,1,Plastic,0.65,8.82,Yes
+Apple iPhone 15 Var95,Electronics,Smartphone,0.179,"Aluminum 70%, Silicon 20%, Plastic 10%",5149,Yes,Yes,5,Cardboard,0.59,81.85,No
+MacBook Air M2 Var95,Electronics,Laptop,1.228,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4905,Yes,Yes,8,Cardboard,0.66,165.97,No
+Samsung Galaxy S24 Var95,Electronics,Smartphone,0.17,"Aluminum 60%, Glass 30%, Plastic 10%",5414,Yes,Yes,5,Cardboard,0.68,67.23,No
+HP Pavilion x360 Var95,Electronics,Laptop,1.676,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4221,Yes,Yes,7,Cardboard,0.59,134.8,No
+Samsung 322L Refrigerator Var95,Electronics,Refrigerator,54.366,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1806,Yes,Yes,12,Plastic,0.57,294.35,No
+Godrej 7 kg Washing Machine Var95,Electronics,Washing Machine,34.575,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1565,Yes,Yes,10,Plastic,0.55,248.79,No
+Philips 9W LED Bulb Var95,Electronics,LED Bulb,0.081,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",931,Yes,No,4,Paper,0.69,9.57,Yes
+Organic Bananas (1kg) Var95,Grocery,Bananas,1.03,Organic 100%,199,Yes,No,1,None,0.91,1.92,Yes
+Amul Gold Milk 1L Var95,Grocery,Milk,1.056,"Organic 90%, Plastic 10%",523,No,No,2,Tetrapak,0.66,3.59,Yes
+Khadi Natural Herbal Shampoo Var95,Personal Care,Shampoo,0.507,"Plastic 60%, Organic 40%",288,Yes,No,1,Plastic,0.7,8.54,Yes
+Apple iPhone 15 Var96,Electronics,Smartphone,0.17,"Aluminum 70%, Silicon 20%, Plastic 10%",4839,Yes,Yes,7,Cardboard,0.64,81.75,No
+MacBook Air M2 Var96,Electronics,Laptop,1.272,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5043,Yes,Yes,7,Cardboard,0.63,163.97,No
+Samsung Galaxy S24 Var96,Electronics,Smartphone,0.166,"Aluminum 60%, Glass 30%, Plastic 10%",5394,Yes,Yes,7,Cardboard,0.64,71.32,No
+HP Pavilion x360 Var96,Electronics,Laptop,1.718,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3910,Yes,Yes,5,Cardboard,0.61,134.55,No
+Samsung 322L Refrigerator Var96,Electronics,Refrigerator,53.378,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1881,Yes,Yes,11,Plastic,0.57,290.96,No
+Godrej 7 kg Washing Machine Var96,Electronics,Washing Machine,36.043,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1519,Yes,Yes,11,Plastic,0.56,251.33,No
+Philips 9W LED Bulb Var96,Electronics,LED Bulb,0.081,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",906,Yes,No,6,Paper,0.75,10.08,Yes
+Organic Bananas (1kg) Var96,Grocery,Bananas,0.972,Organic 100%,209,Yes,No,1,None,0.93,2.01,Yes
+Amul Gold Milk 1L Var96,Grocery,Milk,1.049,"Organic 90%, Plastic 10%",522,No,No,1,Tetrapak,0.57,3.53,No
+Khadi Natural Herbal Shampoo Var96,Personal Care,Shampoo,0.495,"Plastic 60%, Organic 40%",300,Yes,No,1,Plastic,0.66,8.66,Yes
+Apple iPhone 15 Var97,Electronics,Smartphone,0.172,"Aluminum 70%, Silicon 20%, Plastic 10%",5026,Yes,Yes,7,Cardboard,0.63,81.0,No
+MacBook Air M2 Var97,Electronics,Laptop,1.217,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5047,Yes,Yes,8,Cardboard,0.6,165.54,No
+Samsung Galaxy S24 Var97,Electronics,Smartphone,0.172,"Aluminum 60%, Glass 30%, Plastic 10%",4791,Yes,Yes,6,Cardboard,0.66,70.36,No
+HP Pavilion x360 Var97,Electronics,Laptop,1.692,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4134,Yes,Yes,6,Cardboard,0.6,132.15,No
+Samsung 322L Refrigerator Var97,Electronics,Refrigerator,56.471,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1893,Yes,Yes,12,Plastic,0.57,302.37,No
+Godrej 7 kg Washing Machine Var97,Electronics,Washing Machine,35.959,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1360,Yes,Yes,9,Plastic,0.53,249.97,No
+Philips 9W LED Bulb Var97,Electronics,LED Bulb,0.081,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1020,Yes,No,5,Paper,0.7,10.36,Yes
+Organic Bananas (1kg) Var97,Grocery,Bananas,0.979,Organic 100%,181,Yes,No,2,None,0.87,1.94,Yes
+Amul Gold Milk 1L Var97,Grocery,Milk,1.043,"Organic 90%, Plastic 10%",536,No,No,1,Tetrapak,0.57,3.67,No
+Khadi Natural Herbal Shampoo Var97,Personal Care,Shampoo,0.499,"Plastic 60%, Organic 40%",323,Yes,No,1,Plastic,0.61,8.21,Yes
+Apple iPhone 15 Var98,Electronics,Smartphone,0.172,"Aluminum 70%, Silicon 20%, Plastic 10%",4748,Yes,Yes,6,Cardboard,0.6,76.73,No
+MacBook Air M2 Var98,Electronics,Laptop,1.229,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",4694,Yes,Yes,7,Cardboard,0.62,156.59,No
+Samsung Galaxy S24 Var98,Electronics,Smartphone,0.168,"Aluminum 60%, Glass 30%, Plastic 10%",5482,Yes,Yes,7,Cardboard,0.66,68.99,No
+HP Pavilion x360 Var98,Electronics,Laptop,1.707,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4128,Yes,Yes,6,Cardboard,0.58,140.87,No
+Samsung 322L Refrigerator Var98,Electronics,Refrigerator,54.593,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1919,Yes,Yes,11,Plastic,0.56,303.88,No
+Godrej 7 kg Washing Machine Var98,Electronics,Washing Machine,34.629,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1491,Yes,Yes,10,Plastic,0.59,240.65,No
+Philips 9W LED Bulb Var98,Electronics,LED Bulb,0.081,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1000,Yes,No,6,Paper,0.71,10.12,Yes
+Organic Bananas (1kg) Var98,Grocery,Bananas,0.981,Organic 100%,188,Yes,No,2,None,0.9,2.01,Yes
+Amul Gold Milk 1L Var98,Grocery,Milk,1.047,"Organic 90%, Plastic 10%",549,No,No,1,Tetrapak,0.63,3.65,Yes
+Khadi Natural Herbal Shampoo Var98,Personal Care,Shampoo,0.509,"Plastic 60%, Organic 40%",300,Yes,No,2,Plastic,0.69,8.77,Yes
+Apple iPhone 15 Var99,Electronics,Smartphone,0.175,"Aluminum 70%, Silicon 20%, Plastic 10%",5283,Yes,Yes,5,Cardboard,0.68,78.98,No
+MacBook Air M2 Var99,Electronics,Laptop,1.234,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5442,Yes,Yes,8,Cardboard,0.63,161.11,No
+Samsung Galaxy S24 Var99,Electronics,Smartphone,0.169,"Aluminum 60%, Glass 30%, Plastic 10%",5399,Yes,Yes,7,Cardboard,0.62,68.04,No
+HP Pavilion x360 Var99,Electronics,Laptop,1.658,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",3945,Yes,Yes,7,Cardboard,0.67,136.81,No
+Samsung 322L Refrigerator Var99,Electronics,Refrigerator,54.586,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",1871,Yes,Yes,13,Plastic,0.58,300.31,No
+Godrej 7 kg Washing Machine Var99,Electronics,Washing Machine,34.405,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1549,Yes,Yes,11,Plastic,0.52,245.32,No
+Philips 9W LED Bulb Var99,Electronics,LED Bulb,0.078,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",986,Yes,No,4,Paper,0.7,10.27,Yes
+Organic Bananas (1kg) Var99,Grocery,Bananas,1.028,Organic 100%,212,Yes,No,1,None,0.95,2.0,Yes
+Amul Gold Milk 1L Var99,Grocery,Milk,1.019,"Organic 90%, Plastic 10%",459,No,No,2,Tetrapak,0.61,3.61,Yes
+Khadi Natural Herbal Shampoo Var99,Personal Care,Shampoo,0.503,"Plastic 60%, Organic 40%",287,Yes,No,1,Plastic,0.61,8.18,Yes
+Apple iPhone 15 Var100,Electronics,Smartphone,0.174,"Aluminum 70%, Silicon 20%, Plastic 10%",5378,Yes,Yes,7,Cardboard,0.6,79.6,No
+MacBook Air M2 Var100,Electronics,Laptop,1.266,"Aluminum 65%, Silicon 20%, Plastic 10%, Steel 5%",5014,Yes,Yes,6,Cardboard,0.63,156.39,No
+Samsung Galaxy S24 Var100,Electronics,Smartphone,0.173,"Aluminum 60%, Glass 30%, Plastic 10%",4649,Yes,Yes,6,Cardboard,0.6,69.69,No
+HP Pavilion x360 Var100,Electronics,Laptop,1.725,"Aluminum 50%, Plastic 30%, Silicon 15%, Copper 5%",4216,Yes,Yes,5,Cardboard,0.58,141.63,No
+Samsung 322L Refrigerator Var100,Electronics,Refrigerator,54.037,"Steel 50%, Plastic 30%, Copper 10%, Insulation Foam 10%",2062,Yes,Yes,12,Plastic,0.54,301.79,No
+Godrej 7 kg Washing Machine Var100,Electronics,Washing Machine,36.026,"Steel 40%, Plastic 35%, Copper 15%, Drum Metal 10%",1609,Yes,Yes,11,Plastic,0.59,256.37,No
+Philips 9W LED Bulb Var100,Electronics,LED Bulb,0.078,"Glass 50%, Plastic 30%, Copper 10%, Steel 10%",1047,Yes,No,5,Paper,0.77,9.78,Yes
+Organic Bananas (1kg) Var100,Grocery,Bananas,1.018,Organic 100%,184,Yes,No,2,None,0.92,2.07,Yes
+Amul Gold Milk 1L Var100,Grocery,Milk,1.003,"Organic 90%, Plastic 10%",499,No,No,2,Tetrapak,0.66,3.38,Yes
+Khadi Natural Herbal Shampoo Var100,Personal Care,Shampoo,0.506,"Plastic 60%, Organic 40%",285,Yes,No,2,Plastic,0.65,8.21,Yes

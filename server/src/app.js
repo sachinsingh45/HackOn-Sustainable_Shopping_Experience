@@ -24,7 +24,7 @@ const router = require('./routes/router');
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(cookieParser(""));
-app.use(cors({credentials: true, origin: 'http://localhost:5173'}));
+app.use(cors({credentials: true, origin: 'http://localhost:5175'}));
 app.use('/api', router);
 
 // For deployment

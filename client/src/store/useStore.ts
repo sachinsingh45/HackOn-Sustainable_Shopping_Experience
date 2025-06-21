@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { authAPI, productsAPI, cartAPI, ordersAPI, challengeAPI, aiAPI } from '../services/api';
+import axios from 'axios';
 
 interface Product {
   _id: string;
@@ -19,11 +20,13 @@ interface Product {
   features?: string[];
   points: string[];
   mrp?: string;
+  weight?: number;
 }
 
 interface CartItem {
   cartItem: Product;
   qty: number;
+  id?: string;
 }
 
 interface Badge {
@@ -48,20 +51,6 @@ export type Challenge = {
   startDate: string;
   endDate: string;
 };
-
-interface Challenge {
-  _id: string;
-  id?: string;
-  name: string;
-  description: string;
-  type: string;
-  targetValue: number;
-  rewardBadge: Badge;
-  isActive: boolean;
-  frequency: 'daily' | 'weekly' | 'monthly';
-  startDate: string;
-  endDate: string;
-}
 
 interface User {
   _id: string;
@@ -119,7 +108,7 @@ interface Store {
   addToCart: (productId: string) => Promise<void>;
   removeFromCart: (productId: string) => Promise<void>;
   updateQuantity: (productId: string, quantity: number) => Promise<void>;
-  checkout: () => Promise<void>;
+  checkout: (orderData?: any) => Promise<void>;
   
   // UI actions
   setSearchQuery: (query: string) => void;
@@ -317,7 +306,7 @@ export const useStore = create<Store>((set, get) => ({
     }
   },
 
-  checkout: async () => {
+  checkout: async (orderData?: any) => {
     try {
       set({ loading: true, error: null });
       const { cart, user } = get();
@@ -330,45 +319,59 @@ export const useStore = create<Store>((set, get) => ({
         throw new Error('Cart is empty');
       }
 
-      // Calculate order details
-      const orderItems = cart.map(item => ({
-        productId: item.cartItem._id,
-        name: item.cartItem.name,
-        quantity: item.qty,
-        price: parseFloat(item.cartItem.price.replace(/[^0-9.]/g, '')),
-        ecoScore: item.cartItem.ecoScore || 0,
-        carbonFootprint: item.cartItem.carbonFootprint || 0
-      }));
+      // Use provided order data or calculate from cart
+      let finalOrderData;
+      if (orderData) {
+        // Use packaging data from cart page
+        finalOrderData = {
+          ...orderData,
+          totalAmount: orderData.items.reduce((sum: number, item: any) => {
+            const price = parseFloat(cart.find(c => c.cartItem._id === item.productId)?.cartItem.price.replace(/[^0-9.]/g, '') || '0');
+            return sum + (price * item.quantity);
+          }, 0),
+          totalEcoScore: orderData.items.reduce((sum: number, item: any) => {
+            const ecoScore = cart.find(c => c.cartItem._id === item.productId)?.cartItem.ecoScore || 0;
+            return sum + (ecoScore * item.quantity);
+          }, 0),
+          totalCarbonSaved: orderData.totalCarbonFootprint || 0
+        };
+      } else {
+        // Calculate order details from cart (fallback)
+        const orderItems = cart.map((item: CartItem) => ({
+          productId: item.cartItem._id,
+          name: item.cartItem.name,
+          quantity: item.qty,
+          price: parseFloat(item.cartItem.price.replace(/[^0-9.]/g, '')),
+          ecoScore: item.cartItem.ecoScore || 0,
+          carbonFootprint: item.cartItem.carbonFootprint || 0
+        }));
 
-      const totalAmount = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-      const totalEcoScore = orderItems.reduce((sum, item) => sum + (item.ecoScore * item.quantity), 0);
-      const totalCarbonSaved = orderItems.reduce((sum, item) => sum + (item.carbonFootprint * item.quantity), 0);
-      
-      // Calculate money saved based on eco-friendly products
-      const moneySaved = orderItems.reduce((sum, item) => {
-        const ecoDiscount = item.ecoScore > 80 ? 0.1 : item.ecoScore > 60 ? 0.05 : 0;
-        return sum + (item.price * item.quantity * ecoDiscount);
-      }, 0);
+        const totalAmount = orderItems.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0);
+        const totalEcoScore = orderItems.reduce((sum: number, item: any) => sum + (item.ecoScore * item.quantity), 0);
+        const totalCarbonSaved = orderItems.reduce((sum: number, item: any) => sum + (item.carbonFootprint * item.quantity), 0);
+        
+        finalOrderData = {
+          items: orderItems,
+          totalAmount,
+          totalEcoScore,
+          totalCarbonSaved,
+          moneySaved: 0
+        };
+      }
 
-      // Create order
-      const orderData = {
-        items: orderItems,
-        totalAmount,
-        totalEcoScore,
-        totalCarbonSaved,
-        moneySaved
-      };
+      await ordersAPI.createOrder(finalOrderData);
 
-      await ordersAPI.createOrder(orderData);
+      // Update product sales count for each product
+      await Promise.all(finalOrderData.items.map((item: any) =>
+        axios.patch(`http://localhost:8000/api/products/${item.productId}/sales`, { quantity: item.quantity }, { withCredentials: true })
+      ));
       
       // Refresh user data to get updated stats
       const userData = await authAPI.getAuthUser();
       set({ user: userData, cart: [] });
       
-      return true;
     } catch (error: any) {
       set({ error: error.response?.data?.message || error.message || 'Checkout failed' });
-      return false;
     } finally {
       set({ loading: false });
     }

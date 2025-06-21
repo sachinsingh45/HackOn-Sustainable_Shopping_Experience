@@ -35,7 +35,7 @@ const productSchema = new mongoose.Schema({
   },
   isEcoFriendly: {
     type: Boolean,
-    default: true
+    default: false
   },
   groupBuyEligible: {
     type: Boolean,
@@ -50,6 +50,45 @@ const productSchema = new mongoose.Schema({
     type: Number,
     default: 0,
     min: 0
+  },
+  sellerId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'users',
+    required: true
+  },
+  weight: {
+    type: Number,
+    required: true
+  },
+  materialComposition: {
+    type: Map,
+    of: Number, // percentage of each material
+    required: true
+  },
+  packaging: {
+    type: String,
+    required: true
+  },
+  recyclability: {
+    type: Boolean,
+    required: true
+  },
+  distance: {
+    type: Number, // distance in km
+    required: true
+  },
+  salesCount: {
+    type: Number,
+    default: 0,
+    min: 0
+  },
+  repairability: {
+    type: Boolean,
+    required: true
+  },
+  lifespan: {
+    type: Number,
+    required: true
   }
 });
 
@@ -59,6 +98,8 @@ productSchema.virtual('outOfStock').get(function() {
 
 productSchema.set('toJSON', { virtuals: true });
 productSchema.set('toObject', { virtuals: true });
+
+productSchema.set('timestamps', true);
 
 const Product = new mongoose.model("products", productSchema);
 

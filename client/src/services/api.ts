@@ -57,6 +57,11 @@ export const productsAPI = {
     return response.data;
   },
 
+  getEcoRecommendations: async (productId: string) => {
+    const response = await api.get(`/products/${productId}/recommendations`);
+    return response.data;
+  },
+
   searchProducts: async (query: string) => {
     const response = await api.get(`/products/search?q=${encodeURIComponent(query)}`);
     return response.data;
