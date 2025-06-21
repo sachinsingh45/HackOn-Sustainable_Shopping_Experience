@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import * as geohash from 'ngeohash';
 import { User, Award, Leaf, TrendingUp, Calendar, Package, Settings, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useStore } from '../store/useStore';
 import axios from 'axios';
+import { api } from "../services/api";
 import { useToast } from '../context/ToastContext';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 
@@ -38,25 +40,69 @@ const ProfilePage = () => {
     city: '',
     state: '',
     country: '',
-    pin: ''
+    pin: '',
+    coor: '',
   });
   const [locationDetailsLoading, setLocationDetailsLoading] = useState(false);
 
+
   useEffect(() => {
-    if (user && !user.location) {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(async (position) => {
-          const { latitude, longitude } = position.coords;
-          // Use a geocoding API to get city/country (or just store lat/lng)
-          const loc = `${latitude},${longitude}`;
-          await axios.post('/api/update-location', { location: loc });
-          setUser({ ...(user as any), location: loc });
-        }, () => setLocationPrompt(true));
-      } else {
-        setLocationPrompt(true);
+    const sendLocation = async () => {
+      if (!navigator.geolocation) return;
+      try {
+        const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject);
+        });
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        const coor = `${latitude},${longitude}`;
+
+        setLocationDetails((prev) => ({ ...prev, coor }));
+      } catch (error) {
+        console.error('Error getting location:', error);
       }
+    };
+    sendLocation();
+  }, []);
+
+
+  const handleUpdateLocation = async () => {
+    const updatedCoor = locationDetails.coor ||
+      (navigator.geolocation
+        ? await new Promise<string>((resolve) => {
+            navigator.geolocation.getCurrentPosition((pos) => {
+              resolve(`${pos.coords.latitude},${pos.coords.longitude}`);
+            }, () => resolve(''));
+          })
+        : '');
+
+    const fullDetails = { ...locationDetails, coor: updatedCoor };
+
+    if (
+      fullDetails.city &&
+      fullDetails.state &&
+      fullDetails.country &&
+      fullDetails.pin &&
+      fullDetails.coor
+    ) {
+      setLocationDetailsLoading(true);
+      try {
+        const response = await api.post('/api/update-location', fullDetails);
+
+        setUser({ ...(user as any), location: fullDetails });
+        setLocationDetails({ city: '', state: '', country: '', pin: '', coor: '' });
+        showToast('Location updated successfully!', 'success');
+      } catch {
+        showToast('Failed to update location', 'error');
+      } finally {
+        setLocationDetailsLoading(false);
+      }
+    } else {
+      showToast('Please fill in all fields including geolocation.', 'error');
     }
-  }, [user, setUser]);
+  };
+       
+
 
   const handleManualLocation = async () => {
     await axios.post('/api/update-location', { location: manualLocation });
@@ -562,21 +608,22 @@ const ProfilePage = () => {
                 <button
                   className={`flex items-center gap-1 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md font-medium transition-colors mt-2 w-full sm:w-auto justify-center ${locationDetailsLoading ? 'opacity-60 cursor-not-allowed' : ''}`}
                   disabled={locationDetailsLoading}
-                  onClick={async () => {
-                    if (locationDetails.city && locationDetails.state && locationDetails.country && locationDetails.pin) {
-                      setLocationDetailsLoading(true);
-                      try {
-                        await axios.post('/api/update-location', locationDetails);
-                        setUser({ ...(user as any), location: locationDetails });
-                        setLocationDetails({ city: '', state: '', country: '', pin: '' });
-                        showToast('Location updated successfully!', 'success');
-                      } catch {
-                        showToast('Failed to update location', 'error');
-                      } finally {
-                        setLocationDetailsLoading(false);
-                      }
-                    }
-                  }}
+                  onClick={handleUpdateLocation}
+                  // onClick={async () => {
+                  //   if (locationDetails.city && locationDetails.state && locationDetails.country && locationDetails.pin && locationDetails.coor) {
+                  //     setLocationDetailsLoading(true);
+                  //     try {
+                  //       await axios.post('/api/update-location', locationDetails);
+                  //       setUser({ ...(user as any), location: locationDetails });
+                  //       setLocationDetails({ city: '', state: '', country: '', pin: '', coor: '' });
+                  //       showToast('Location updated successfully!', 'success');
+                  //     } catch {
+                  //       showToast('Failed to update location', 'error');
+                  //     } finally {
+                  //       setLocationDetailsLoading(false);
+                  //     }
+                  //   }
+                  // }}
                 >
                   <MapPin className="w-4 h-4" /> {locationDetailsLoading ? 'Updating...' : 'Update Location'}
                 </button>
