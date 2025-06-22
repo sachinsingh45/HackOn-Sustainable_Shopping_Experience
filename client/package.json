@@ -12,6 +12,7 @@
   "dependencies": {
     "@google/generative-ai": "^0.2.1",
     "axios": "^1.6.0",
+    "core-js-pure": "^3.43.0",
     "date-fns": "^3.3.0",
     "framer-motion": "^11.0.0",
     "lucide-react": "^0.344.0",
@@ -22,9 +23,7 @@
     "react-icons": "^5.5.0",
     "react-router-dom": "^6.22.0",
     "recharts": "^2.12.0",
-
     "socket.io-client": "^4.8.1",
-
     "zustand": "^4.5.0"
   },
   "devDependencies": {
