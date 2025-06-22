@@ -1,19 +1,23 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
-import {Link} from 'react-router-dom';
-import Avatar from 'react-avatar';
 import { motion } from 'framer-motion';
 import { Users, TrendingDown, Clock, Target, CheckCircle, Plus, Share2, MessageCircle,Calendar,DollarSign,Package,Star,ArrowRight,Leaf,Zap } from 'lucide-react';
 import { useStore } from '../store/useStore';
 
 import { api } from "../services/api";
+import PendingGroupBuy from './pendingGroupBuy';
+import OrderedGroupBuy from './OrderedGroupBuy';
 
 const GroupBuyPage = () => {
   const { products, user } = useStore();
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState(1);
   const [sortBy, setSortBy] = useState('savings');
 
   const [groupData, setGroupData] = useState([]);
+  const [OrderGroupData, setOrderGroupData] = useState([]);
+
   const [isLoading, setIsLoading] = useState(true); // Add loading state
+  const [orderisLoading, setOrderIsLoading] = useState(true); 
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [groupName, setGroupName] = useState<string>('');
   const [date, setDate] = useState<string>('');
@@ -61,7 +65,6 @@ const GroupBuyPage = () => {
       setIsLoading(true); // Set loading when fetching
       const response = await api.get('/pending-group');
 
-      console.log(response.data.data.PendingGroup)
       if(response.data?.data?.PendingGroup) {
         setGroupData(response.data.data.PendingGroup);
       }
@@ -72,16 +75,29 @@ const GroupBuyPage = () => {
     }
   };
 
+  const fetchGroupOrder = async() => {
+    setOrderIsLoading(true);
+    try {
+      const response = await api.get('/ordered');
+      if(response.data?.data?.OrderedGroup) {
+        setOrderGroupData(response.data.data.OrderedGroup);
+      }
+
+      setOrderIsLoading(false);
+    } catch (error) {
+      setOrderIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchGroup();
+    fetchGroupOrder();
   }, []);
 
   const categories = [
-    { id: 'all', name: 'All Groups', icon: Users, color: 'bg-blue-500' },
-    { id: 'electronics', name: 'Electronics', icon: Zap, color: 'bg-purple-500' },
-    { id: 'fashion', name: 'Fashion', icon: Package, color: 'bg-pink-500' },
-    { id: 'home', name: 'Home & Kitchen', icon: Target, color: 'bg-green-500' },
-    { id: 'beauty', name: 'Beauty', icon: Star, color: 'bg-yellow-500' }
+    { id: '1', name: 'New Groups', icon: Users, color: 'bg-blue-500' },
+    { id: '2', name: 'Ordered', icon: Zap, color: 'bg-purple-500' },
+    // { id: '3', name: 'Fashion', icon: Package, color: 'bg-pink-500' },
   ];
 
   // Mock group buy data
@@ -239,77 +255,16 @@ const GroupBuyPage = () => {
       </div>
 
       {/* Active Groups */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Active Group Buys</h2>
-
-        {isLoading ? (
-          <div className="flex justify-center items-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
-          </div>
+      {selectedCategory == 1 ? (
+        <PendingGroupBuy isLoading={isLoading} groupData={groupData} setIsOpen={setIsOpen}/>
+      ) : (
+        (selectedCategory == 2 ? (
+          <OrderedGroupBuy isLoading={orderisLoading} groupData={OrderGroupData}/>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {groupData && groupData.length > 0 ? (
-            groupData.map((data, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
-                className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100"
-              >
-                <div className="p-5 flex flex-col h-full">
-                  {/* Avatar + Name */}
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="flex-shrink-0">
-                      <Avatar 
-                        name={data?.name} 
-                        src="" 
-                        size="60" 
-                        round={true} 
-                        className="border-2 border-blue-100"
-                      />
-                    </div>
-                    <div className="flex flex-col">
-                      <h3 className="text-lg font-bold text-gray-800 truncate">
-                        {data?.name || "Untitled Group"}
-                      </h3>
-                      <p className="text-sm text-gray-500">Admin: {data?.admin || "Unknown"}</p>
-                    </div>
-                  </div>
-
-                  {/* Member Info */}
-                  <div className="mb-4">
-                    <p className="text-sm text-gray-600">
-                      👥 Members: <span className="font-semibold">{data?.members?.length || 0}</span>
-                    </p>
-                  </div>
-
-                  {/* View Group Button */}
-                  <div className="mt-auto">
-                    <Link
-                      to={`/group/${data?.name?.toLowerCase().replace(/\s+/g, '-')}/id/${data._id}`}
-                      className="block w-full text-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition duration-300 text-sm font-medium"
-                    >
-                      View Group
-                    </Link>
-                  </div>
-                </div>
-              </motion.div>
-              ))
-            ) : (
-              <div className="col-span-full text-center py-12">
-                <div className="text-gray-500 mb-4">No active group buys found</div>
-                <button 
-                  onClick={() => setIsOpen(true)}
-                  className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors"
-                >
-                  Create New Group
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
+          <div>8</div>
+        ))
+      )}
+      
 
       {/* Create New Group */}
       <div className="max-w-7xl mx-auto px-4 py-8">

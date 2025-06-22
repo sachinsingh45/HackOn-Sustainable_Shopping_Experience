@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Leaf, Filter, Star, Users, Package, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useStore } from '../store/useStore';
@@ -9,11 +9,6 @@ const GreenStorePage = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('eco-score');
   const [priceRange, setPriceRange] = useState([0, 10000]);
-
-  // Scroll to top when component mounts
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
 
   // Get all unique categories from products (case-insensitive, trimmed)
   const allCategoriesSet = new Set<string>();
@@ -116,6 +111,23 @@ const GreenStorePage = () => {
           return 0;
       }
     });
+
+  // // Build categories array with correct counts for each filter
+  // const categories = [
+  //   {
+  //     id: 'all',
+  //     name: 'All Green Products',
+  //     count: products.filter(p => p.isEcoFriendly).length
+  //   },
+  //   ...allCategories.map(cat => ({
+  //     id: normalizeCatId(cat),
+  //     name: cat,
+  //     count:
+  //       normalizeCatId(cat) === 'general'
+  //         ? products.filter(p => normalizeCatId(p.category || 'General') === 'general').length
+  //         : products.filter(p => p.isEcoFriendly && normalizeCatId(p.category || 'General') === normalizeCatId(cat)).length
+  //   }))
+  // ];
 
   const sortOptions = [
     { value: 'eco-score', label: 'Highest Eco Score' },

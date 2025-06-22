@@ -25,6 +25,7 @@ import SellerDashboardPage from './pages/SellerDashboardPage';
 import { useScrollToTop } from './hooks/useScrollToTop';
 
 import Single_group_buy_page from './pages/single-group-buy';
+import SingleOrderedPages from './pages/singleOrderedPage';
 
 function App() {
   const { checkAuth, fetchProducts } = useStore();
@@ -60,6 +61,7 @@ function App() {
             <Route path="challenges" element={<EcoChallengesPage />} />
             <Route path="carbon-calculator" element={<CarbonCalculatorPage />} />
             <Route path='/group/:name/Id/:groupId' element={<Single_group_buy_page/>} />
+            <Route path='/ordered/group/:name/Id/:groupId' element={<SingleOrderedPages/>} />
 
             {/* Protected Routes */}
             <Route path="cart" element={

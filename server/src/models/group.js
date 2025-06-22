@@ -4,12 +4,10 @@ const groupSchema = new mongoose.Schema({
 
   name: { type: String, required: true },
   admin: { type: String  },
+  adminId: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
   members: [{ 
         userId: { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true },
-        item: [{
-            product: { type: mongoose.Schema.Types.ObjectId, ref: 'products' },
-            count: { type: Number },
-        }],
+        itemId: [ { type: mongoose.Schema.Types.ObjectId, ref: 'items' } ],
     }],
 
   message: [ { type: mongoose.Schema.Types.ObjectId, ref: 'message' } ],
