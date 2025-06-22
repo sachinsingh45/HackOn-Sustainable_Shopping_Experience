@@ -1483,7 +1483,7 @@ router.post('/products', authenticate, async (req, res) => {
       console.log('ML payload being sent:', JSON.stringify(mlPayload, null, 2));
       let mlRes;
       try {
-        mlRes = await axios.post('http://127.0.0.1:8001/predict', mlPayload);
+        mlRes = await axios.post('https://ecoml.onrender.com/predict', mlPayload);
         console.log('ML server response status:', mlRes.status);
         console.log('ML server response headers:', mlRes.headers);
         console.log('ML server response data:', mlRes.data);
@@ -1533,7 +1533,7 @@ router.post('/products', authenticate, async (req, res) => {
           return res.status(503).json({
             status: false,
             message: 'ML server is not available',
-            error: 'Cannot connect to ML server. Please ensure the ML server is running on port 8001.',
+            error: 'Cannot connect to ML server. Please try again later or contact support.',
             details: 'Network error - server not reachable'
           });
         } else {

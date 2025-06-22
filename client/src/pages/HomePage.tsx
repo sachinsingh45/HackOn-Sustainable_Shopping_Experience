@@ -49,9 +49,12 @@ const HomePage = () => {
                   Explore Green Store
                   <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
                 </Link>
-                <button className="border-2 border-white text-white px-6 sm:px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-green-600 transition-colors">
+                <Link
+                  to="/profile"
+                  className="border-2 border-white text-white px-6 sm:px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-green-600 transition-colors inline-flex items-center justify-center"
+                >
                   Calculate Your Impact
-                </button>
+                </Link>
               </div>
             </motion.div>
             

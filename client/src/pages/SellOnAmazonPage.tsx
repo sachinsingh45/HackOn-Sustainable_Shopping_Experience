@@ -273,7 +273,7 @@ const SellOnAmazonPage = () => {
       console.log('🚀 Sending ML payload:', JSON.stringify(mlPayload, null, 2));
 
       // Call ML server directly
-      const mlServerUrl = import.meta.env.VITE_ML_SERVER_URL || 'http://127.0.0.1:8001';
+      const mlServerUrl = import.meta.env.VITE_ML_SERVER_URL || 'https://ecoml.onrender.com';
       const mlRes = await axios.post(`${mlServerUrl}/predict`, mlPayload);
       
       const { carbon_footprint, eco_score, isEcoFriendly, status, warning } = mlRes.data;
@@ -313,7 +313,7 @@ const SellOnAmazonPage = () => {
         }
       } else if (err.request) {
         // Network error - server not reachable
-        setError('Cannot connect to ML server. Please check if the ML server is running on port 8001.');
+        setError('Cannot connect to ML server. Please try again later or contact support.');
       } else {
         // Other errors
         setError(err.message || 'Failed to calculate CO2 emissions. Please try again.');

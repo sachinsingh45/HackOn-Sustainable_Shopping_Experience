@@ -112,7 +112,7 @@ const CarbonCalculatorPage: React.FC = () => {
       materialFeatures[`Material_${mat}`] = materialObj[mat] || 0;
     });
     try {
-      const mlServerUrl = import.meta.env.VITE_ML_SERVER_URL || 'http://127.0.0.1:8001';
+      const mlServerUrl = import.meta.env.VITE_ML_SERVER_URL || 'https://ecoml.onrender.com';
       const res = await axios.post(`${mlServerUrl}/predict`, {
         'Weight (kg)': form.weight ? Number(form.weight) : 1,
         'Distance (km)': form.distance ? Number(form.distance) : 100,

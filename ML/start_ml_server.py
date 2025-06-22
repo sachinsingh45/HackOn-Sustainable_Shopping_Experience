@@ -53,7 +53,7 @@ def check_model_file():
 def test_server_health():
     """Test if the server is responding"""
     try:
-        response = requests.get("http://127.0.0.1:8001/health", timeout=5)
+        response = requests.get("https://ecoml.onrender.com/health", timeout=5)
         if response.status_code == 200:
             data = response.json()
             print(f"✅ Server is running and healthy")
@@ -63,7 +63,7 @@ def test_server_health():
             print(f"❌ Server responded with status {response.status_code}")
             return False
     except requests.exceptions.ConnectionError:
-        print("❌ Cannot connect to server on port 8001")
+        print("❌ Cannot connect to server on https://ecoml.onrender.com")
         return False
     except Exception as e:
         print(f"❌ Health check failed: {e}")
@@ -89,9 +89,9 @@ def start_server():
         # Test if server is running
         if test_server_health():
             print("🎉 ML Server is running successfully!")
-            print("   URL: http://127.0.0.1:8001")
-            print("   Health check: http://127.0.0.1:8001/health")
-            print("   API docs: http://127.0.0.1:8001/docs")
+            print("   URL: https://ecoml.onrender.com")
+            print("   Health check: https://ecoml.onrender.com/health")
+            print("   API docs: https://ecoml.onrender.com/docs")
             print("\nPress Ctrl+C to stop the server")
             
             try:

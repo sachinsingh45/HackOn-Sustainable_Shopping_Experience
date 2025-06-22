@@ -3,7 +3,7 @@ import json
 
 def test_ml_server():
     """Test the ML server endpoints"""
-    base_url = "http://127.0.0.1:8001"
+    base_url = "https://ecoml.onrender.com"
     
     print("🧪 Testing ML Server...")
     
