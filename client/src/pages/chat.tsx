@@ -2,18 +2,13 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import Avatar from 'react-avatar';
 import { chatSocket } from '../services/socket';
 
-const ChatRoom = ({ groupId, groupName = 'Group Chat', userId, userName = 'Anonymous', className = '', onMessageSent, onMessageReceived, showAvatars = false, showTimestamps = true, }) => {
-  const [messages, setMessages] = useState([]);
+const ChatRoom = ({ messages, setMessages,  groupId, groupName = 'Group Chat', userId, userName = 'Anonymous', className = '', onMessageSent, onMessageReceived, showAvatars = false, showTimestamps = true, }) => {
+
   const [input, setInput] = useState('');
   const [isConnected, setIsConnected] = useState(chatSocket.connected);
   const [typingUsers, setTypingUsers] = useState([]);
 
-  const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
-
-  const scrollToBottom = useCallback(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, []);
 
   const sendMessage = useCallback(() => {
     if (!input.trim()) return;
@@ -22,8 +17,6 @@ const ChatRoom = ({ groupId, groupName = 'Group Chat', userId, userName = 'Anony
 
     chatSocket.emit('send-message', message);
     setInput('');
-
-    inputRef.current?.focus();
 
     if (onMessageSent) onMessageSent(message);
   }, [input, groupId, userId, userName, onMessageSent]);
@@ -49,11 +42,6 @@ const ChatRoom = ({ groupId, groupName = 'Group Chat', userId, userName = 'Anony
       }
     });
 
-    chatSocket.on('previous-messages', (data) => {
-      if(data?.message)
-          console.log(data.message);
-    });
-
 
 
     chatSocket.on('typing', ({ userName: typingUser }) => {
@@ -75,9 +63,6 @@ const ChatRoom = ({ groupId, groupName = 'Group Chat', userId, userName = 'Anony
     };
   }, [groupId, userId, userName, onMessageReceived]);
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages, scrollToBottom]);
 
   const formatTime = (date) => {
     if (!date) return '';
@@ -99,11 +84,11 @@ const ChatRoom = ({ groupId, groupName = 'Group Chat', userId, userName = 'Anony
       </header>
 
       {/* Messages */}
-      <main className="flex-1 overflow-y-auto p-3 space-y-2">
+      <main className="flex-1 overflow-y-auto p-1 space-y-2">
         {messages.map((msg, idx) => (
           <div key={idx} className={`flex ${msg.senderId._id === userId ? 'justify-end' : 'justify-start'}`}>
             <div
-              className={`max-w-xs px-3 py-2 rounded-lg ${msg.senderId._id === userId ? 'bg-green-100 rounded-tr-none' : 'bg-white rounded-tl-none'}`}
+              className={`max-w-xs px-2 py-1 rounded-lg ${msg.senderId._id === userId ? 'bg-green-100 rounded-tr-none' : 'bg-white rounded-tl-none'}`}
             >
               <div className="flex items-center gap-2 mb-1">
                 {msg.senderId._id !== userId && (
@@ -115,9 +100,9 @@ const ChatRoom = ({ groupId, groupName = 'Group Chat', userId, userName = 'Anony
                 )}
 
               </div>
-              <div className="text-gray-800">{msg.content}</div>
+              <div className="text-gray-800 text-xs">{msg.content}</div>
               {showTimestamps && (
-                <div className="text-xs text-gray-500 text-right">
+                <div className="text-[10px] text-gray-500 text-right">
                   {formatTime(msg.sentAt)}
                 </div>
               )}
@@ -130,7 +115,7 @@ const ChatRoom = ({ groupId, groupName = 'Group Chat', userId, userName = 'Anony
             {typingUsers.join(', ')} {typingUsers.length > 1 ? 'are' : 'is'} typing...
           </div>
         )}
-        <div ref={messagesEndRef} />
+       
       </main>
 
       {/* Input */}

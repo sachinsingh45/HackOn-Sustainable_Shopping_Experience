@@ -6,6 +6,8 @@ import { useStore } from '../store/useStore';
 import { useToast } from '../context/ToastContext';
 import { productsAPI } from '../services/api';
 
+import { api } from "../services/api";
+
 type SectionKey = 'details' | 'shipping' | 'returns' | 'eco';
 
 interface ExpandedSections {
@@ -34,10 +36,70 @@ const ProductPage = () => {
     returns: false,
     eco: true
   });
+
+  const [groupDiscounts, setGroupDiscounts] = useState<Record<string, number>>({});
+
+  const [userGroups, setUserGroups] = useState([]);
+  const [showChoiceModal, setShowChoiceModal] = useState(false);
+  const [selectedOption, setSelectedOption] = useState('');
+  const [modalLoading, setModalLoading] = useState(false);
+
   const [isWishlist, setIsWishlist] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   const [imageError, setImageError] = useState(false);
   const fallbackImage = 'https://images.pexels.com/photos/1029236/pexels-photo-1029236.jpeg?auto=compress&cs=tinysrgb&w=400';
+
+
+  const fetchJoinedGroup = async() => {
+    try {
+      const response = await api.get('/pending-group');
+
+      if(response.data.data)
+        setUserGroups(response.data.data.PendingGroup);
+
+      console.log(response.data.data.PendingGroup);
+    } catch (error) {
+      console.log("fetch joined group data error");
+    }
+  };
+
+  useEffect(() => {
+    fetchJoinedGroup();
+  }, []);
+
+
+  const handleAddToCartClick = () => {
+    if (userGroups.length > 0) {
+      const discounts = {};
+      userGroups.forEach(group => {
+        discounts[group._id] = getRandomInt(5, 30); // Generate once
+      });
+      setGroupDiscounts(discounts);
+
+      setShowChoiceModal(true); // Show modal with options
+    } else {
+      handleAddToCart();
+    }
+  };
+
+
+  const handleFinalSelection = async () => {
+    setModalLoading(true);
+    try {
+      await api.post(`/group/${selectedOption}/add-item`, {
+        productId: product._id,
+        count: quantity,
+      });
+      showToast(`${product.name} added to cart successfully!`, 'success');
+      console.log('Item added to group cart');
+    } catch (err) {
+      showToast('Failed to add item to cart', 'error');
+      console.error('Error adding to group cart', err);
+    } finally {
+      setModalLoading(false);
+      setShowChoiceModal(false);
+    }
+  };
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -131,12 +193,16 @@ const ProductPage = () => {
       return;
     }
 
+    setModalLoading(true);
     try {
       await addToCart(product._id);
       showToast(`${product.name} added to cart successfully!`, 'success');
     } catch (error) {
       console.error('Failed to add to cart:', error);
       showToast('Failed to add item to cart', 'error');
+    }finally {
+      setModalLoading(false);
+      setShowChoiceModal(false);
     }
   };
 
@@ -184,6 +250,14 @@ const ProductPage = () => {
       discountPercent = Math.round(((mrp - price) / mrp) * 100);
     }
   }
+
+  function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+  
+  
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -329,7 +403,7 @@ const ProductPage = () => {
             </div>
 
             <div className="flex space-x-4">
-              <motion.button
+              {/* <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={handleAddToCart}
@@ -348,9 +422,178 @@ const ProductPage = () => {
               >
                 <Zap className="w-5 h-5 mr-2" />
                 Buy Now
+              </motion.button> */}
+
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={handleAddToCartClick}
+                className={`flex-1 bg-yellow-400 hover:bg-yellow-500 text-gray-900 py-3 px-6 rounded-lg font-semibold transition-colors flex items-center justify-center ${
+                  product.outOfStock || product.unitsInStock === 0 ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+                disabled={product.outOfStock || product.unitsInStock === 0}
+              >
+                <ShoppingCart className="w-5 h-5 mr-2" />
+                Add to Cart
+              </motion.button>
+
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={handleBuyNow}
+                className={`flex-1 bg-orange-500 hover:bg-orange-600 text-white py-3 px-6 rounded-lg font-semibold transition-colors flex items-center justify-center ${
+                  product.outOfStock || product.unitsInStock === 0 ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+                disabled={product.outOfStock || product.unitsInStock === 0}
+              >
+                <Zap className="w-5 h-5 mr-2" />
+                Buy Now
               </motion.button>
             </div>
           </div>
+
+
+          {showChoiceModal && (
+  <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-4 transition-opacity duration-300">
+    <motion.div 
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ type: "spring", damping: 25, stiffness: 400 }}
+      className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden"
+    >
+      {/* Modal Header */}
+      <div className="p-2 border-b border-gray-100 relative">
+        <h2 className="text-2xl font-bold text-gray-900 text-center">
+          Add to Cart
+        </h2>
+        <p className="text-sm text-gray-500 mt-1 text-center">
+          Choose where to add this item
+        </p>
+        <button 
+          onClick={() => setShowChoiceModal(false)}
+          className="absolute top-4 right-4 p-1 rounded-full hover:bg-gray-100 transition-colors"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      
+      {/* Scrollable Content Area */}
+      <div className="overflow-y-auto max-h-[60vh] p-6 space-y-4">
+        {/* Individual Cart Option */}
+        <div 
+          onClick={() => setSelectedOption('individual')}
+          className={`p-4 rounded-xl border-2 transition-all cursor-pointer ${
+            selectedOption === 'individual' 
+              ? 'border-green-500 bg-green-50/50' 
+              : 'border-gray-200 hover:border-green-300'
+          }`}
+        >
+          <div className="flex items-start gap-4">
+            <div className={`mt-0.5 flex-shrink-0 h-5 w-5 rounded-full border-2 flex items-center justify-center transition-colors ${
+              selectedOption === 'individual' 
+                ? 'border-green-600 bg-green-600' 
+                : 'border-gray-300 group-hover:border-green-400'
+            }`}>
+              {selectedOption === 'individual' && (
+                <svg className="h-3 w-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+              )}
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-800">Personal Cart</h3>
+              <p className="text-sm text-gray-500 mt-1">
+                Add only to your personal shopping cart
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Group Options */}
+        {userGroups.map((group) => (
+          <div 
+            key={group._id}
+            onClick={() => setSelectedOption(group._id)}
+            className={`p-4 rounded-xl border-2 transition-all cursor-pointer group ${
+              selectedOption === group._id 
+                ? 'border-green-500 bg-green-50/50' 
+                : 'border-gray-200 hover:border-green-300'
+            }`}
+          >
+            <div className="flex items-start gap-4">
+              <div className={`mt-0.5 flex-shrink-0 h-5 w-5 rounded-full border-2 flex items-center justify-center transition-colors ${
+                selectedOption === group._id 
+                  ? 'border-green-600 bg-green-600' 
+                  : 'border-gray-300 group-hover:border-green-400'
+              }`}>
+                {selectedOption === group._id && (
+                  <svg className="h-3 w-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                  <span className="flex text-sm items-center bg-gray-100 px-2 py-1 rounded-full">
+                    <svg className="h-3 w-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    {group?.adminId?.location?.city}, {group?.adminId?.location?.state}, ({group?.adminId?.location?.pin})
+                  </span>
+                <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500 mt-2">
+                  <span className="flex items-center bg-gray-100 px-2 py-1 rounded-full">
+                    <Users className="h-3 w-3 mr-1" />
+                    {group?.members?.length} members
+                  </span>
+                  <span className="flex items-center bg-amber-100 text-amber-800 px-2 py-1 rounded-full">
+                    <svg className="h-3 w-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                    </svg>
+                    Save {groupDiscounts[group._id]}%
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      {/* Modal Footer */}
+      <div className="p-6 border-t border-gray-100">
+        <button
+          onClick={() => {
+            selectedOption === 'individual' ? handleAddToCart() : handleFinalSelection();
+          }}
+          disabled={!selectedOption || modalLoading}
+          className={`w-full px-6 py-3 rounded-lg font-medium transition-all flex items-center justify-center ${
+            selectedOption
+              ? 'bg-green-600 text-white hover:bg-green-700 shadow-md hover:shadow-lg'
+              : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+          } ${modalLoading ? 'opacity-90' : ''}`}
+        >
+          {modalLoading ? (
+            <>
+              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Processing...
+            </>
+          ) : (
+            <>
+              <ShoppingCart className="w-5 h-5 mr-2" />
+              {selectedOption === 'individual' ? 'Add to Personal Cart' : 'Add to Group Cart'}
+            </>
+          )}
+        </button>
+      </div>
+    </motion.div>
+  </div>
+)}
+
 
           {/* Eco Info */}
           {product.ecoScore && (

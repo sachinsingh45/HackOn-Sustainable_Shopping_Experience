@@ -14,7 +14,7 @@ const app = express();
 
 // socket connection
 const { setUpsSockets } = require('./socket/socketconnection');
-const ChatFunction = require('./socket/chat');
+const { ChatFunction } = require('./socket/chat');
 const { Notification } = require('./socket/notification');
 
 

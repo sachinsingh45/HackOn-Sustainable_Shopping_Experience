@@ -17,6 +17,7 @@ const transformUserGroups = (user, userId) => {
         if (unreadMessages.length === 0) return null; // skip if no unread messages
   
         return {
+          _id: group._id,
           name: group.name,
           message: unreadMessages
         };
@@ -63,7 +64,7 @@ const Notification = () => {
                 const message = new messageModel({ senderId: userId, content: `${ user.name } have joined your group`, newUser: 1, readBy: [userId]});
                 await message.save();
 
-                await groupModel.findByIdAndUpdate( groupId, { $push: { members: { userId: userId, item: [], } } });
+                await groupModel.findByIdAndUpdate( groupId, { $push: { members: { userId: userId, itemId: [], } } });
                                 
                 await notificationModel.findByIdAndUpdate(_id, { isRead: true });
 
@@ -90,6 +91,39 @@ const Notification = () => {
                 socket.emit('previous-notification', { notification: notificationData, message: data });
             } catch (error) {
                 console.log("group join failed");
+            }
+        });
+
+        socket.on('mark-read-message', async(data) => {
+            try {
+                let d = data.data;
+            
+                for(let group of d){
+                    for(let message of group.message)
+                    await messageModel.updateOne(
+                        { _id: message._id },
+                        { $addToSet: { readBy: data.userId } }
+                      );
+                }
+
+                socket.emit('marked-message', { message: "Message are marked" });
+            } catch (error) {
+                
+            }
+        });
+
+
+        socket.on('mark-group-notification', async(data) => {
+            try {
+                let dat = data.data;
+
+                for(let notif of dat){
+                    await notificationModel.findByIdAndUpdate(notif._id, { isRead: true });
+                }
+
+                socket.emit('marked-group-notification', { message: "Notification are marked" });
+            } catch (error) {
+                
             }
         });
     });
