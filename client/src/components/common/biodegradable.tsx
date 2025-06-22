@@ -39,7 +39,7 @@ export default function MaterialInfoScanner() {
         `${materialAnalysisUrl}/analyze-material`,
         { description: description.trim() },
         {
-          timeout: 60000, // 60 second timeout
+          timeout: 300000, // 60 second timeout
           headers: {
             'Content-Type': 'application/json',
           }
