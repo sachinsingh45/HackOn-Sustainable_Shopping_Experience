@@ -226,17 +226,23 @@ const SellOnAmazonPage = () => {
     });
 
     try {
-      // Parse materialComposition
-      let parsedMaterialComposition = {};
-      if (typeof form.materialComposition === 'string') {
+      // Parse materialComposition with proper typing
+      const parsedMaterialComposition: { [key: string]: number } = {};
+      if (typeof form.materialComposition === 'string' && form.materialComposition.trim()) {
         form.materialComposition.split(',').forEach(pair => {
-          const [mat, val] = pair.split(':');
-          if (mat && val) parsedMaterialComposition[mat.trim()] = Number(val.trim());
+          const [mat, val] = pair.trim().split(':');
+          if (mat && val) {
+            const material = mat.trim();
+            const percentage = Number(val.trim());
+            if (!isNaN(percentage) && percentage >= 0) {
+              parsedMaterialComposition[material] = percentage;
+            }
+          }
         });
       }
 
       // Convert material composition to ML server format
-      const mlMaterialFeatures = {
+      const mlMaterialFeatures: { [key: string]: number } = {
         "Material_Plastic": 0,
         "Material_Aluminum": 0,
         "Material_Steel": 0,
@@ -248,7 +254,7 @@ const SellOnAmazonPage = () => {
         "Material_Drum Metal": 0
       };
 
-      // Map parsed materials to ML server format
+      // Map parsed materials to ML server format with proper error handling
       Object.keys(parsedMaterialComposition).forEach(material => {
         const percentage = parsedMaterialComposition[material];
         const mlKey = `Material_${material}`;
