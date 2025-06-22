@@ -337,30 +337,30 @@ const SellOnAmazonPage = () => {
                 </p>
               </div>
               <div className="mt-4 sm:mt-0">
-                <button
+        <button
                   className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-lg shadow-lg hover:from-orange-600 hover:to-red-600 transform hover:scale-105 transition-all duration-200"
-                  onClick={() => setShowAddProduct(v => !v)}
-                >
+          onClick={() => setShowAddProduct(v => !v)}
+        >
                   <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                   </svg>
                   {showAddProduct ? 'Close Form' : 'Add New Product'}
-                </button>
+        </button>
               </div>
             </div>
           </div>
 
           {/* Add Product Form */}
-          {showAddProduct && (
-            <div className="mb-8">
+        {showAddProduct && (
+          <div className="mb-8">
               <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
                 <div className="bg-gradient-to-r from-green-500 to-blue-500 px-6 py-4">
                   <h2 className="text-2xl font-bold text-white">Add New Product</h2>
                   <p className="text-green-100 mt-1">Fill in the details below to list your product</p>
-                </div>
-                
+              </div>
+
                 <form onSubmit={handleSubmit} className="p-6 space-y-8">
-                  {/* Basic Information */}
+              {/* Basic Information */}
                   <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-200">
                     <div className="flex items-center mb-4">
                       <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center mr-3">
@@ -371,72 +371,72 @@ const SellOnAmazonPage = () => {
                       <h3 className="text-xl font-semibold text-gray-900">Basic Information</h3>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
+                  <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-2">Product Name *</label>
-                        <input 
-                          name="name" 
-                          value={form.name} 
-                          onChange={handleChange} 
-                          placeholder="Enter product name" 
+                    <input 
+                      name="name" 
+                      value={form.name} 
+                      onChange={handleChange} 
+                      placeholder="Enter product name" 
                           className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors" 
-                          required 
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">Image URL *</label>
-                        <input 
-                          name="url" 
-                          value={form.url} 
-                          onChange={handleChange} 
-                          placeholder="https://example.com/image.jpg" 
-                          className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors" 
-                          required 
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">Price (₹) *</label>
-                        <input 
-                          name="price" 
-                          value={form.price} 
-                          onChange={handleChange} 
-                          placeholder="999" 
-                          type="number" 
-                          min="0" 
-                          step="0.01"
-                          className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors" 
-                          required 
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">MRP (₹)</label>
-                        <input 
-                          name="mrp" 
-                          value={form.mrp} 
-                          onChange={handleChange} 
-                          placeholder="1299" 
-                          type="number" 
-                          min="0" 
-                          step="0.01"
-                          className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors" 
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">Units in Stock *</label>
-                        <input 
-                          name="unitsInStock" 
-                          value={form.unitsInStock} 
-                          onChange={handleChange} 
-                          placeholder="100" 
-                          type="number" 
-                          min="0"
-                          className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors" 
-                          required 
-                        />
-                      </div>
-                    </div>
+                      required 
+                    />
                   </div>
+                  <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Image URL *</label>
+                    <input 
+                      name="url" 
+                      value={form.url} 
+                      onChange={handleChange} 
+                      placeholder="https://example.com/image.jpg" 
+                          className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors" 
+                      required 
+                    />
+                  </div>
+                  <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Price (₹) *</label>
+                    <input 
+                      name="price" 
+                      value={form.price} 
+                      onChange={handleChange} 
+                      placeholder="999" 
+                      type="number" 
+                      min="0" 
+                      step="0.01"
+                          className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors" 
+                      required 
+                    />
+                  </div>
+                  <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">MRP (₹)</label>
+                    <input 
+                      name="mrp" 
+                      value={form.mrp} 
+                      onChange={handleChange} 
+                      placeholder="1299" 
+                      type="number" 
+                      min="0" 
+                      step="0.01"
+                          className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors" 
+                    />
+                  </div>
+                  <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Units in Stock *</label>
+                    <input 
+                      name="unitsInStock" 
+                      value={form.unitsInStock} 
+                      onChange={handleChange} 
+                      placeholder="100" 
+                      type="number" 
+                      min="0"
+                          className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors" 
+                      required 
+                    />
+                  </div>
+                </div>
+              </div>
 
-                  {/* Category Selection */}
+              {/* Category Selection */}
                   <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-xl border border-purple-200">
                     <div className="flex items-center mb-4">
                       <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center mr-3">
@@ -447,41 +447,41 @@ const SellOnAmazonPage = () => {
                       <h3 className="text-xl font-semibold text-gray-900">Category & Classification</h3>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
+                  <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-2">Category *</label>
-                        <select 
-                          name="category" 
-                          value={form.category} 
-                          onChange={(e) => handleCategoryChange(e.target.value)}
+                    <select 
+                      name="category" 
+                      value={form.category} 
+                      onChange={(e) => handleCategoryChange(e.target.value)}
                           className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
-                          required
-                        >
-                          <option value="">Select Category</option>
-                          <option value="Electronics">Electronics</option>
-                          <option value="Personal Care">Personal Care</option>
-                          <option value="Grocery">Grocery</option>
-                          <option value="Other">Other</option>
-                        </select>
+                      required
+                    >
+                      <option value="">Select Category</option>
+                      <option value="Electronics">Electronics</option>
+                      <option value="Personal Care">Personal Care</option>
+                      <option value="Grocery">Grocery</option>
+                      <option value="Other">Other</option>
+                    </select>
                         <p className="text-xs text-gray-500 mt-2">Our ML model is optimized for Electronics, Personal Care, and Grocery</p>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">Subcategory</label>
-                        <select 
-                          name="subCategory" 
-                          value={form.subCategory} 
-                          onChange={handleChange}
-                          className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
-                        >
-                          <option value="">Select Subcategory</option>
-                          {form.category && categoryPresets[form.category as keyof typeof categoryPresets]?.subCategories.map(sub => (
-                            <option key={sub} value={sub}>{sub}</option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
                   </div>
+                  <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Subcategory</label>
+                    <select 
+                      name="subCategory" 
+                      value={form.subCategory} 
+                      onChange={handleChange}
+                          className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                    >
+                      <option value="">Select Subcategory</option>
+                      {form.category && categoryPresets[form.category as keyof typeof categoryPresets]?.subCategories.map(sub => (
+                        <option key={sub} value={sub}>{sub}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
 
-                  {/* Sustainability Parameters */}
+              {/* Sustainability Parameters */}
                   <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-xl border border-green-200">
                     <div className="flex items-center mb-4">
                       <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-3">
@@ -492,92 +492,92 @@ const SellOnAmazonPage = () => {
                       <h3 className="text-xl font-semibold text-gray-900">Sustainability Parameters</h3>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
+                  <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-2">Weight (kg) *</label>
-                        <input 
-                          name="weight" 
-                          value={form.weight} 
-                          onChange={handleChange} 
-                          placeholder="0.5" 
-                          type="number" 
-                          min="0" 
+                    <input 
+                      name="weight" 
+                      value={form.weight} 
+                      onChange={handleChange} 
+                      placeholder="0.5" 
+                      type="number" 
+                      min="0" 
                           step="0.1"
                           className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors" 
-                          required 
-                        />
-                      </div>
-                      <div>
+                      required 
+                    />
+                  </div>
+                  <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-2">Distance (km) *</label>
-                        <input 
-                          name="distance" 
-                          value={form.distance} 
-                          onChange={handleChange} 
+                    <input 
+                      name="distance" 
+                      value={form.distance} 
+                      onChange={handleChange} 
                           placeholder="100" 
-                          type="number" 
-                          min="0" 
+                      type="number" 
+                      min="0"
                           step="0.1"
                           className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors" 
-                          required 
-                        />
-                      </div>
-                      <div>
+                      required 
+                    />
+                  </div>
+                  <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-2">Lifespan (years)</label>
-                        <input 
-                          name="lifespan" 
-                          value={form.lifespan} 
-                          onChange={handleChange} 
-                          placeholder="3" 
-                          type="number" 
-                          min="0" 
-                          step="0.1"
+                    <input 
+                      name="lifespan" 
+                      value={form.lifespan} 
+                      onChange={handleChange} 
+                      placeholder="3" 
+                      type="number" 
+                      min="0" 
+                      step="0.1"
                           className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors" 
-                        />
-                      </div>
-                      <div>
+                    />
+                  </div>
+                  <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-2">Packaging</label>
-                        <select 
-                          name="packaging" 
-                          value={form.packaging} 
-                          onChange={handleChange}
+                    <select 
+                      name="packaging" 
+                      value={form.packaging} 
+                      onChange={handleChange}
                           className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
-                        >
-                          <option value="">Select Packaging</option>
-                          <option value="Cardboard box">Cardboard box</option>
-                          <option value="Plastic bag">Plastic bag</option>
-                          <option value="Glass container">Glass container</option>
-                          <option value="Plastic bottle">Plastic bottle</option>
-                          <option value="Paper bag">Paper bag</option>
-                          <option value="Styrofoam">Styrofoam</option>
-                          <option value="Plastic bubble wrap">Plastic bubble wrap</option>
-                        </select>
-                      </div>
-                    </div>
+                    >
+                      <option value="">Select Packaging</option>
+                      <option value="Cardboard box">Cardboard box</option>
+                      <option value="Plastic bag">Plastic bag</option>
+                      <option value="Glass container">Glass container</option>
+                      <option value="Plastic bottle">Plastic bottle</option>
+                      <option value="Paper bag">Paper bag</option>
+                      <option value="Styrofoam">Styrofoam</option>
+                      <option value="Plastic bubble wrap">Plastic bubble wrap</option>
+                    </select>
+                  </div>
+                </div>
 
                     <div className="mt-6 space-y-4">
-                      <div className="flex items-center">
-                        <input 
-                          name="recyclability" 
-                          type="checkbox" 
-                          checked={!!form.recyclability} 
-                          onChange={handleChange} 
+                  <div className="flex items-center">
+                    <input 
+                      name="recyclability" 
+                      type="checkbox" 
+                      checked={!!form.recyclability} 
+                      onChange={handleChange} 
                           className="h-5 w-5 text-green-600 focus:ring-green-500 border-gray-300 rounded transition-colors" 
-                        />
+                    />
                         <label className="ml-3 text-sm font-medium text-gray-700">Product is recyclable</label>
-                      </div>
-                      <div className="flex items-center">
-                        <input 
-                          name="repairability" 
-                          type="checkbox" 
-                          checked={!!form.repairability} 
-                          onChange={handleChange} 
-                          className="h-5 w-5 text-green-600 focus:ring-green-500 border-gray-300 rounded transition-colors" 
-                        />
-                        <label className="ml-3 text-sm font-medium text-gray-700">Product is repairable</label>
-                      </div>
-                    </div>
                   </div>
+                  <div className="flex items-center">
+                    <input 
+                      name="repairability" 
+                      type="checkbox" 
+                      checked={!!form.repairability} 
+                      onChange={handleChange} 
+                          className="h-5 w-5 text-green-600 focus:ring-green-500 border-gray-300 rounded transition-colors" 
+                    />
+                        <label className="ml-3 text-sm font-medium text-gray-700">Product is repairable</label>
+                  </div>
+                </div>
+              </div>
 
-                  {/* Material Composition */}
+              {/* Material Composition */}
                   <div className="bg-gradient-to-br from-yellow-50 to-orange-50 p-6 rounded-xl border border-yellow-200">
                     <div className="flex items-center mb-4">
                       <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center mr-3">
@@ -587,32 +587,32 @@ const SellOnAmazonPage = () => {
                       </div>
                       <h3 className="text-xl font-semibold text-gray-900">Material Composition</h3>
                     </div>
-                    <div>
+                <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">Material Composition *</label>
-                      <select 
-                        name="materialComposition" 
-                        value={form.materialComposition} 
-                        onChange={handleChange}
+                  <select 
+                    name="materialComposition" 
+                    value={form.materialComposition} 
+                    onChange={handleChange}
                         className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
-                        required
-                      >
-                        <option value="">Select Material Composition</option>
-                        <option value="Plastic:90, Organic:10">Plastic:90, Organic:10</option>
-                        <option value="Aluminum:60, Plastic:30, Steel:10">Aluminum:60, Plastic:30, Steel:10</option>
-                        <option value="Organic:100">Organic:100</option>
-                        <option value="Glass:70, Plastic:30">Glass:70, Plastic:30</option>
+                    required
+                  >
+                    <option value="">Select Material Composition</option>
+                    <option value="Plastic:90, Organic:10">Plastic:90, Organic:10</option>
+                    <option value="Aluminum:60, Plastic:30, Steel:10">Aluminum:60, Plastic:30, Steel:10</option>
+                    <option value="Organic:100">Organic:100</option>
+                    <option value="Glass:70, Plastic:30">Glass:70, Plastic:30</option>
                         <option value="Plastic:80, Steel:20">Plastic:80, Steel:20</option>
-                        <option value="Organic:80, Plastic:20">Organic:80, Plastic:20</option>
-                        <option value="Glass:90, Plastic:10">Glass:90, Plastic:10</option>
-                        <option value="Plastic:70, Aluminum:20, Glass:10">Plastic:70, Aluminum:20, Glass:10</option>
+                    <option value="Organic:80, Plastic:20">Organic:80, Plastic:20</option>
+                    <option value="Glass:90, Plastic:10">Glass:90, Plastic:10</option>
+                    <option value="Plastic:70, Aluminum:20, Glass:10">Plastic:70, Aluminum:20, Glass:10</option>
                         <option value="Steel:50, Plastic:30, Copper:20">Steel:50, Plastic:30, Copper:20</option>
                         <option value="Silicon:40, Plastic:40, Steel:20">Silicon:40, Plastic:40, Steel:20</option>
-                      </select>
+                  </select>
                       <p className="text-xs text-gray-500 mt-2">Format: Material:Percentage, Material:Percentage (e.g., Plastic:70, Aluminum:30)</p>
-                    </div>
-                  </div>
+                </div>
+              </div>
 
-                  {/* Product Description */}
+              {/* Product Description */}
                   <div className="bg-gradient-to-br from-indigo-50 to-blue-50 p-6 rounded-xl border border-indigo-200">
                     <div className="flex items-center mb-4">
                       <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center mr-3">
@@ -622,18 +622,18 @@ const SellOnAmazonPage = () => {
                       </div>
                       <h3 className="text-xl font-semibold text-gray-900">Product Description</h3>
                     </div>
-                    <div>
+                <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">Product Points (one per line)</label>
-                      <textarea 
-                        name="points" 
-                        value={form.points} 
-                        onChange={handleChange} 
-                        placeholder="• High quality product&#10;• Eco-friendly packaging&#10;• Long lasting" 
+                  <textarea 
+                    name="points" 
+                    value={form.points} 
+                    onChange={handleChange} 
+                    placeholder="• High quality product&#10;• Eco-friendly packaging&#10;• Long lasting" 
                         className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors" 
-                        rows={4} 
-                      />
-                    </div>
-                  </div>
+                    rows={4} 
+                  />
+                </div>
+              </div>
 
                   {/* CO2 Calculation Button and Results */}
                   <div className="bg-gradient-to-br from-emerald-50 to-teal-50 p-6 rounded-xl border border-emerald-200">
@@ -728,18 +728,18 @@ const SellOnAmazonPage = () => {
 
                   {/* Form Actions */}
                   <div className="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4">
-                    <button 
-                      type="button" 
-                      onClick={() => setShowAddProduct(false)}
+                <button 
+                  type="button" 
+                  onClick={() => setShowAddProduct(false)}
                       className="px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
-                    >
-                      Cancel
-                    </button>
-                    <button 
-                      type="submit" 
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit" 
                       className="px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-semibold hover:from-orange-600 hover:to-red-600 transform hover:scale-105 transition-all duration-200 shadow-lg" 
-                      disabled={loading}
-                    >
+                  disabled={loading}
+                >
                       {loading ? (
                         <div className="flex items-center">
                           <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
@@ -748,12 +748,12 @@ const SellOnAmazonPage = () => {
                       ) : (
                         'Add Product'
                       )}
-                    </button>
-                  </div>
-                </form>
+                </button>
               </div>
-            </div>
-          )}
+            </form>
+              </div>
+          </div>
+        )}
 
           {/* Dashboard Content */}
           <SellerDashboardPage refreshTrigger={refreshTrigger} />
