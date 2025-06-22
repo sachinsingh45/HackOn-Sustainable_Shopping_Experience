@@ -16,9 +16,11 @@
 Our next-generation e-commerce platform integrates seamlessly with Amazon to empower intelligent, sustainable shopping decisions. We've built a comprehensive solution that combines convenience with environmental consciousness through four key features:
 
 - **🔍 Green Lens** - Analyze environmental impact and sustainability metrics of products in real-time
-- **🛒 Green Store** - Discover curated eco-friendly alternatives with verified sustainability credentials  
-- **🤝 Group Buy** - Save money and reduce environmental impact through collective purchasing power
+- **🛒 Green Store** - Discover curated eco-friendly alternatives with verified sustainability credentials
+- **🤝 Green Partner** - Smart shopping companion, transforms your cart analysis into actionable eco-swaps, personalized challenges, and live carbon tracking
+- **💰 Group Buy** - Save money and reduce environmental impact through collective purchasing power
 - **🎮 Eco Challenges** - Gamified experiences that motivate customers to adopt eco-friendly shopping habits
+- **📊 Green Bridge** - Sellers unlock sustainability analytics, dive into environmental impact with insights on packaging waste, emissions, and recyclability metrics
 
 Our platform bridges the gap between online shopping convenience and sustainability analytics, providing both buyers and sellers with powerful tools to reduce their carbon footprint while making smarter purchasing decisions.
 
@@ -30,10 +32,9 @@ Our platform bridges the gap between online shopping convenience and sustainabil
 ### For the Customers:
 
 - **Green Store:** Browse a curated selection of eco-friendly products, filter by eco features (biodegradable, recycled, carbon neutral, etc.), and see transparent sustainability metrics.
-- **Green Lens:** Instantly scan and view the environmental impact of any product.
-- **Green Partner AI:** Analyze your cart and show suggestions
+- **Green Lens:** Enter the product details and view the environmental impact of any product.
+- **Green Partner AI:** Analyze your cart and show eco-friendly alternatives, eco-challenges and your carbon footprint.
 - **Group Buy:** Team up with others to buy in bulk, save up to 40%, and reduce packaging waste.
-- **Group Chat:** 
 - **Eco Challenges:** Take on fun, rewarding challenges (e.g., "Buy 1 eco-friendly product today", "Save 5kg CO₂ this week") and earn digital badges.
 - **Order History & Impact:** Track your past orders, see your cumulative CO₂ savings, and monitor your progress over time.
 - **Profile Dashboard:** View your eco-score, carbon saved, money saved, badges earned and challenge progress.
@@ -42,10 +43,8 @@ Our platform bridges the gap between online shopping convenience and sustainabil
 
 - **GreenBridge Dashboard:** 
   - **GreenScore Analytics:** Get insights on packaging waste, return rates, CO₂ emissions, and recyclability for each product.
-  - **Eco-Optimization Tips:** Receive AI-powered suggestions to improve your sustainability profile.
   - **Climate Pledge Friendly:** Access checklists and nudges to earn green certifications and boost product visibility.
   - **Seller Community:** Share best practices, success stories, and connect with other sustainable sellers.
-
 
 ---
 
@@ -141,10 +140,6 @@ Our platform bridges the gap between online shopping convenience and sustainabil
 - **Transparent Impact:** Real data, real rewards—no greenwashing.
 - **Community-Driven:** Group buys, challenges, and forums foster a sense of shared mission.
 - **AI-Enhanced:** Smart recommendations and support for both shoppers and sellers.
-
----
-
-## Future Scope:
 
 ---
 
