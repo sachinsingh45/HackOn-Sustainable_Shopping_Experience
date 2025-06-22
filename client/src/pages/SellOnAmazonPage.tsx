@@ -323,346 +323,441 @@ const SellOnAmazonPage = () => {
 
   if (user) {
     return (
-      <div className="max-w-5xl mx-auto py-12">
-        <h2 className="text-3xl font-bold mb-6">Seller Dashboard</h2>
-        <button
-          className="mb-6 bg-orange-600 text-white px-6 py-2 rounded font-semibold hover:bg-orange-700 transition-colors"
-          onClick={() => setShowAddProduct(v => !v)}
-        >
-          {showAddProduct ? 'Close Add Product' : 'Add Product'}
-        </button>
-        {showAddProduct && (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+          {/* Header Section */}
           <div className="mb-8">
-            <form onSubmit={handleSubmit} className="space-y-6 bg-white p-8 rounded-lg shadow-lg border">
-              <div className="text-center mb-6">
-                <h3 className="text-2xl font-bold text-gray-900">Add New Product</h3>
-                <p className="text-gray-600 mt-2">Fill in the details below to list your product</p>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+                  Seller Dashboard
+                </h1>
+                <p className="text-gray-600 text-lg">
+                  Manage your products and track your sustainability impact
+                </p>
               </div>
-
-              {/* Basic Information */}
-              <div className="bg-gray-50 p-6 rounded-lg">
-                <h4 className="text-lg font-semibold mb-4 text-gray-900">Basic Information</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Product Name *</label>
-                    <input 
-                      name="name" 
-                      value={form.name} 
-                      onChange={handleChange} 
-                      placeholder="Enter product name" 
-                      className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
-                      required 
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Image URL *</label>
-                    <input 
-                      name="url" 
-                      value={form.url} 
-                      onChange={handleChange} 
-                      placeholder="https://example.com/image.jpg" 
-                      className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
-                      required 
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Price (₹) *</label>
-                    <input 
-                      name="price" 
-                      value={form.price} 
-                      onChange={handleChange} 
-                      placeholder="999" 
-                      type="number" 
-                      min="0" 
-                      step="0.01"
-                      className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
-                      required 
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">MRP (₹)</label>
-                    <input 
-                      name="mrp" 
-                      value={form.mrp} 
-                      onChange={handleChange} 
-                      placeholder="1299" 
-                      type="number" 
-                      min="0" 
-                      step="0.01"
-                      className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Units in Stock *</label>
-                    <input 
-                      name="unitsInStock" 
-                      value={form.unitsInStock} 
-                      onChange={handleChange} 
-                      placeholder="100" 
-                      type="number" 
-                      min="0"
-                      className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
-                      required 
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Category Selection */}
-              <div className="bg-gray-50 p-6 rounded-lg">
-                <h4 className="text-lg font-semibold mb-4 text-gray-900">Category & Classification</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Category *</label>
-                    <select 
-                      name="category" 
-                      value={form.category} 
-                      onChange={(e) => handleCategoryChange(e.target.value)}
-                      className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
-                      required
-                    >
-                      <option value="">Select Category</option>
-                      <option value="Electronics">Electronics</option>
-                      <option value="Personal Care">Personal Care</option>
-                      <option value="Grocery">Grocery</option>
-                      <option value="Other">Other</option>
-                    </select>
-                    <p className="text-xs text-gray-500 mt-1">Our ML model is optimized for Electronics, Personal Care, and Grocery</p>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Subcategory</label>
-                    <select 
-                      name="subCategory" 
-                      value={form.subCategory} 
-                      onChange={handleChange}
-                      className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
-                    >
-                      <option value="">Select Subcategory</option>
-                      {form.category && categoryPresets[form.category as keyof typeof categoryPresets]?.subCategories.map(sub => (
-                        <option key={sub} value={sub}>{sub}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              {/* Sustainability Parameters */}
-              <div className="bg-gray-50 p-6 rounded-lg">
-                <h4 className="text-lg font-semibold mb-4 text-gray-900">Sustainability Parameters</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Weight (kg) *</label>
-                    <input 
-                      name="weight" 
-                      value={form.weight} 
-                      onChange={handleChange} 
-                      placeholder="0.5" 
-                      type="number" 
-                      min="0" 
-                      step="0.1"
-                      className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
-                      required 
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Distance (km) *</label>
-                    <input 
-                      name="distance" 
-                      value={form.distance} 
-                      onChange={handleChange} 
-                      placeholder="100" 
-                      type="number" 
-                      min="0" 
-                      step="0.1"
-                      className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
-                      required 
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Lifespan (years)</label>
-                    <input 
-                      name="lifespan" 
-                      value={form.lifespan} 
-                      onChange={handleChange} 
-                      placeholder="3" 
-                      type="number" 
-                      min="0" 
-                      step="0.1"
-                      className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Packaging</label>
-                    <select 
-                      name="packaging" 
-                      value={form.packaging} 
-                      onChange={handleChange}
-                      className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
-                    >
-                      <option value="">Select Packaging</option>
-                      <option value="Cardboard box">Cardboard box</option>
-                      <option value="Plastic bag">Plastic bag</option>
-                      <option value="Glass container">Glass container</option>
-                      <option value="Plastic bottle">Plastic bottle</option>
-                      <option value="Paper bag">Paper bag</option>
-                      <option value="Styrofoam">Styrofoam</option>
-                      <option value="Plastic bubble wrap">Plastic bubble wrap</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="mt-4 space-y-2">
-                  <div className="flex items-center">
-                    <input 
-                      name="recyclability" 
-                      type="checkbox" 
-                      checked={!!form.recyclability} 
-                      onChange={handleChange} 
-                      className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded" 
-                    />
-                    <label className="ml-2 text-sm text-gray-700">Product is recyclable</label>
-                  </div>
-                  <div className="flex items-center">
-                    <input 
-                      name="repairability" 
-                      type="checkbox" 
-                      checked={!!form.repairability} 
-                      onChange={handleChange} 
-                      className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded" 
-                    />
-                    <label className="ml-2 text-sm text-gray-700">Product is repairable</label>
-                  </div>
-                </div>
-              </div>
-
-              {/* Material Composition */}
-              <div className="bg-gray-50 p-6 rounded-lg">
-                <h4 className="text-lg font-semibold mb-4 text-gray-900">Material Composition</h4>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Material Composition *</label>
-                  <select 
-                    name="materialComposition" 
-                    value={form.materialComposition} 
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
-                    required
-                  >
-                    <option value="">Select Material Composition</option>
-                    <option value="Plastic:90, Organic:10">Plastic:90, Organic:10</option>
-                    <option value="Aluminum:60, Plastic:30, Steel:10">Aluminum:60, Plastic:30, Steel:10</option>
-                    <option value="Organic:100">Organic:100</option>
-                    <option value="Glass:70, Plastic:30">Glass:70, Plastic:30</option>
-                    <option value="Plastic:80, Steel:20">Plastic:80, Steel:20</option>
-                    <option value="Organic:80, Plastic:20">Organic:80, Plastic:20</option>
-                    <option value="Glass:90, Plastic:10">Glass:90, Plastic:10</option>
-                    <option value="Plastic:70, Aluminum:20, Glass:10">Plastic:70, Aluminum:20, Glass:10</option>
-                    <option value="Steel:50, Plastic:30, Copper:20">Steel:50, Plastic:30, Copper:20</option>
-                    <option value="Silicon:40, Plastic:40, Steel:20">Silicon:40, Plastic:40, Steel:20</option>
-                  </select>
-                  <p className="text-xs text-gray-500 mt-1">Format: Material:Percentage, Material:Percentage (e.g., Plastic:70, Aluminum:30)</p>
-                </div>
-              </div>
-
-              {/* Product Description */}
-              <div className="bg-gray-50 p-6 rounded-lg">
-                <h4 className="text-lg font-semibold mb-4 text-gray-900">Product Description</h4>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Product Points (one per line)</label>
-                  <textarea 
-                    name="points" 
-                    value={form.points} 
-                    onChange={handleChange} 
-                    placeholder="• High quality product&#10;• Eco-friendly packaging&#10;• Long lasting" 
-                    className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
-                    rows={4} 
-                  />
-                </div>
-              </div>
-
-              {/* CO2 Calculation Button and Results */}
-              <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <h5 className="text-lg font-semibold text-green-800">CO2 Emission Calculator</h5>
-                    <p className="text-sm text-green-700 mt-1">
-                      Calculate your product's environmental impact before adding it. This uses our AI model to analyze 
-                      materials, weight, distance, and sustainability factors.
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={handleCalculateCO2}
-                    disabled={calculating}
-                    className="bg-green-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-                  >
-                    {calculating ? (
-                      <>
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                        Calculating...
-                      </>
-                    ) : (
-                      <>
-                        <Leaf className="h-4 w-4" />
-                        Calculate CO2 Emission
-                      </>
-                    )}
-                  </button>
-                </div>
-                
-                {calculatedValues.carbonFootprint !== null && (
-                  <div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div className="text-center p-3 bg-white rounded-lg border">
-                        <div className="text-2xl font-bold text-green-600">
-                          {calculatedValues.carbonFootprint} kg
-                        </div>
-                        <div className="text-sm text-gray-600">Carbon Footprint</div>
-                      </div>
-                      <div className="text-center p-3 bg-white rounded-lg border">
-                        <div className="text-2xl font-bold text-blue-600">
-                          {calculatedValues.ecoScore?.toFixed(1)}%
-                        </div>
-                        <div className="text-sm text-gray-600">Eco Score</div>
-                      </div>
-                      <div className="text-center p-3 bg-white rounded-lg border">
-                        <div className="text-2xl font-bold text-orange-600">
-                          {calculatedValues.isEcoFriendly ? 'Yes' : 'No'}
-                        </div>
-                        <div className="text-sm text-gray-600">Eco Friendly</div>
-                      </div>
-                    </div>
-                    <div className="mt-3 p-2 bg-blue-50 rounded border border-blue-200">
-                      <p className="text-xs text-blue-700 text-center">
-                        ✓ These calculated values will be automatically used when you submit the product
-                      </p>
-                    </div>
-                  </div>
-                )}
-                
-                {message && <div className="text-green-600 font-medium mt-4 p-3 bg-green-100 rounded-md">{message}</div>}
-                {error && <div className="text-red-600 font-medium mt-4 p-3 bg-red-100 rounded-md">{error}</div>}
-              </div>
-
-              <div className="flex justify-end space-x-4">
-                <button 
-                  type="button" 
-                  onClick={() => setShowAddProduct(false)}
-                  className="px-6 py-3 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+              <div className="mt-4 sm:mt-0">
+                <button
+                  className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-lg shadow-lg hover:from-orange-600 hover:to-red-600 transform hover:scale-105 transition-all duration-200"
+                  onClick={() => setShowAddProduct(v => !v)}
                 >
-                  Cancel
-                </button>
-                <button 
-                  type="submit" 
-                  className="bg-orange-600 text-white px-8 py-3 rounded-md font-semibold hover:bg-orange-700 transition-colors" 
-                  disabled={loading}
-                >
-                  {loading ? 'Adding Product...' : 'Add Product'}
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                  {showAddProduct ? 'Close Form' : 'Add New Product'}
                 </button>
               </div>
-            </form>
+            </div>
           </div>
-        )}
-        <SellerDashboardPage refreshTrigger={refreshTrigger} />
+
+          {/* Add Product Form */}
+          {showAddProduct && (
+            <div className="mb-8">
+              <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+                <div className="bg-gradient-to-r from-green-500 to-blue-500 px-6 py-4">
+                  <h2 className="text-2xl font-bold text-white">Add New Product</h2>
+                  <p className="text-green-100 mt-1">Fill in the details below to list your product</p>
+                </div>
+                
+                <form onSubmit={handleSubmit} className="p-6 space-y-8">
+                  {/* Basic Information */}
+                  <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-200">
+                    <div className="flex items-center mb-4">
+                      <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center mr-3">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      <h3 className="text-xl font-semibold text-gray-900">Basic Information</h3>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Product Name *</label>
+                        <input 
+                          name="name" 
+                          value={form.name} 
+                          onChange={handleChange} 
+                          placeholder="Enter product name" 
+                          className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors" 
+                          required 
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Image URL *</label>
+                        <input 
+                          name="url" 
+                          value={form.url} 
+                          onChange={handleChange} 
+                          placeholder="https://example.com/image.jpg" 
+                          className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors" 
+                          required 
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Price (₹) *</label>
+                        <input 
+                          name="price" 
+                          value={form.price} 
+                          onChange={handleChange} 
+                          placeholder="999" 
+                          type="number" 
+                          min="0" 
+                          step="0.01"
+                          className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors" 
+                          required 
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">MRP (₹)</label>
+                        <input 
+                          name="mrp" 
+                          value={form.mrp} 
+                          onChange={handleChange} 
+                          placeholder="1299" 
+                          type="number" 
+                          min="0" 
+                          step="0.01"
+                          className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors" 
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Units in Stock *</label>
+                        <input 
+                          name="unitsInStock" 
+                          value={form.unitsInStock} 
+                          onChange={handleChange} 
+                          placeholder="100" 
+                          type="number" 
+                          min="0"
+                          className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors" 
+                          required 
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Category Selection */}
+                  <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-xl border border-purple-200">
+                    <div className="flex items-center mb-4">
+                      <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center mr-3">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                        </svg>
+                      </div>
+                      <h3 className="text-xl font-semibold text-gray-900">Category & Classification</h3>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Category *</label>
+                        <select 
+                          name="category" 
+                          value={form.category} 
+                          onChange={(e) => handleCategoryChange(e.target.value)}
+                          className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                          required
+                        >
+                          <option value="">Select Category</option>
+                          <option value="Electronics">Electronics</option>
+                          <option value="Personal Care">Personal Care</option>
+                          <option value="Grocery">Grocery</option>
+                          <option value="Other">Other</option>
+                        </select>
+                        <p className="text-xs text-gray-500 mt-2">Our ML model is optimized for Electronics, Personal Care, and Grocery</p>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Subcategory</label>
+                        <select 
+                          name="subCategory" 
+                          value={form.subCategory} 
+                          onChange={handleChange}
+                          className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                        >
+                          <option value="">Select Subcategory</option>
+                          {form.category && categoryPresets[form.category as keyof typeof categoryPresets]?.subCategories.map(sub => (
+                            <option key={sub} value={sub}>{sub}</option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Sustainability Parameters */}
+                  <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-xl border border-green-200">
+                    <div className="flex items-center mb-4">
+                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                      </div>
+                      <h3 className="text-xl font-semibold text-gray-900">Sustainability Parameters</h3>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Weight (kg) *</label>
+                        <input 
+                          name="weight" 
+                          value={form.weight} 
+                          onChange={handleChange} 
+                          placeholder="0.5" 
+                          type="number" 
+                          min="0" 
+                          step="0.1"
+                          className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors" 
+                          required 
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Distance (km) *</label>
+                        <input 
+                          name="distance" 
+                          value={form.distance} 
+                          onChange={handleChange} 
+                          placeholder="100" 
+                          type="number" 
+                          min="0" 
+                          step="0.1"
+                          className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors" 
+                          required 
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Lifespan (years)</label>
+                        <input 
+                          name="lifespan" 
+                          value={form.lifespan} 
+                          onChange={handleChange} 
+                          placeholder="3" 
+                          type="number" 
+                          min="0" 
+                          step="0.1"
+                          className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors" 
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Packaging</label>
+                        <select 
+                          name="packaging" 
+                          value={form.packaging} 
+                          onChange={handleChange}
+                          className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                        >
+                          <option value="">Select Packaging</option>
+                          <option value="Cardboard box">Cardboard box</option>
+                          <option value="Plastic bag">Plastic bag</option>
+                          <option value="Glass container">Glass container</option>
+                          <option value="Plastic bottle">Plastic bottle</option>
+                          <option value="Paper bag">Paper bag</option>
+                          <option value="Styrofoam">Styrofoam</option>
+                          <option value="Plastic bubble wrap">Plastic bubble wrap</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="mt-6 space-y-4">
+                      <div className="flex items-center">
+                        <input 
+                          name="recyclability" 
+                          type="checkbox" 
+                          checked={!!form.recyclability} 
+                          onChange={handleChange} 
+                          className="h-5 w-5 text-green-600 focus:ring-green-500 border-gray-300 rounded transition-colors" 
+                        />
+                        <label className="ml-3 text-sm font-medium text-gray-700">Product is recyclable</label>
+                      </div>
+                      <div className="flex items-center">
+                        <input 
+                          name="repairability" 
+                          type="checkbox" 
+                          checked={!!form.repairability} 
+                          onChange={handleChange} 
+                          className="h-5 w-5 text-green-600 focus:ring-green-500 border-gray-300 rounded transition-colors" 
+                        />
+                        <label className="ml-3 text-sm font-medium text-gray-700">Product is repairable</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Material Composition */}
+                  <div className="bg-gradient-to-br from-yellow-50 to-orange-50 p-6 rounded-xl border border-yellow-200">
+                    <div className="flex items-center mb-4">
+                      <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center mr-3">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                        </svg>
+                      </div>
+                      <h3 className="text-xl font-semibold text-gray-900">Material Composition</h3>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">Material Composition *</label>
+                      <select 
+                        name="materialComposition" 
+                        value={form.materialComposition} 
+                        onChange={handleChange}
+                        className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                        required
+                      >
+                        <option value="">Select Material Composition</option>
+                        <option value="Plastic:90, Organic:10">Plastic:90, Organic:10</option>
+                        <option value="Aluminum:60, Plastic:30, Steel:10">Aluminum:60, Plastic:30, Steel:10</option>
+                        <option value="Organic:100">Organic:100</option>
+                        <option value="Glass:70, Plastic:30">Glass:70, Plastic:30</option>
+                        <option value="Plastic:80, Steel:20">Plastic:80, Steel:20</option>
+                        <option value="Organic:80, Plastic:20">Organic:80, Plastic:20</option>
+                        <option value="Glass:90, Plastic:10">Glass:90, Plastic:10</option>
+                        <option value="Plastic:70, Aluminum:20, Glass:10">Plastic:70, Aluminum:20, Glass:10</option>
+                        <option value="Steel:50, Plastic:30, Copper:20">Steel:50, Plastic:30, Copper:20</option>
+                        <option value="Silicon:40, Plastic:40, Steel:20">Silicon:40, Plastic:40, Steel:20</option>
+                      </select>
+                      <p className="text-xs text-gray-500 mt-2">Format: Material:Percentage, Material:Percentage (e.g., Plastic:70, Aluminum:30)</p>
+                    </div>
+                  </div>
+
+                  {/* Product Description */}
+                  <div className="bg-gradient-to-br from-indigo-50 to-blue-50 p-6 rounded-xl border border-indigo-200">
+                    <div className="flex items-center mb-4">
+                      <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center mr-3">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                      </div>
+                      <h3 className="text-xl font-semibold text-gray-900">Product Description</h3>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">Product Points (one per line)</label>
+                      <textarea 
+                        name="points" 
+                        value={form.points} 
+                        onChange={handleChange} 
+                        placeholder="• High quality product&#10;• Eco-friendly packaging&#10;• Long lasting" 
+                        className="w-full border-2 border-gray-300 p-4 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors" 
+                        rows={4} 
+                      />
+                    </div>
+                  </div>
+
+                  {/* CO2 Calculation Button and Results */}
+                  <div className="bg-gradient-to-br from-emerald-50 to-teal-50 p-6 rounded-xl border border-emerald-200">
+                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
+                      <div className="mb-4 lg:mb-0">
+                        <div className="flex items-center mb-2">
+                          <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center mr-3">
+                            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </div>
+                          <h3 className="text-xl font-semibold text-gray-900">CO2 Emission Calculator</h3>
+                        </div>
+                        <p className="text-sm text-gray-600">
+                          Calculate your product's environmental impact before adding it. This uses our AI model to analyze 
+                          materials, weight, distance, and sustainability factors.
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleCalculateCO2}
+                        disabled={calculating}
+                        className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold rounded-lg shadow-lg hover:from-emerald-600 hover:to-teal-600 transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                      >
+                        {calculating ? (
+                          <>
+                            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                            Calculating...
+                          </>
+                        ) : (
+                          <>
+                            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            Calculate CO2 Emission
+                          </>
+                        )}
+                      </button>
+                    </div>
+                    
+                    {calculatedValues.carbonFootprint !== null && (
+                      <div>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                          <div className="text-center p-6 bg-white rounded-xl border border-emerald-200 shadow-lg">
+                            <div className="text-3xl font-bold text-emerald-600 mb-2">
+                              {calculatedValues.carbonFootprint} kg
+                            </div>
+                            <div className="text-sm text-gray-600 font-medium">Carbon Footprint</div>
+                          </div>
+                          <div className="text-center p-6 bg-white rounded-xl border border-blue-200 shadow-lg">
+                            <div className="text-3xl font-bold text-blue-600 mb-2">
+                              {calculatedValues.ecoScore?.toFixed(1)}%
+                            </div>
+                            <div className="text-sm text-gray-600 font-medium">Eco Score</div>
+                          </div>
+                          <div className="text-center p-6 bg-white rounded-xl border border-orange-200 shadow-lg">
+                            <div className="text-3xl font-bold text-orange-600 mb-2">
+                              {calculatedValues.isEcoFriendly ? 'Yes' : 'No'}
+                            </div>
+                            <div className="text-sm text-gray-600 font-medium">Eco Friendly</div>
+                          </div>
+                        </div>
+                        <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                          <p className="text-sm text-blue-700 text-center font-medium">
+                            ✓ These calculated values will be automatically used when you submit the product
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {message && (
+                      <div className="mt-4 p-4 bg-green-50 rounded-lg border border-green-200">
+                        <div className="flex items-center">
+                          <svg className="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <span className="text-green-700 font-medium">{message}</span>
+                        </div>
+                      </div>
+                    )}
+                    {error && (
+                      <div className="mt-4 p-4 bg-red-50 rounded-lg border border-red-200">
+                        <div className="flex items-center">
+                          <svg className="w-5 h-5 text-red-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <span className="text-red-700 font-medium">{error}</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Form Actions */}
+                  <div className="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4">
+                    <button 
+                      type="button" 
+                      onClick={() => setShowAddProduct(false)}
+                      className="px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
+                    >
+                      Cancel
+                    </button>
+                    <button 
+                      type="submit" 
+                      className="px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-semibold hover:from-orange-600 hover:to-red-600 transform hover:scale-105 transition-all duration-200 shadow-lg" 
+                      disabled={loading}
+                    >
+                      {loading ? (
+                        <div className="flex items-center">
+                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                          Adding Product...
+                        </div>
+                      ) : (
+                        'Add Product'
+                      )}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* Dashboard Content */}
+          <SellerDashboardPage refreshTrigger={refreshTrigger} />
+        </div>
       </div>
     );
   }
