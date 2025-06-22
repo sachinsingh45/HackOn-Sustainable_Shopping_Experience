@@ -13,25 +13,33 @@ interface SellerProduct {
   url: string;
 }
 
-const SellerDashboardPage: React.FC = () => {
+interface SellerDashboardPageProps {
+  refreshTrigger?: number;
+}
+
+const SellerDashboardPage: React.FC<SellerDashboardPageProps> = ({ refreshTrigger = 0 }) => {
   const { user } = useStore();
   const [products, setProducts] = useState<SellerProduct[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string|null>(null);
 
-  useEffect(() => {
+  const fetchProducts = async () => {
     if (!user) return;
     setLoading(true);
     setError(null);
-    axios.get('http://localhost:8000/api/seller/products', { withCredentials: true })
-      .then(res => {
-        setProducts(res.data.products || []);
-      })
-      .catch(err => {
-        setError(err.response?.data?.message || 'Failed to fetch products');
-      })
-      .finally(() => setLoading(false));
-  }, [user]);
+    try {
+      const res = await axios.get('http://localhost:8000/api/seller/products', { withCredentials: true });
+      setProducts(res.data.products || []);
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Failed to fetch products');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, [user, refreshTrigger]);
 
   if (!user) {
     return <div className="max-w-2xl mx-auto py-12 text-center text-lg">Please log in to view your seller dashboard.</div>;
@@ -53,6 +61,19 @@ const SellerDashboardPage: React.FC = () => {
   return (
     <div className="max-w-5xl mx-auto py-12">
       <h2 className="text-3xl font-bold mb-6">Seller Dashboard</h2>
+      
+      {/* ML Model Information */}
+      <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+        <div className="flex items-center gap-2 mb-2">
+          <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+          <h3 className="text-lg font-semibold text-blue-800">AI-Powered Sustainability Metrics</h3>
+        </div>
+        <p className="text-blue-700 text-sm">
+          All CO2 emissions and eco scores are calculated using our advanced machine learning model that analyzes 
+          material composition, weight, distance, recyclability, and other sustainability factors.
+        </p>
+      </div>
+      
       <div className="grid grid-cols-3 gap-6 mb-8">
         <div className="bg-white p-6 rounded shadow text-center">
           <div className="text-2xl font-bold">{totalSales}</div>
@@ -87,8 +108,20 @@ const SellerDashboardPage: React.FC = () => {
                 <td className="px-4 py-2 font-medium">{product.name}</td>
                 <td className="px-4 py-2">{product.salesCount}</td>
                 <td className="px-4 py-2">{product.unitsInStock}</td>
-                <td className="px-4 py-2">{product.ecoScore}</td>
-                <td className="px-4 py-2">{product.carbonFootprint}</td>
+                <td className="px-4 py-2">
+                  <span className={`px-2 py-1 rounded text-xs font-medium ${
+                    product.ecoScore >= 80 ? 'bg-green-100 text-green-800' :
+                    product.ecoScore >= 60 ? 'bg-yellow-100 text-yellow-800' :
+                    'bg-red-100 text-red-800'
+                  }`}>
+                    {product.ecoScore}%
+                  </span>
+                </td>
+                <td className="px-4 py-2">
+                  <span className="text-sm font-medium text-gray-700">
+                    {product.carbonFootprint} kg CO₂
+                  </span>
+                </td>
                 <td className="px-4 py-2">{product.price}</td>
               </tr>
             ))}

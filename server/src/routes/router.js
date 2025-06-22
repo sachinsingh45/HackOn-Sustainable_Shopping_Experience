@@ -1354,7 +1354,10 @@ router.post('/products', authenticate, async (req, res) => {
       recyclability,
       distance,
       lifespan,
-      repairability
+      repairability,
+      carbonFootprint,
+      ecoScore,
+      isEcoFriendly
     } = req.body;
 
     console.log('Parsed fields:', {
@@ -1373,48 +1376,6 @@ router.post('/products', authenticate, async (req, res) => {
 
     console.log('Parsed material composition:', parsedMaterialComposition);
 
-    // Convert material composition to ML server format
-    const mlMaterialFeatures = {
-      "Material_Aluminum": 0,
-      "Material_Silicon": 0,
-      "Material_Plastic": 0,
-      "Material_Glass": 0,
-      "Material_Steel": 0,
-      "Material_Organic": 0,
-      "Material_Copper": 0,
-      "Material_Insulation Foam": 0,
-      "Material_Paper": 0,
-      "Material_Cotton": 0
-    };
-
-    // Map parsed materials to ML server format
-    if (parsedMaterialComposition) {
-      Object.keys(parsedMaterialComposition).forEach(material => {
-        const percentage = parsedMaterialComposition[material];
-        const mlKey = `Material_${material}`;
-        if (mlMaterialFeatures.hasOwnProperty(mlKey)) {
-          mlMaterialFeatures[mlKey] = percentage;
-        }
-      });
-    }
-
-    console.log('ML material features:', mlMaterialFeatures);
-
-    // Prepare data for ML server
-    const mlPayload = {
-      "Weight (kg)": Number(weight),
-      "Distance (km)": Number(distance),
-      "Recyclable": recyclability ? 1 : 0,
-      "Repairable": repairability ? 1 : 0,
-      "Lifespan (yrs)": lifespan ? Number(lifespan) : 5,
-      "Packaging Used": packaging || "Cardboard box",
-      "Category": category || 'General',
-      "Subcategory": subCategory || '',
-      ...mlMaterialFeatures
-    };
-
-    console.log('ML payload:', mlPayload);
-
     // Validate required fields
     const requiredFields = ['name', 'price', 'url', 'weight', 'distance', 'packaging'];
     const missingFields = requiredFields.filter(field => !req.body[field]);
@@ -1428,29 +1389,139 @@ router.post('/products', authenticate, async (req, res) => {
       });
     }
 
-    // Call ML server
-    console.log('Calling ML server...');
-    console.log('ML payload being sent:', JSON.stringify(mlPayload, null, 2));
-    let mlRes;
-    try {
-      mlRes = await axios.post('http://127.0.0.1:8000/predict', mlPayload);
-      console.log('ML server response status:', mlRes.status);
-      console.log('ML server response headers:', mlRes.headers);
-      console.log('ML server response data:', mlRes.data);
-      console.log('ML server response data type:', typeof mlRes.data);
-    } catch (mlError) {
-      console.error('ML server error:', mlError);
-      console.error('ML server error response:', mlError.response?.data);
-      console.error('ML server error status:', mlError.response?.status);
-      return res.status(500).json({
-        status: false,
-        message: 'Failed to get ML predictions',
-        error: mlError.message || 'ML server error',
-        details: mlError.response?.data || 'No response data available'
-      });
-    }
+    // Check if client has already provided calculated values
+    let finalCarbonFootprint, finalEcoScore, finalIsEcoFriendly;
     
-    const { carbon_footprint, eco_score, isEcoFriendly } = mlRes.data;
+    if (carbonFootprint !== undefined && ecoScore !== undefined && isEcoFriendly !== undefined) {
+      // Use client-provided values
+      console.log('Using client-provided calculated values');
+      finalCarbonFootprint = carbonFootprint;
+      finalEcoScore = ecoScore;
+      finalIsEcoFriendly = isEcoFriendly;
+    } else {
+      // Calculate values using ML server
+      console.log('Calculating values using ML server...');
+      
+      // Convert material composition to ML server format
+      const mlMaterialFeatures = {
+        "Material_Plastic": 0,
+        "Material_Aluminum": 0,
+        "Material_Steel": 0,
+        "Material_Copper": 0,
+        "Material_Silicon": 0,
+        "Material_Organic": 0,
+        "Material_Glass": 0,
+        "Material_Insulation Foam": 0,
+        "Material_Drum Metal": 0
+      };
+
+      // Map parsed materials to ML server format
+      if (parsedMaterialComposition) {
+        Object.keys(parsedMaterialComposition).forEach(material => {
+          const percentage = parsedMaterialComposition[material];
+          const mlKey = `Material_${material}`;
+          if (mlMaterialFeatures.hasOwnProperty(mlKey)) {
+            mlMaterialFeatures[mlKey] = percentage;
+          }
+        });
+      }
+
+      console.log('ML material features:', mlMaterialFeatures);
+
+      // Prepare data for ML server
+      const mlPayload = {
+        "Weight (kg)": Number(weight),
+        "Distance (km)": Number(distance),
+        "Recyclable": recyclability ? 1 : 0,
+        "Repairable": repairability ? 1 : 0,
+        "Lifespan (yrs)": lifespan ? Number(lifespan) : 5,
+        "Packaging Used": packaging || "Cardboard box",
+        "Category": category || 'General',
+        "Subcategory": subCategory || '',
+        ...mlMaterialFeatures
+      };
+
+      console.log('ML payload:', mlPayload);
+
+      // Call ML server
+      console.log('Calling ML server...');
+      console.log('ML payload being sent:', JSON.stringify(mlPayload, null, 2));
+      let mlRes;
+      try {
+        mlRes = await axios.post('http://127.0.0.1:8001/predict', mlPayload);
+        console.log('ML server response status:', mlRes.status);
+        console.log('ML server response headers:', mlRes.headers);
+        console.log('ML server response data:', mlRes.data);
+        console.log('ML server response data type:', typeof mlRes.data);
+      } catch (mlError) {
+        console.error('ML server error:', mlError);
+        console.error('ML server error response:', mlError.response?.data);
+        console.error('ML server error status:', mlError.response?.status);
+        
+        // Handle different ML server error scenarios
+        if (mlError.response) {
+          const status = mlError.response.status;
+          const errorData = mlError.response.data;
+          
+          switch (status) {
+            case 400:
+              return res.status(400).json({
+                status: false,
+                message: 'Invalid product data for ML calculation',
+                error: errorData.detail || 'Please check your product specifications',
+                details: errorData
+              });
+            case 503:
+              return res.status(503).json({
+                status: false,
+                message: 'ML model is temporarily unavailable',
+                error: 'Please try again in a few minutes or contact support',
+                details: errorData
+              });
+            case 500:
+              return res.status(500).json({
+                status: false,
+                message: 'ML server internal error',
+                error: 'Please try again or contact support if the problem persists',
+                details: errorData
+              });
+            default:
+              return res.status(500).json({
+                status: false,
+                message: 'ML server error',
+                error: errorData.detail || `Server error (${status})`,
+                details: errorData
+              });
+          }
+        } else if (mlError.request) {
+          // Network error - ML server not reachable
+          return res.status(503).json({
+            status: false,
+            message: 'ML server is not available',
+            error: 'Cannot connect to ML server. Please ensure the ML server is running on port 8001.',
+            details: 'Network error - server not reachable'
+          });
+        } else {
+          // Other errors
+          return res.status(500).json({
+            status: false,
+            message: 'Failed to get ML predictions',
+            error: mlError.message || 'Unknown ML server error',
+            details: 'Request setup error'
+          });
+        }
+      }
+      
+      const { carbon_footprint, eco_score, isEcoFriendly, status, warning } = mlRes.data;
+      finalCarbonFootprint = carbon_footprint;
+      finalEcoScore = eco_score * 100; // Convert decimal to percentage
+      finalIsEcoFriendly = isEcoFriendly;
+      
+      // Log if fallback was used
+      if (status === 'fallback' && warning) {
+        console.warn('ML model used fallback calculation:', warning);
+      }
+    }
 
     // Create product (rating and reviews will use model defaults)
     const product = new Product({
@@ -1469,9 +1540,9 @@ router.post('/products', authenticate, async (req, res) => {
       distance,
       lifespan: lifespan ? Number(lifespan) : 5,
       repairability: !!repairability,
-      carbonFootprint: carbon_footprint,
-      ecoScore: eco_score * 100, // Convert decimal to percentage
-      isEcoFriendly: isEcoFriendly,
+      carbonFootprint: finalCarbonFootprint,
+      ecoScore: finalEcoScore,
+      isEcoFriendly: finalIsEcoFriendly,
       sellerId: req.userId,
       salesCount: 0
     });

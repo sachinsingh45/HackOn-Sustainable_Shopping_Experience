@@ -26,8 +26,19 @@ const SellOnAmazonPage = () => {
     repairability: false,
   });
   const [loading, setLoading] = useState(false);
+  const [calculating, setCalculating] = useState(false);
   const [message, setMessage] = useState<string|null>(null);
   const [error, setError] = useState<string|null>(null);
+  const [calculatedValues, setCalculatedValues] = useState<{
+    carbonFootprint: number | null;
+    ecoScore: number | null;
+    isEcoFriendly: boolean | null;
+  }>({
+    carbonFootprint: null,
+    ecoScore: null,
+    isEcoFriendly: null
+  });
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   // Category presets optimized for ML model
   const categoryPresets = {
@@ -96,11 +107,21 @@ const SellOnAmazonPage = () => {
         repairability: !!form.repairability,
         materialComposition: form.materialComposition,
         points: form.points ? form.points.split('\n') : [],
+        carbonFootprint: calculatedValues.carbonFootprint,
+        ecoScore: calculatedValues.ecoScore,
+        isEcoFriendly: calculatedValues.isEcoFriendly,
       }, { withCredentials: true });
-      setMessage('Product created successfully!');
+      setMessage('Product created successfully! Dashboard will refresh automatically.');
       setForm({
         name: '', price: '', mrp: '', url: '', category: '', subCategory: '', points: '', unitsInStock: '', weight: '', materialComposition: '', packaging: '', recyclability: false, distance: '', lifespan: '', repairability: false,
       });
+      setCalculatedValues({
+        carbonFootprint: null,
+        ecoScore: null,
+        isEcoFriendly: null
+      });
+      // Trigger dashboard refresh
+      setRefreshTrigger(prev => prev + 1);
     } catch (err: any) {
       setError(err.response?.data?.message || 'Failed to create product');
     } finally {
@@ -184,6 +205,121 @@ const SellOnAmazonPage = () => {
       recommended: true
     }
   ];
+
+  const handleCalculateCO2 = async () => {
+    // Validate required fields for calculation
+    const requiredFields = ['weight', 'distance', 'packaging', 'materialComposition'];
+    const missingFields = requiredFields.filter(field => !form[field as keyof typeof form]);
+    
+    if (missingFields.length > 0) {
+      setError(`Please fill in required fields for calculation: ${missingFields.join(', ')}`);
+      return;
+    }
+
+    setCalculating(true);
+    setError(null);
+    setCalculatedValues({
+      carbonFootprint: null,
+      ecoScore: null,
+      isEcoFriendly: null
+    });
+
+    try {
+      // Parse materialComposition
+      let parsedMaterialComposition = {};
+      if (typeof form.materialComposition === 'string') {
+        form.materialComposition.split(',').forEach(pair => {
+          const [mat, val] = pair.split(':');
+          if (mat && val) parsedMaterialComposition[mat.trim()] = Number(val.trim());
+        });
+      }
+
+      // Convert material composition to ML server format
+      const mlMaterialFeatures = {
+        "Material_Plastic": 0,
+        "Material_Aluminum": 0,
+        "Material_Steel": 0,
+        "Material_Copper": 0,
+        "Material_Silicon": 0,
+        "Material_Organic": 0,
+        "Material_Glass": 0,
+        "Material_Insulation Foam": 0,
+        "Material_Drum Metal": 0
+      };
+
+      // Map parsed materials to ML server format
+      Object.keys(parsedMaterialComposition).forEach(material => {
+        const percentage = parsedMaterialComposition[material];
+        const mlKey = `Material_${material}`;
+        if (mlMaterialFeatures.hasOwnProperty(mlKey)) {
+          mlMaterialFeatures[mlKey] = percentage;
+        }
+      });
+
+      // Prepare data for ML server
+      const mlPayload = {
+        "Weight (kg)": Number(form.weight),
+        "Distance (km)": Number(form.distance),
+        "Recyclable": form.recyclability ? 1 : 0,
+        "Repairable": form.repairability ? 1 : 0,
+        "Lifespan (yrs)": form.lifespan ? Number(form.lifespan) : 5,
+        "Packaging Used": form.packaging || "Cardboard box",
+        "Category": form.category || 'General',
+        "Subcategory": form.subCategory || '',
+        ...mlMaterialFeatures
+      };
+
+      console.log('🚀 Sending ML payload:', JSON.stringify(mlPayload, null, 2));
+
+      // Call ML server directly
+      const mlRes = await axios.post('http://127.0.0.1:8001/predict', mlPayload);
+      
+      const { carbon_footprint, eco_score, isEcoFriendly, status, warning } = mlRes.data;
+      
+      setCalculatedValues({
+        carbonFootprint: carbon_footprint,
+        ecoScore: eco_score * 100, // Convert to percentage
+        isEcoFriendly: (eco_score * 100) >= 60 // Mark as eco friendly if eco score >= 60
+      });
+
+      if (status === 'fallback' && warning) {
+        setMessage(`CO2 emissions calculated using fallback method. ${warning}`);
+      } else {
+        setMessage('CO2 emissions calculated successfully!');
+      }
+    } catch (err: any) {
+      console.error('ML Server Error:', err);
+      
+      // Handle different types of errors
+      if (err.response) {
+        // Server responded with error status
+        const status = err.response.status;
+        const errorData = err.response.data;
+        
+        switch (status) {
+          case 400:
+            setError(`Invalid data: ${errorData.detail || 'Please check your input values'}`);
+            break;
+          case 503:
+            setError('ML model is temporarily unavailable. Please try again in a few minutes.');
+            break;
+          case 500:
+            setError('ML server error. Please try again or contact support if the problem persists.');
+            break;
+          default:
+            setError(errorData.detail || `Server error (${status}). Please try again.`);
+        }
+      } else if (err.request) {
+        // Network error - server not reachable
+        setError('Cannot connect to ML server. Please check if the ML server is running on port 8001.');
+      } else {
+        // Other errors
+        setError(err.message || 'Failed to calculate CO2 emissions. Please try again.');
+      }
+    } finally {
+      setCalculating(false);
+    }
+  };
 
   if (user) {
     return (
@@ -323,7 +459,7 @@ const SellOnAmazonPage = () => {
                       placeholder="0.5" 
                       type="number" 
                       min="0" 
-                      step="0.01"
+                      step="0.1"
                       className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
                       required 
                     />
@@ -334,9 +470,10 @@ const SellOnAmazonPage = () => {
                       name="distance" 
                       value={form.distance} 
                       onChange={handleChange} 
-                      placeholder="500" 
+                      placeholder="100" 
                       type="number" 
-                      min="0"
+                      min="0" 
+                      step="0.1"
                       className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500" 
                       required 
                     />
@@ -374,7 +511,7 @@ const SellOnAmazonPage = () => {
                   </div>
                 </div>
 
-                <div className="mt-4 space-y-3">
+                <div className="mt-4 space-y-2">
                   <div className="flex items-center">
                     <input 
                       name="recyclability" 
@@ -415,10 +552,12 @@ const SellOnAmazonPage = () => {
                     <option value="Aluminum:60, Plastic:30, Steel:10">Aluminum:60, Plastic:30, Steel:10</option>
                     <option value="Organic:100">Organic:100</option>
                     <option value="Glass:70, Plastic:30">Glass:70, Plastic:30</option>
-                    <option value="Plastic:80, Metal:20">Plastic:80, Metal:20</option>
+                    <option value="Plastic:80, Steel:20">Plastic:80, Steel:20</option>
                     <option value="Organic:80, Plastic:20">Organic:80, Plastic:20</option>
                     <option value="Glass:90, Plastic:10">Glass:90, Plastic:10</option>
                     <option value="Plastic:70, Aluminum:20, Glass:10">Plastic:70, Aluminum:20, Glass:10</option>
+                    <option value="Steel:50, Plastic:30, Copper:20">Steel:50, Plastic:30, Copper:20</option>
+                    <option value="Silicon:40, Plastic:40, Steel:20">Silicon:40, Plastic:40, Steel:20</option>
                   </select>
                   <p className="text-xs text-gray-500 mt-1">Format: Material:Percentage, Material:Percentage (e.g., Plastic:70, Aluminum:30)</p>
                 </div>
@@ -440,6 +579,70 @@ const SellOnAmazonPage = () => {
                 </div>
               </div>
 
+              {/* CO2 Calculation Button and Results */}
+              <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <h5 className="text-lg font-semibold text-green-800">CO2 Emission Calculator</h5>
+                    <p className="text-sm text-green-700 mt-1">
+                      Calculate your product's environmental impact before adding it. This uses our AI model to analyze 
+                      materials, weight, distance, and sustainability factors.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleCalculateCO2}
+                    disabled={calculating}
+                    className="bg-green-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  >
+                    {calculating ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        Calculating...
+                      </>
+                    ) : (
+                      <>
+                        <Leaf className="h-4 w-4" />
+                        Calculate CO2 Emission
+                      </>
+                    )}
+                  </button>
+                </div>
+                
+                {calculatedValues.carbonFootprint !== null && (
+                  <div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="text-center p-3 bg-white rounded-lg border">
+                        <div className="text-2xl font-bold text-green-600">
+                          {calculatedValues.carbonFootprint} kg
+                        </div>
+                        <div className="text-sm text-gray-600">Carbon Footprint</div>
+                      </div>
+                      <div className="text-center p-3 bg-white rounded-lg border">
+                        <div className="text-2xl font-bold text-blue-600">
+                          {calculatedValues.ecoScore?.toFixed(1)}%
+                        </div>
+                        <div className="text-sm text-gray-600">Eco Score</div>
+                      </div>
+                      <div className="text-center p-3 bg-white rounded-lg border">
+                        <div className="text-2xl font-bold text-orange-600">
+                          {calculatedValues.isEcoFriendly ? 'Yes' : 'No'}
+                        </div>
+                        <div className="text-sm text-gray-600">Eco Friendly</div>
+                      </div>
+                    </div>
+                    <div className="mt-3 p-2 bg-blue-50 rounded border border-blue-200">
+                      <p className="text-xs text-blue-700 text-center">
+                        ✓ These calculated values will be automatically used when you submit the product
+                      </p>
+                    </div>
+                  </div>
+                )}
+                
+                {message && <div className="text-green-600 font-medium mt-4 p-3 bg-green-100 rounded-md">{message}</div>}
+                {error && <div className="text-red-600 font-medium mt-4 p-3 bg-red-100 rounded-md">{error}</div>}
+              </div>
+
               <div className="flex justify-end space-x-4">
                 <button 
                   type="button" 
@@ -456,13 +659,10 @@ const SellOnAmazonPage = () => {
                   {loading ? 'Adding Product...' : 'Add Product'}
                 </button>
               </div>
-
-              {message && <div className="text-green-600 font-medium mt-4 p-3 bg-green-50 rounded-md">{message}</div>}
-              {error && <div className="text-red-600 font-medium mt-4 p-3 bg-red-50 rounded-md">{error}</div>}
             </form>
           </div>
         )}
-        <SellerDashboardPage />
+        <SellerDashboardPage refreshTrigger={refreshTrigger} />
       </div>
     );
   }
