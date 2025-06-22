@@ -19,6 +19,8 @@ const Header = () => {
   const [activeTab, setActiveTab] = useState('chat');
   const [chatNotifications, setChatNotifications] = useState([])
   const [groupBuyNotifications, setGroupBuyNotifications] = useState([])
+  const [unreadChatCount, setUnreadChatCount] = useState(0);
+  const [unreadGroupCount, setUnreadGroupCount] = useState(0);
 
   const handleLogout = async () => {
     await logout();
@@ -46,10 +48,10 @@ const Header = () => {
     notificationSocket.on('previous-notification', (data) => {
       
       if(data?.message)
-        setChatNotifications(data.message), console.log(data?.message);
+        setChatNotifications(data.message), setUnreadChatCount(data?.message?.length);
 
       if(data?.notification)
-        setGroupBuyNotifications(data.notification);
+        setGroupBuyNotifications(data.notification), setUnreadGroupCount(data.notification.length);
     });
 
     notificationSocket.on('receive-notification', (data) => {
@@ -66,8 +68,17 @@ const Header = () => {
           return [...uniqueNew, ...prev];
         });
       }
+
+      setUnreadGroupCount(groupBuyNotifications.length);
     });
     
+    notificationSocket.on('marked-group-notification', (data) => {
+      setUnreadGroupCount(0);
+    });
+
+    notificationSocket.on('marked-message', (data) => {
+      setUnreadChatCount(0);
+    });
     
   
     return () => {
@@ -77,13 +88,21 @@ const Header = () => {
   }, [user?._id]);
   
   const handleJoinGroup = ({ _id, groupId, userId }) => {
-    setIsJoining(true);
+    setIsJoining(prev => ({ ...prev, [_id]: true }));
 
     notificationSocket.emit('join-group', { _id: _id, groupId: groupId, userId: userId });
   };
 
-  const unreadChatCount = chatNotifications.length;
-  const unreadGroupCount = groupBuyNotifications.length;
+
+  const MessageRead = ({ userId }) => {
+    notificationSocket.emit('mark-read-message', { data: chatNotifications, userId: userId });
+  };
+
+
+  const ReadJoinGroupNotification = ({ userId }) => {
+    notificationSocket.emit('mark-group-notification', { data: groupBuyNotifications, userId: userId });
+  };
+
   const totalUnread = unreadChatCount + unreadGroupCount;
 
 
@@ -328,6 +347,7 @@ const Header = () => {
               <button
                 onClick={() => {
                   setActiveTab('chat');
+                  MessageRead({userId: user?._id});
                 }}
                 className={`flex-1 py-2 px-4 text-sm font-medium flex items-center justify-center gap-2 ${activeTab === 'chat' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
               >
@@ -341,6 +361,7 @@ const Header = () => {
               <button
                 onClick={() => {
                   setActiveTab('group');
+                  ReadJoinGroupNotification({userId: user?._id});
                 }}
                 className={`flex-1 py-2 px-4 text-sm font-medium flex items-center justify-center gap-2 ${activeTab === 'group' ? 'text-green-600 border-b-2 border-green-600' : 'text-gray-500 hover:text-gray-700'}`}
               >
@@ -408,7 +429,7 @@ const Header = () => {
                       </div>
                       
                       <button className="text-sm text-blue-500 hover:text-blue-700" onClick={() => handleJoinGroup({ _id: data._id, groupId: data.groupId._id, userId: user._id })}>
-                        {isJoining ? 'Joining...' : 'Join'}
+                        {isJoining[data._id] ? 'Joining...' : 'Join'}
                       </button>
                     </div>
                   </div>

@@ -6,7 +6,7 @@ let io;
 const setUpsSockets = (server) => {
 
     io = SocketIo(server, {
-        cors : { origin: 'http://localhost:5173', methods: ['GET', 'POST'], credentials: true },
+        cors : { origin: 'https://hackon-sustainable-shopping-experience.onrender.com', methods: ['GET', 'POST'], credentials: true },
     });
 
     console.log('✅ Socket.IO initialized');     
