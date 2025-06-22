@@ -207,7 +207,7 @@ const Header = () => {
                 <User className="w-4 h-4" />
                 <div className="text-left hidden xl:block">
                   <div className="text-xs">
-                    Hello, {user ? user.name.split(' ')[0] : 'Sign in'}
+                    Hello, {user && user.name ? user.name.split(' ')[0] : 'Sign in'}
                   </div>
                   <div className="font-semibold">Account & Lists</div>
                 </div>

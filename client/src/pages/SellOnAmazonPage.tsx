@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useStore } from '../store/useStore';
 import axios from 'axios';
 import SellerDashboardPage from './SellerDashboardPage';
+import { api } from '../services/api';
 
 const SellOnAmazonPage = () => {
   const { user } = useStore();
@@ -98,7 +99,7 @@ const SellOnAmazonPage = () => {
     setMessage(null);
     setError(null);
     try {
-      const res = await axios.post('http://localhost:8000/api/products', {
+      const res = await api.post('/products', {
         ...form,
         unitsInStock: form.unitsInStock ? Number(form.unitsInStock) : undefined,
         weight: Number(form.weight),
@@ -110,7 +111,7 @@ const SellOnAmazonPage = () => {
         carbonFootprint: calculatedValues.carbonFootprint,
         ecoScore: calculatedValues.ecoScore,
         isEcoFriendly: calculatedValues.isEcoFriendly,
-      }, { withCredentials: true });
+      });
       setMessage('Product created successfully! Dashboard will refresh automatically.');
       setForm({
         name: '', price: '', mrp: '', url: '', category: '', subCategory: '', points: '', unitsInStock: '', weight: '', materialComposition: '', packaging: '', recyclability: false, distance: '', lifespan: '', repairability: false,
@@ -272,7 +273,8 @@ const SellOnAmazonPage = () => {
       console.log('🚀 Sending ML payload:', JSON.stringify(mlPayload, null, 2));
 
       // Call ML server directly
-      const mlRes = await axios.post('http://127.0.0.1:8001/predict', mlPayload);
+      const mlServerUrl = import.meta.env.VITE_ML_SERVER_URL || 'http://127.0.0.1:8001';
+      const mlRes = await axios.post(`${mlServerUrl}/predict`, mlPayload);
       
       const { carbon_footprint, eco_score, isEcoFriendly, status, warning } = mlRes.data;
       

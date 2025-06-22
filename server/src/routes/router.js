@@ -160,10 +160,14 @@ router.post('/login', [
 
 
     const token = await user.generateAuthToken();
+    console.log('Token generated, setting cookie...');
     res.cookie("AmazonClone", token, {
       expires: new Date(Date.now() + 3600000),
-      httpOnly: true
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true
     });
+    console.log('Cookie set successfully');
 
     res.status(201).json({ 
       status: true, 
@@ -225,7 +229,10 @@ router.delete("/delete/:id", authenticate, async (req, res) => {
 router.get("/logout", authenticate, async (req, res) => {
   try {
     req.rootUser.tokens = req.rootUser.tokens.filter(tokenObj => tokenObj.token !== req.token);
-    res.clearCookie("AmazonClone");
+    res.clearCookie("AmazonClone", {
+      sameSite: 'none',
+      secure: true
+    });
     await req.rootUser.save();
     res.status(201).json({ status: true, message: "Logged out successfully!" });
   } catch (err) {

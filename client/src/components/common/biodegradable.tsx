@@ -34,8 +34,9 @@ export default function MaterialInfoScanner() {
     setAnalyzedMaterial(description.trim());
 
     try {
+      const materialAnalysisUrl = import.meta.env.VITE_MATERIAL_ANALYSIS_URL || 'https://machine-learning-8crr.onrender.com';
       const response = await axios.post<MaterialAPIResponse>(
-        'https://machine-learning-8crr.onrender.com/analyze-material',
+        `${materialAnalysisUrl}/analyze-material`,
         { description: description.trim() },
         {
           timeout: 60000, // 60 second timeout

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { authAPI, productsAPI, cartAPI, ordersAPI, challengeAPI, aiAPI } from '../services/api';
+import { authAPI, productsAPI, cartAPI, ordersAPI, challengeAPI, aiAPI, api } from '../services/api';
 import axios from 'axios';
 
 interface Product {
@@ -385,7 +385,7 @@ export const useStore = create<Store>((set, get) => ({
           const cartItem = cart.find(c => c.cartItem.name === item.name);
           if (cartItem) {
             try {
-              await axios.patch(`http://localhost:8000/api/products/${cartItem.cartItem._id}/sales`, { quantity: item.quantity }, { withCredentials: true });
+              await api.patch(`/products/${cartItem.cartItem._id}/sales`, { quantity: item.quantity });
             } catch (salesError) {
               console.warn('Failed to update sales count for product:', cartItem.cartItem._id, salesError);
               // Don't throw error - sales update failure shouldn't break checkout

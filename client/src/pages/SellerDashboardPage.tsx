@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useStore } from '../store/useStore';
-import axios from 'axios';
+import { api } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 
 interface SellerProduct {
@@ -39,7 +39,7 @@ const SellerDashboardPage: React.FC<SellerDashboardPageProps> = ({ refreshTrigge
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.get('http://localhost:8000/api/seller/products', { withCredentials: true });
+      const res = await api.get('/seller/products');
       setProducts(res.data.products || []);
     } catch (err: any) {
       setError(err.response?.data?.message || 'Failed to fetch products');

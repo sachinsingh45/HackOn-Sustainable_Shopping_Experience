@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
 
 // Create axios instance with default config
 const api = axios.create({
@@ -144,19 +144,19 @@ export const aiAPI = {
 // Challenge API
 export const challengeAPI = {
   getChallenges: async () => {
-    const response = await axios.get('http://localhost:8000/api/challenges', { withCredentials: true });
+    const response = await api.get('/challenges');
     return response.data;
   },
   joinChallenge: async (challengeId: string) => {
-    const response = await axios.post(`http://localhost:8000/api/challenges/join/${challengeId}`, {}, { withCredentials: true });
+    const response = await api.post(`/challenges/join/${challengeId}`, {});
     return response.data;
   },
   completeChallenge: async (challengeId: string) => {
-    const response = await axios.post(`http://localhost:8000/api/challenges/complete/${challengeId}`, {}, { withCredentials: true });
+    const response = await api.post(`/challenges/complete/${challengeId}`, {});
     return response.data;
   },
   checkCompletion: async () => {
-    const response = await axios.post('http://localhost:8000/api/challenges/check-completion', {}, { withCredentials: true });
+    const response = await api.post('/challenges/check-completion', {});
     return response.data;
   },
 };
@@ -164,7 +164,7 @@ export const challengeAPI = {
 // Leaderboard API
 export const leaderboardAPI = {
   getLeaderboard: async () => {
-    const response = await axios.get('http://localhost:8000/api/leaderboard', { withCredentials: true });
+    const response = await api.get('/leaderboard');
     return response.data;
   }
 };
