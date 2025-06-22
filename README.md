@@ -55,7 +55,7 @@ Our platform bridges the gap between online shopping convenience and sustainabil
   - **UI & Styling:** Tailwind CSS, Framer Motion, Lucide React, React icons, React avatar
   - **Data Visualization:** Recharts
   - **Real-time communication:** Socket.io client
-  - **HTTP clinet:** Axios
+  - **HTTP client:** Axios
 - **Backend:**
   - **Core Framework:** Node.js, Express.js, MongoDB, Mongoose
   - **Authentication & Security:** bcryptjs, jsonwebtoken, express-validator
