@@ -8,6 +8,11 @@ import ProductCard from '../components/common/ProductCard';
 const HomePage = () => {
   const { products, user } = useStore();
 
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   const categories = [
     { name: 'Green Electronics', icon: '📱', count: '2,400+ items', color: 'bg-blue-100 text-blue-800' },
     { name: 'Sustainable Fashion', icon: '👕', count: '5,600+ items', color: 'bg-green-100 text-green-800' },

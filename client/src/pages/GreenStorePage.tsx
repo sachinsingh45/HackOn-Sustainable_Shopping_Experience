@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Leaf, Filter, Star, Users, Package, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useStore } from '../store/useStore';
@@ -10,29 +10,88 @@ const GreenStorePage = () => {
   const [sortBy, setSortBy] = useState('eco-score');
   const [priceRange, setPriceRange] = useState([0, 10000]);
 
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   // Get all unique categories from products (case-insensitive, trimmed)
   const allCategoriesSet = new Set<string>();
   products.forEach(product => {
-    const cat = (product.category?.trim() || 'General');
-    allCategoriesSet.add(cat);
+    if (product.category) {
+      // Normalize the category name to prevent duplicates
+      const normalizedCat = product.category.trim().toLowerCase();
+      // Convert back to title case for display
+      const displayCat = product.category.trim().replace(/\b\w/g, l => l.toUpperCase());
+      allCategoriesSet.add(displayCat);
+    }
   });
-  const allCategories = Array.from(allCategoriesSet);
+  const allCategories = Array.from(allCategoriesSet).sort();
+  
+  // Debug: Log the categories being generated
+  console.log('Generated categories:', allCategories);
 
   // Helper to normalize category id
   const normalizeCatId = (cat: string) => cat.trim().toLowerCase().replace(/\s+/g, '-');
+
+  // Helper function to get filtered products for a specific category
+  const getFilteredProductsForCategory = (categoryId: string) => {
+    return products
+      .filter(product => {
+        const isEco = product.isEcoFriendly ?? true;
+        if (categoryId === 'all') return isEco;
+        
+        // Normalize both the product category and selected category for comparison
+        const productCatNormalized = normalizeCatId(product.category || '');
+        const selectedCatNormalized = categoryId;
+        
+        // For other categories, show only eco-friendly products in that category
+        return (
+          isEco &&
+          productCatNormalized === selectedCatNormalized
+        );
+      })
+      .filter(product => {
+        const price = parseFloat((product.price || '0').replace(/[^0-9.]/g, ''));
+        return price >= priceRange[0] && price <= priceRange[1];
+      });
+  };
+
+  // Build categories array with dynamic counts based on current filters
+  const categories = useMemo(() => {
+    const categoryList = [
+      {
+        id: 'all',
+        name: 'All Green Products',
+        count: getFilteredProductsForCategory('all').length
+      },
+      ...allCategories.map(cat => ({
+        id: normalizeCatId(cat),
+        name: cat,
+        count: getFilteredProductsForCategory(normalizeCatId(cat)).length
+      }))
+    ];
+    
+    // Debug: Log the category counts
+    console.log('Category counts:', categoryList.map(c => `${c.name}: ${c.count}`));
+    
+    return categoryList;
+  }, [products, priceRange, allCategories]);
 
   // Compute filteredProducts based on selectedCategory
   const filteredProducts = products
     .filter(product => {
       const isEco = product.isEcoFriendly ?? true;
       if (selectedCategory === 'all') return isEco;
-      if (selectedCategory === 'general') {
-        return normalizeCatId(product.category || 'General') === 'general';
-      }
+      
+      // Normalize both the product category and selected category for comparison
+      const productCatNormalized = normalizeCatId(product.category || '');
+      const selectedCatNormalized = selectedCategory;
+      
       // For other categories, show only eco-friendly products in that category
       return (
         isEco &&
-        normalizeCatId(product.category || 'General') === selectedCategory
+        productCatNormalized === selectedCatNormalized
       );
     })
     .filter(product => {
@@ -57,23 +116,6 @@ const GreenStorePage = () => {
           return 0;
       }
     });
-
-  // Build categories array with correct counts for each filter
-  const categories = [
-    {
-      id: 'all',
-      name: 'All Green Products',
-      count: products.filter(p => p.isEcoFriendly).length
-    },
-    ...allCategories.map(cat => ({
-      id: normalizeCatId(cat),
-      name: cat,
-      count:
-        normalizeCatId(cat) === 'general'
-          ? products.filter(p => normalizeCatId(p.category || 'General') === 'general').length
-          : products.filter(p => p.isEcoFriendly && normalizeCatId(p.category || 'General') === normalizeCatId(cat)).length
-    }))
-  ];
 
   const sortOptions = [
     { value: 'eco-score', label: 'Highest Eco Score' },

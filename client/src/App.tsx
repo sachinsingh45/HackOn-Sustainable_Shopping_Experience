@@ -22,11 +22,15 @@ import MainLayout from './components/layout/MainLayout';
 import { ToastProvider } from './context/ToastContext';
 import OrderHistoryPage from './pages/OrderHistoryPage';
 import SellerDashboardPage from './pages/SellerDashboardPage';
+import { useScrollToTop } from './hooks/useScrollToTop';
 
 import Single_group_buy_page from './pages/single-group-buy';
 
 function App() {
   const { checkAuth, fetchProducts } = useStore();
+  
+  // Scroll to top on route changes
+  useScrollToTop();
 
   useEffect(() => {
     checkAuth();
