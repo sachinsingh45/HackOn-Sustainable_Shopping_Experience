@@ -39,7 +39,24 @@ const router = require('./routes/router');
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(cookieParser(""));
-app.use(cors({credentials: true, origin:'http://localhost:5173'}));
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://your-frontend-domain.vercel.app' // Replace with actual deployed frontend URL
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // allow requests with no origin (like mobile apps, curl, Postman)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+}));
+
 app.use('/api', router);
 
 // For deployment

@@ -1198,7 +1198,7 @@ router.post('/create-group', authenticate, async(req, res) => {
 });
 
 
-router.post('/join-group/:groudId', authenticate, async(req, res) => {
+router.post('/join-group/:groupId', authenticate, async(req, res) => {
   try {
     const userId = req.userId;
     const { groupId } = req.params;
