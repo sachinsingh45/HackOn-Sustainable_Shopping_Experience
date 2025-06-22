@@ -39,14 +39,24 @@ const router = require('./routes/router');
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(cookieParser(""));
+
+// CORS configuration
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://your-frontend-domain.vercel.app' // Replace with actual deployed frontend URL
+  'http://localhost:3000',
+  'https://hack-on-sustainable-shopping-experi.vercel.app/',
+  'https://hack-on-sustainable-git-9d5060-sachin-singhs-projects-a8578191.vercel.app/',
+  'https://hack-on-sustainable-shopping-experience-bhr7csnmr.vercel.app/' // Replace with actual deployed frontend URL
 ];
 
 app.use(cors({
   origin: function (origin, callback) {
-    // allow requests with no origin (like mobile apps, curl, Postman)
+    // In production, allow all origins for now (you can restrict this later)
+    if (process.env.NODE_ENV === 'production') {
+      return callback(null, true);
+    }
+    
+    // In development, use the allowed origins list
     if (!origin) return callback(null, true);
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
@@ -61,9 +71,9 @@ app.use('/api', router);
 
 // For deployment
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('frontend/build'));
+  app.use(express.static(path.join(__dirname, '../../client/dist')));
   app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname,  "frontend/build", "index.html"));
+    res.sendFile(path.resolve(__dirname, "../../client/dist", "index.html"));
   });
 }
 
