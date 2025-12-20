@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Challenge = require('./models/Challenge');
+const User = require('./models/User');
 require('dotenv').config({ path: '../.env' });
 
 const badgeIcons = {
@@ -25,12 +26,37 @@ function getPeriodDates(frequency) {
   return { startDate, endDate };
 }
 
+async function deactivateExpiredChallenges() {
+  const now = new Date();
+  const expired = await Challenge.find({
+    isActive: true,
+    endDate: { $lt: now }
+  });
+  
+  if (expired.length > 0) {
+    console.log(`Found ${expired.length} expired challenges to deactivate`);
+    await Challenge.updateMany(
+      { isActive: true, endDate: { $lt: now } },
+      { $set: { isActive: false } }
+    );
+    
+    // Remove expired challenges from all users' currentChallenges
+    for (const challenge of expired) {
+      await User.updateMany(
+        { currentChallenges: challenge._id.toString() },
+        { $pull: { currentChallenges: challenge._id.toString() } }
+      );
+    }
+    console.log(`Deactivated ${expired.length} expired challenges and removed from users`);
+  }
+}
+
 async function ensureChallenge(frequency, name, description, type, targetValue) {
   const { startDate, endDate } = getPeriodDates(frequency);
   // Check if a challenge for this period and frequency exists
   const exists = await Challenge.findOne({ frequency, startDate, endDate });
   if (!exists) {
-    await Challenge.create({
+    const newChallenge = await Challenge.create({
       name,
       description,
       type,
@@ -46,6 +72,13 @@ async function ensureChallenge(frequency, name, description, type, targetValue) 
       endDate,
     });
     console.log(`Created new ${frequency} challenge for period ${startDate.toISOString()} - ${endDate.toISOString()}`);
+    
+    // Auto-assign to all users
+    await User.updateMany(
+      { currentChallenges: { $ne: newChallenge._id.toString() } },
+      { $addToSet: { currentChallenges: newChallenge._id.toString() } }
+    );
+    console.log(`Assigned new ${frequency} challenge to all users`);
   } else {
     console.log(`${frequency} challenge already exists for this period.`);
   }
@@ -53,6 +86,9 @@ async function ensureChallenge(frequency, name, description, type, targetValue) 
 
 async function main() {
   await mongoose.connect(process.env.MONGO_URI);
+  
+  // First, deactivate expired challenges
+  await deactivateExpiredChallenges();
   
   // Create challenges that match frontend expectations
   await ensureChallenge(

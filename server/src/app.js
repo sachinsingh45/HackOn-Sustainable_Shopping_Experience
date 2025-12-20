@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 var path = require('path'); 
 const http = require('http');
+const cron = require('node-cron');
 
 
 const port = process.env.PORT || 8000;
@@ -31,6 +32,101 @@ connectDB();
 
 // Product Model
 const Product = require('./models/Product');
+
+// Routes
+const router = require('./routes/router');
+
+// Auto-update challenges
+const Challenge = require('./models/Challenge');
+const User = require('./models/User');
+
+const badgeIcons = {
+  daily: '/daily-badge.png',
+  weekly: '/weekly-badge.png',
+  monthly: '/monthly-badge.png',
+};
+
+function getPeriodDates(frequency) {
+  const now = new Date();
+  let startDate, endDate;
+  if (frequency === 'daily') {
+    startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+  } else if (frequency === 'weekly') {
+    const day = now.getDay();
+    startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - day);
+    endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - day + 7);
+  } else if (frequency === 'monthly') {
+    startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+    endDate = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+  }
+  return { startDate, endDate };
+}
+
+async function updateChallenges() {
+  try {
+    console.log('[CRON] Running challenge update check...');
+    const now = new Date();
+    
+    // Deactivate expired challenges
+    const expired = await Challenge.find({ isActive: true, endDate: { $lt: now } });
+    if (expired.length > 0) {
+      await Challenge.updateMany(
+        { isActive: true, endDate: { $lt: now } },
+        { $set: { isActive: false } }
+      );
+      for (const challenge of expired) {
+        await User.updateMany(
+          { currentChallenges: challenge._id.toString() },
+          { $pull: { currentChallenges: challenge._id.toString() } }
+        );
+      }
+      console.log(`[CRON] Deactivated ${expired.length} expired challenges`);
+    }
+    
+    // Create new challenges if needed
+    const challenges = [
+      { frequency: 'daily', name: 'Daily Eco Shopper', description: 'Buy at least 1 eco-friendly product today to complete this challenge.', type: 'ecoScore', targetValue: 1 },
+      { frequency: 'weekly', name: 'Weekly CO₂ Saver', description: 'Save at least 5kg of CO₂ this week to complete this challenge.', type: 'co2Saved', targetValue: 5 },
+      { frequency: 'monthly', name: 'Monthly Green Champion', description: 'Buy at least 10 eco-friendly products this month to complete this challenge.', type: 'ecoScore', targetValue: 10 }
+    ];
+    
+    for (const ch of challenges) {
+      const { startDate, endDate } = getPeriodDates(ch.frequency);
+      const exists = await Challenge.findOne({ frequency: ch.frequency, startDate, endDate });
+      if (!exists) {
+        const newChallenge = await Challenge.create({
+          name: ch.name,
+          description: ch.description,
+          type: ch.type,
+          targetValue: ch.targetValue,
+          rewardBadge: {
+            name: `${ch.frequency.charAt(0).toUpperCase() + ch.frequency.slice(1)} Eco Champion`,
+            description: `Awarded for completing the ${ch.frequency} eco challenge`,
+            iconUrl: badgeIcons[ch.frequency],
+          },
+          isActive: true,
+          frequency: ch.frequency,
+          startDate,
+          endDate,
+        });
+        await User.updateMany(
+          { currentChallenges: { $ne: newChallenge._id.toString() } },
+          { $addToSet: { currentChallenges: newChallenge._id.toString() } }
+        );
+        console.log(`[CRON] Created new ${ch.frequency} challenge`);
+      }
+    }
+  } catch (error) {
+    console.error('[CRON] Challenge update error:', error);
+  }
+}
+
+// Run challenge update every hour
+cron.schedule('0 * * * *', updateChallenges);
+
+// Run once on startup
+setTimeout(updateChallenges, 5000);
 
 // Routes
 const router = require('./routes/router');
