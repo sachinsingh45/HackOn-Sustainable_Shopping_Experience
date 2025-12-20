@@ -394,29 +394,72 @@ router.post('/challenges/complete/:challengeId', authenticate, async (req, res) 
 
 // POST: Update user location
 router.post('/update-location', authenticate, async (req, res) => {
-  console.log(req.body);
+  console.log('[update-location] Request body:', req.body);
   try {
     const { city, state, country, pin, coor } = req.body;
     const userId = req.userId;
+    
+    // Validate required fields
+    if (!city || !state || !country || !pin || !coor) {
+      return res.status(400).json({ 
+        status: false, 
+        message: 'Missing required fields: city, state, country, pin, coor' 
+      });
+    }
+    
     const [latStr, lngStr] = coor.split(',');
     const latitude = parseFloat(latStr);
     const longitude = parseFloat(lngStr);
+    
     if (isNaN(latitude) || isNaN(longitude)) {
-      return res.status(400).json({ message: 'Invalid coordinates format' });
+      return res.status(400).json({ 
+        status: false, 
+        message: 'Invalid coordinates format. Expected "lat,lng"' 
+      });
     }
 
     const user = await User.findById(userId);
-    user.location = { city, state, country, pin, coor: { type: 'Point', coordinates: [longitude, latitude] } };
+    if (!user) {
+      return res.status(404).json({ status: false, message: 'User not found' });
+    }
+    
+    // Update location
+    user.location = { 
+      city, 
+      state, 
+      country, 
+      pin, 
+      coor: { 
+        type: 'Point', 
+        coordinates: [longitude, latitude] 
+      } 
+    };
     await user.save();
 
-    await UpdateLocationNotification({ userId, latitude, longitude, pin });
+    // Send notification (wrap in try-catch to not block response)
+    try {
+      await UpdateLocationNotification({ userId, latitude, longitude, pin });
+    } catch (notifError) {
+      console.error('[update-location] Notification error:', notifError.message);
+    }
 
+    // Get unread notifications
     let notification = await notificationModel.find({ receiver: userId, isRead: false });
 
-    res.status(200).json({ status: true, message: 'Location updated', location: user.location, notification: notification });
+    console.log('[update-location] Success for user:', userId);
+    res.status(200).json({ 
+      status: true, 
+      message: 'Location updated successfully', 
+      location: user.location, 
+      notification: notification 
+    });
   } catch (error) {
-
-    res.status(500).json({ status: false, message: 'Failed to update location' });
+    console.error('[update-location] Error:', error);
+    res.status(500).json({ 
+      status: false, 
+      message: 'Failed to update location', 
+      error: error.message 
+    });
   }
 });
 
