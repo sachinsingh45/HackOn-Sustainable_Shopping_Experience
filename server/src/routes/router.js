@@ -333,14 +333,48 @@ router.get('/challenges', async (req, res) => {
 router.post('/challenges/join/:challengeId', authenticate, async (req, res) => {
   try {
     const { challengeId } = req.params;
-    const user = await User.findById(req.userId);
-    if (!user.currentChallenges.includes(challengeId)) {
-      user.currentChallenges.push(challengeId);
-      await user.save();
+    console.log('[Join Challenge] User:', req.userId, 'Challenge:', challengeId);
+    
+    // Validate challenge exists
+    const challenge = await Challenge.findById(challengeId);
+    if (!challenge) {
+      console.error('[Join Challenge] Challenge not found:', challengeId);
+      return res.status(404).json({ status: false, message: 'Challenge not found' });
     }
-    res.status(200).json({ status: true, message: 'Challenge joined', currentChallenges: user.currentChallenges });
+    
+    // Check if challenge is active
+    if (!challenge.isActive) {
+      console.error('[Join Challenge] Challenge is not active:', challengeId);
+      return res.status(400).json({ status: false, message: 'This challenge is no longer active' });
+    }
+    
+    const user = await User.findById(req.userId);
+    if (!user) {
+      console.error('[Join Challenge] User not found:', req.userId);
+      return res.status(404).json({ status: false, message: 'User not found' });
+    }
+    
+    // Check if already joined
+    const alreadyJoined = user.currentChallenges.some(id => id.toString() === challengeId);
+    if (alreadyJoined) {
+      console.log('[Join Challenge] User already joined:', challengeId);
+      return res.status(200).json({ status: true, message: 'Already joined this challenge', currentChallenges: user.currentChallenges });
+    }
+    
+    // Check if already completed
+    const alreadyCompleted = user.badges.some(b => b.challengeId && b.challengeId.toString() === challengeId);
+    if (alreadyCompleted) {
+      console.log('[Join Challenge] Challenge already completed:', challengeId);
+      return res.status(400).json({ status: false, message: 'You have already completed this challenge' });
+    }
+    
+    user.currentChallenges.push(challengeId);
+    await user.save();
+    console.log('[Join Challenge] Success. User challenges:', user.currentChallenges);
+    res.status(200).json({ status: true, message: 'Challenge joined successfully', currentChallenges: user.currentChallenges });
   } catch (error) {
-    res.status(500).json({ status: false, message: 'Failed to join challenge' });
+    console.error('[Join Challenge] Error:', error);
+    res.status(500).json({ status: false, message: 'Failed to join challenge', error: error.message });
   }
 });
 
@@ -753,8 +787,10 @@ router.get('/leaderboard', async (req, res) => {
 // POST: Check and complete challenges for existing orders
 router.post('/challenges/check-completion', authenticate, async (req, res) => {
   try {
+    console.log('[Check Completion] Checking for user:', req.userId);
     const user = await User.findById(req.userId);
     if (!user) {
+      console.error('[Check Completion] User not found:', req.userId);
       return res.status(404).json({ status: false, message: 'User not found' });
     }
 
@@ -854,6 +890,7 @@ router.post('/challenges/check-completion', authenticate, async (req, res) => {
 
     await user.save();
     
+    console.log(`[Check Completion] Checked ${activeChallenges.length} challenges, completed ${completedChallenges.length}`);
     res.status(200).json({ 
       status: true, 
       message: `Checked challenges. ${completedChallenges.length} challenges completed.`,
@@ -861,8 +898,8 @@ router.post('/challenges/check-completion', authenticate, async (req, res) => {
       badges: user.badges 
     });
   } catch (error) {
-    console.error('Error checking challenges:', error);
-    res.status(500).json({ status: false, message: 'Failed to check challenges' });
+    console.error('[Check Completion] Error:', error);
+    res.status(500).json({ status: false, message: 'Failed to check challenges', error: error.message });
   }
 });
 
