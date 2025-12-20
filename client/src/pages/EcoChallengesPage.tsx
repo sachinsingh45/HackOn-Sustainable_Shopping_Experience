@@ -351,7 +351,20 @@ const EcoChallengesPage = () => {
                       {!joined && !completed && (
                         <button
                           className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors font-medium w-full shadow"
-                          onClick={() => joinChallenge(challenge._id)}
+                          onClick={async () => {
+                            try {
+                              const response = await joinChallenge(challenge._id);
+                              if (response.status) {
+                                showToast('Challenge joined successfully!', 'success');
+                                fetchChallenges(); // Refresh challenges
+                              } else {
+                                showToast(response.message || 'Failed to join challenge', 'error');
+                              }
+                            } catch (error: any) {
+                              console.error('Error joining challenge:', error);
+                              showToast(error.response?.data?.message || 'Please login to join challenges', 'error');
+                            }
+                          }}
                         >
                           Join Challenge
                         </button>

@@ -495,33 +495,57 @@ export const useStore = create<Store>((set, get) => ({
   },
 
   joinChallenge: async (challengeId: string) => {
-    const response = await challengeAPI.joinChallenge(challengeId);
-    if (response.status) {
-      set((state) => ({
-        user: state.user ? { ...state.user, currentChallenges: response.currentChallenges } : null
-      }));
+    try {
+      const response = await challengeAPI.joinChallenge(challengeId);
+      if (response.status) {
+        set((state) => ({
+          user: state.user ? { ...state.user, currentChallenges: response.currentChallenges } : null
+        }));
+      }
+      return response;
+    } catch (error: any) {
+      console.error('Join challenge error:', error);
+      return { 
+        status: false, 
+        message: error.response?.data?.message || error.message || 'Failed to join challenge'
+      };
     }
-    return response;
   },
 
   completeChallenge: async (challengeId: string) => {
-    const response = await challengeAPI.completeChallenge(challengeId);
-    if (response.status) {
-      set((state) => ({
-        user: state.user ? { ...state.user, badges: response.badges } : null
-      }));
+    try {
+      const response = await challengeAPI.completeChallenge(challengeId);
+      if (response.status) {
+        set((state) => ({
+          user: state.user ? { ...state.user, badges: response.badges } : null
+        }));
+      }
+      return response;
+    } catch (error: any) {
+      console.error('Complete challenge error:', error);
+      return { 
+        status: false, 
+        message: error.response?.data?.message || error.message || 'Failed to complete challenge'
+      };
     }
-    return response;
   },
 
   checkCompletion: async () => {
-    const response = await challengeAPI.checkCompletion();
-    if (response.status) {
-      set((state) => ({
-        user: state.user ? { ...state.user, badges: response.badges } : null
-      }));
+    try {
+      const response = await challengeAPI.checkCompletion();
+      if (response.status) {
+        set((state) => ({
+          user: state.user ? { ...state.user, badges: response.badges } : null
+        }));
+      }
+      return response;
+    } catch (error: any) {
+      console.error('Check completion error:', error);
+      return { 
+        status: false, 
+        message: error.response?.data?.message || error.message || 'Failed to check challenges'
+      };
     }
-    return response;
   },
 
   // If you need to implement orderProduct, use ordersAPI.createOrder or similar here

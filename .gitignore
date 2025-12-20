@@ -47,3 +47,8 @@ server/dump/
 coverage/
 reports/
 test-results/
+
+# Ignore temporary/documentation MD files
+FIXES_APPLIED.md
+TODO.md
+NOTES.md
