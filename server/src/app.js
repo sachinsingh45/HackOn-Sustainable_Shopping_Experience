@@ -128,9 +128,6 @@ cron.schedule('0 * * * *', updateChallenges);
 // Run once on startup
 setTimeout(updateChallenges, 5000);
 
-// Routes
-const router = require('./routes/router');
-
 // Middleware
 app.use(morgan('dev'));
 app.use(express.json());
