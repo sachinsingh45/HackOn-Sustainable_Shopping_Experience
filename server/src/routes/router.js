@@ -895,56 +895,67 @@ router.get('/user/profile', authenticate, async (req, res) => {
 
 // Helper: Cohere intent detection using generate endpoint
 async function getIntentFromCohere(userMessage) {
-  const prompt = `You are an assistant that classifies user queries into one of the following:\n\n1. cart_alternative → if the user asks about eco-friendly product replacements or shopping suggestions.\n2. my_challenges → if the user asks about their environmental challenges or progress.\n3. carbon_footprint → if the user asks about their CO2 usage, impact, or monthly footprint.\n4. chat → if the query is general conversation, fun facts, or unrelated.\n\nOnly reply with one of these 4 words exactly.\n\nUser: ${userMessage}\nAssistant:`;
-  const data = {
-    model: "command",
-    prompt,
-    max_tokens: 10,
-    temperature: 0,
-    k: 0,
-    stop_sequences: ["\n"],
-    return_likelihoods: "NONE"
-  };
-  const response = await axios.post(
-    "https://api.cohere.ai/v1/generate",
-    data,
-    {
-      headers: {
-        "Authorization": `Bearer ${COHERE_API_KEY}`,
-        "Content-Type": "application/json"
+  try {
+    const prompt = `You are an assistant that classifies user queries into one of the following:\n\n1. cart_alternative → if the user asks about eco-friendly product replacements or shopping suggestions.\n2. my_challenges → if the user asks about their environmental challenges or progress.\n3. carbon_footprint → if the user asks about their CO2 usage, impact, or monthly footprint.\n4. chat → if the query is general conversation, fun facts, or unrelated.\n\nOnly reply with one of these 4 words exactly.\n\nUser: ${userMessage}\nAssistant:`;
+    const data = {
+      model: "command",
+      prompt,
+      max_tokens: 10,
+      temperature: 0,
+      k: 0,
+      stop_sequences: ["\n"],
+      return_likelihoods: "NONE"
+    };
+    const response = await axios.post(
+      "https://api.cohere.ai/v1/generate",
+      data,
+      {
+        headers: {
+          "Authorization": `Bearer ${COHERE_API_KEY}`,
+          "Content-Type": "application/json"
+        }
       }
-    }
-  );
-  return response.data.generations[0].text.trim();
+    );
+    return response.data.generations[0].text.trim();
+  } catch (error) {
+    console.error("Cohere getIntent error:", error.message);
+    return "chat"; // Default to chat on error
+  }
 }
 
 // Helper: Cohere chat (generate)
 async function continueChatWithCohere(userMessage, maxWords = 30) {
-  const data = {
-    model: "command",
-    prompt: `You are Green Partner, a helpful, friendly, and eco-conscious AI assistant for an Amazon-like platform. If the user asks about global sustainability, carbon emissions, or general eco questions (like 'which items in the world generate most carbon'), answer with real-world facts and context, not just platform data. Always answer in a short, concise way (no more than ${maxWords} words). Be positive, supportive, and engaging.\nUser: ${userMessage}\nAssistant:`,
-    max_tokens: 80, // adjust as needed
-    temperature: 0.7,
-    k: 0,
-    stop_sequences: ["User:"],
-    return_likelihoods: "NONE"
-  };
-  const response = await axios.post(
-    "https://api.cohere.ai/v1/generate",
-    data,
-    {
-      headers: {
-        "Authorization": `Bearer ${COHERE_API_KEY}`,
-        "Content-Type": "application/json"
+  try {
+    const data = {
+      model: "command",
+      prompt: `You are Green Partner, a helpful, friendly, and eco-conscious AI assistant for an Amazon-like platform. If the user asks about global sustainability, carbon emissions, or general eco questions (like 'which items in the world generate most carbon'), answer with real-world facts and context, not just platform data. Always answer in a short, concise way (no more than ${maxWords} words). Be positive, supportive, and engaging.\nUser: ${userMessage}\nAssistant:`,
+      max_tokens: 80, // adjust as needed
+      temperature: 0.7,
+      k: 0,
+      stop_sequences: ["User:"],
+      return_likelihoods: "NONE"
+    };
+    const response = await axios.post(
+      "https://api.cohere.ai/v1/generate",
+      data,
+      {
+        headers: {
+          "Authorization": `Bearer ${COHERE_API_KEY}`,
+          "Content-Type": "application/json"
+        }
       }
+    );
+    let reply = response.data.generations[0].text.trim();
+    // Enforce word limit
+    if (reply.split(' ').length > maxWords) {
+      reply = reply.split(' ').slice(0, maxWords).join(' ') + '...';
     }
-  );
-  let reply = response.data.generations[0].text.trim();
-  // Enforce word limit
-  if (reply.split(' ').length > maxWords) {
-    reply = reply.split(' ').slice(0, maxWords).join(' ') + '...';
+    return reply;
+  } catch (error) {
+    console.error("Cohere chat error:", error.message);
+    // Return friendly fallback response
+    return "I'm Green Partner, your eco-shopping assistant! I'm here to help you make sustainable choices. Try asking about eco-friendly products or your carbon footprint!";
   }
-  return reply;
 }
 
 // POST: Chat intent detection and routing
