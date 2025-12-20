@@ -87,7 +87,7 @@ const ProfilePage = () => {
     ) {
       setLocationDetailsLoading(true);
       try {
-        const response = await api.post('/api/update-location', fullDetails);
+        const response = await api.post('/update-location', fullDetails);
 
         setUser({ ...(user as any), location: fullDetails });
         setLocationDetails({ city: '', state: '', country: '', pin: '', coor: '' });
