@@ -47,7 +47,8 @@ const allowedOrigins = [
   'http://localhost:3000',
   'https://hack-on-sustainable-shopping-experi.vercel.app',
   'https://hack-on-sustainable-git-9d5060-sachin-singhs-projects-a8578191.vercel.app',
-  'https://hack-on-sustainable-shopping-experience-bhr7csnmr.vercel.app'
+  'https://hack-on-sustainable-shopping-experience-bhr7csnmr.vercel.app',
+  'https://ecofriendly-store.netlify.app'
 ];
 
 app.use(cors({
