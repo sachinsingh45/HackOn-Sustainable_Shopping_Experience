@@ -9,7 +9,8 @@ const allowedOrigins = [
   'https://hack-on-sustainable-git-9d5060-sachin-singhs-projects-a8578191.vercel.app',
   'https://hack-on-sustainable-shopping-experience-bhr7csnmr.vercel.app',
   'https://ecofriendly-store.netlify.app',
-  'https://hackon-sustainable-shopping-experience.vercel.app'
+  'https://hackon-sustainable-shopping-experience.vercel.app',
+  'https://hack-on-sustainable-shopping-experi-black.vercel.app'
 ];
 
 let io;
